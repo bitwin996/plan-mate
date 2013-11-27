@@ -22,6 +22,7 @@ module.exports = (grunt) ->
       
       # configurable paths
       app: require("./bower.json").appPath or "app"
+      tmp: ".tmp"
       dist: "dist"
 
     
@@ -38,12 +39,24 @@ module.exports = (grunt) ->
           "karma"
         ]
 
+      jade:
+        files: ["<%= yeoman.app %>/{,*/}*.jade"]
+        tasks: ["newer:jade:dist"]
+
+      stylus:
+        files: ["<%= yeoman.app %>/styles/{,*/}*.styl"]
+        tasks: ["newer:stylus:dist"]
+
       styles:
         files: ["<%= yeoman.app %>/styles/{,*/}*.css"]
         tasks: [
           "newer:copy:styles"
           "autoprefixer"
         ]
+
+      index:
+        files: ["<%= yeoman.app %>/index.jade"]
+        tasks: ["newer:jade:index"]
 
       gruntfile:
         files: ["Gruntfile.coffee"]
@@ -54,7 +67,7 @@ module.exports = (grunt) ->
 
         files: [
           "<%= yeoman.app %>/{,*/}*.html"
-          ".tmp/styles/{,*/}*.css"
+          "<%= yeoman.tmp %>/styles/{,*/}*.css"
           "<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}"
         ]
 
@@ -73,7 +86,7 @@ module.exports = (grunt) ->
           #open: true  # for grunt-open
           open: false
           base: [
-            ".tmp"
+            "<%= yeoman.tmp %>"
             "<%= yeoman.app %>"
           ]
 
@@ -81,7 +94,7 @@ module.exports = (grunt) ->
         options:
           port: 9001
           base: [
-            ".tmp"
+            "<%= yeoman.tmp %>"
             "test"
             "<%= yeoman.app %>"
           ]
@@ -101,7 +114,7 @@ module.exports = (grunt) ->
         jshintrc: ".jshintrc"
         reporter: require("jshint-stylish")
 
-      all: ["Gruntfile.js"]
+      all: ["Gruntfile.js"]  #TODO Gruntfile.coffee
 
     
     # Empties folders to start fresh
@@ -110,13 +123,13 @@ module.exports = (grunt) ->
         files: [
           dot: true
           src: [
-            ".tmp"
+            "<%= yeoman.tmp %>"
             "<%= yeoman.dist %>/*"
             "!<%= yeoman.dist %>/.git*"
           ]
         ]
 
-      server: ".tmp"
+      server: "<%= yeoman.tmp %>"
 
     
     # Add vendor prefixed styles
@@ -127,9 +140,9 @@ module.exports = (grunt) ->
       dist:
         files: [
           expand: true
-          cwd: ".tmp/styles/"
+          cwd: "<%= yeoman.tmp %>/styles/"
           src: "{,*/}*.css"
-          dest: ".tmp/styles/"
+          dest: "<%= yeoman.tmp %>/styles/"
         ]
 
     
@@ -144,7 +157,7 @@ module.exports = (grunt) ->
           expand: true
           cwd: "<%= yeoman.app %>/scripts"
           src: "{,*/}*.coffee"
-          dest: ".tmp/scripts"
+          dest: "<%= yeoman.tmp %>/scripts"
           ext: ".js"
         ]
 
@@ -153,10 +166,41 @@ module.exports = (grunt) ->
           expand: true
           cwd: "test/spec"
           src: "{,*/}*.coffee"
-          dest: ".tmp/spec"
+          dest: "<%= yeoman.tmp %>/spec"
           ext: ".js"
         ]
 
+    jade:
+      dist:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.app %>/views"
+          src: "{,**/}*.jade"
+          dest: "<%= yeoman.tmp %>/views"
+          ext: ".html"
+        ]
+
+      index:
+        options:
+          pretty: true  # for collapse comment for uglify
+
+        files: [
+          expand: true
+          cwd: "<%= yeoman.app %>"
+          src: "index.jade"
+          dest: "<%= yeoman.tmp %>"
+          ext: ".html"
+        ]
+
+    stylus:
+      dist:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.app %>/styles"
+          src: "{,*/}*.styl"
+          dest: "<%= yeoman.tmp %>/styles"
+          ext: ".css"
+        ]
     
     # Renames files for browser caching purposes
     rev:
@@ -235,9 +279,9 @@ module.exports = (grunt) ->
       dist:
         files: [
           expand: true
-          cwd: ".tmp/concat/scripts"
+          cwd: "<%= yeoman.tmp %>/concat/scripts"
           src: "*.js"
-          dest: ".tmp/concat/scripts"
+          dest: "<%= yeoman.tmp %>/concat/scripts"
         ]
 
     
@@ -266,7 +310,7 @@ module.exports = (grunt) ->
           }
           {
             expand: true
-            cwd: ".tmp/images"
+            cwd: "<%= yeoman.tmp %>/images"
             dest: "<%= yeoman.dist %>/images"
             src: ["generated/*"]
           }
@@ -275,7 +319,7 @@ module.exports = (grunt) ->
       styles:
         expand: true
         cwd: "<%= yeoman.app %>/styles"
-        dest: ".tmp/styles/"
+        dest: "<%= yeoman.tmp %>/styles/"
         src: "{,*/}*.css"
 
     
@@ -283,14 +327,20 @@ module.exports = (grunt) ->
     concurrent:
       server: [
         "coffee:dist"
+        "jade:index"
+        "jade:dist"
+        "stylus:dist"
         "copy:styles"
       ]
       test: [
         "coffee"
+        "jade"
         "copy:styles"
       ]
       dist: [
         "coffee"
+        "jade"
+        "stylus"
         "copy:styles"
         "imagemin"
         "svgmin"
@@ -305,7 +355,7 @@ module.exports = (grunt) ->
     #   dist: {
     #     files: {
     #       '<%= yeoman.dist %>/styles/main.css': [
-    #         '.tmp/styles/{,*/}*.css',
+    #         '<%= yeoman.tmp %>/styles/{,*/}*.css',
     #         '<%= yeoman.app %>/styles/{,*/}*.css'
     #       ]
     #     }
