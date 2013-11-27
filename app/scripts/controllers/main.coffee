@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('appApp')
+angular.module('planMateApp')
   .controller 'MainCtrl', ['$scope', ($scope) ->
     $scope.awesomeThings = [
       'HTML5 Boilerplate'

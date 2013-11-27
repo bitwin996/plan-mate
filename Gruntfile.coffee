@@ -83,8 +83,8 @@ module.exports = (grunt) ->
 
       livereload:
         options:
-          #open: true  # for grunt-open
-          open: false
+          #open: true
+          open: false  # for grunt-open
           base: [
             "<%= yeoman.tmp %>"
             "<%= yeoman.app %>"

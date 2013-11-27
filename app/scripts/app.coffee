@@ -1,9 +1,9 @@
 'use strict'
 
-angular.module('appApp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
+angular.module('planMateApp', [
+  'ngCookies'
+  'ngResource'
+  'ngSanitize'
   'ngRoute'
 ])
   .config ['$routeProvider', ($routeProvider) ->
