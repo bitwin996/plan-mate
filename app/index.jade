@@ -19,6 +19,7 @@ html.no-js
     link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
     //link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap-theme.css')
     link(rel='stylesheet', href='styles/main.css')
+    link(rel='stylesheet', href='styles/app.css')
     // endbuild
 
   body(ng-app='planMateApp')
@@ -34,28 +35,7 @@ html.no-js
       script(src='bower_components/json3/lib/json3.min.js')
 
     // navbar
-    //nav.navbar.navbar-inverse.navbar-fixed-top
-    nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="navigation")
-      .navbar-header
-        a.navbar-brand(href="#") Plan Mate
-        //button.navbar-toggle(type="button", data-toggle="collapse", data-target=".nav-collapse")
-        button.navbar-toggle(type="button", ng-click="isCollapsed = !isCollapsed")
-          span.icon-bar
-          span.icon-bar
-          span.icon-bar
-      .navbar-header.navbar-right
-        p.navbar-text
-          a.navbar-link(href="#") Username
-      //.navbar-collapse.collapse
-      .navbar-collapse(ng-class="isCollapsed ? 'collapse' : 'in'")
-        ul.nav.navbar-nav
-          li.active
-            a(href="#") Home
-          li
-            a(href="#") About
-          li
-            a(href="#") Contact
-
+    div(ng-include="'views/navbar.html'")
 
     // Add your site or application content here
     .container(ng-view)
