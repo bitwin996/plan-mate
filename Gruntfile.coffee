@@ -378,7 +378,8 @@ module.exports = (grunt) ->
     karma:
       unit:
         configFile: "karma.conf.js"
-        singleRun: true
+        singleRun: false
+        autoWatch: true
 
   grunt.registerTask "serve", (target) ->
     if target is "dist"
