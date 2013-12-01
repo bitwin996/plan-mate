@@ -8,6 +8,9 @@ angular.module('planMateApp', [
 ])
   .config ['$routeProvider', ($routeProvider) ->
     $routeProvider
+      .when '/plan-detail',
+        templateUrl: 'views/plan-detail.html'
+        controller: 'PlanDetailCtrl'
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
