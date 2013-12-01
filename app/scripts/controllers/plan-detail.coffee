@@ -4,12 +4,17 @@ angular.module('planMateApp')
   .controller 'PlanDetailCtrl', ['$scope', ($scope) ->
 
     $scope.plan =
-      organizer:
+      id: 7
+      date: new Date()
+      planner:
         id: 17
         name: 'Test organizer'
-      place:
+      location:
         id: 27
         name: 'Test Building'
+      dates: []
+      comments: []
+      attendants: []
 
     $scope.watch = ->
       console.log "watch"

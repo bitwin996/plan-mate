@@ -1,8 +1,41 @@
-p This is the views/plan-detail view.
+ul.nav.nav-tabs
+  li.active
+    a(href="#/plan/{{plan.id}}") Info
+  li
+    a(href="#/plan/{{plan.id}}/dates") Dates
+  li
+    a(href="#/plan/{{plan.id}}/comments")
+      | Comments &nbsp;
+      span.badge {{ plan.comments.length }}
+  li
+    a(href="#/plan/{{plan.id}}/attendants")
+      | Attendants &nbsp;
+      span.badge {{ plan.attendants.length }}
 
-p
-  {{ plan.organizer.name }} wishes to go to {{ plan.place.name }}.
+.jumbotron
+  h3.row
+    span.glyphicon.glyphicon-map-marker
+    {{ plan.location.name }}
+  p.row
+    span.glyphicon.glyphicon-user
+    {{ plan.planner.name }}
+  p.row
+    span.glyphicon.glyphicon-calendar
+    {{ plan.date | date:'MM-dd-yy' }}
 
-p
-  a.btn(ng-click="watch()") Watch
-  a.btn(ng-click="apply()") Apply
+  button.btn.btn-success(ng-click="attend()")
+    | Attend
+
+
+//.thumbnail
+  p
+    {{ plan.planner.name }} wishes to go to {{ plan.location.name }}.
+
+  p
+    button.btn.btn-default(ng-click="watch()")
+      span.glyphicon.glyphicon-eye-open
+      | Watch
+    button.btn.btn-default(ng-click="apply()")
+      span.glyphicon.glyphicon-ok
+      | Apply
+
