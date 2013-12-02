@@ -1,0 +1,36 @@
+// tabs
+ul.nav.nav-tabs
+  li(ng-class="{active: $routeSegment.startsWith('detail.info')}")
+    a(href="#/plans/{{plan.id}}") Info
+
+  li(ng-class="{active: $routeSegment.startsWith('detail.dates')}")
+    a(href="#/plans/{{plan.id}}/dates") Dates
+
+  li(ng-class="{active: $routeSegment.startsWith('detail.comments')}")
+    a(href="#/plans/{{plan.id}}/comments")
+      | Comments &nbsp;
+      span.badge {{ plan.comments.length }}
+
+  li(ng-class="{active: $routeSegment.startsWith('detail.attendants')}")
+    a(href="#/plans/{{plan.id}}/attendants")
+      | Attendants &nbsp;
+      span.badge {{ plan.attendants.length }}
+
+// main contents
+.text-center
+  .span(app-view-segment="1")
+
+
+// list view
+//.thumbnail
+  p
+    {{ plan.planner.name }} wishes to go to {{ plan.location.name }}.
+
+  p
+    button.btn.btn-default(ng-click="watch()")
+      span.glyphicon.glyphicon-eye-open
+      | Watch
+    button.btn.btn-default(ng-click="apply()")
+      span.glyphicon.glyphicon-ok
+      | Apply
+

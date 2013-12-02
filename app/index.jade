@@ -38,7 +38,8 @@ html.no-js
     div(ng-include="'views/navbar.html'")
 
     // Add your site or application content here
-    .container(ng-view)
+    //.container(ng-view)
+    .container(app-view-segment="0")
 
     script(src='bower_components/angular/angular.js')
 
@@ -48,11 +49,13 @@ html.no-js
     script(src='bower_components/angular-sanitize/angular-sanitize.js')
     script(src='bower_components/angular-route/angular-route.js')
     script(src='bower_components/angular-ui-bootstrap/src/tabs/tabs.js')
+    script(src='bower_components/angular-route-segment/src/route-segment.js')
+    script(src='bower_components/angular-route-segment/src/view-segment.js')
     // endbuild
 
     // build:js({.tmp,app}) scripts/scripts.js
     script(src='scripts/app.js')
     script(src='scripts/controllers/navbar.js')
     script(src='scripts/controllers/main.js')
-    script(src='scripts/controllers/plan-detail.js')
+    script(src='scripts/controllers/plans/detail.js')
     // endbuild

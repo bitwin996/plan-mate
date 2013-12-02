@@ -1,17 +1,17 @@
 'use strict'
 
-describe 'Controller: PlanDetailCtrl', () ->
+describe 'Controller: PlansDetailCtrl', () ->
 
   # load the controller's module
   beforeEach module 'planMateApp'
 
-  PlanDetailCtrl = {}
+  PlansDetailCtrl = {}
   scope = {}
 
   # Initialize the controller and a mock scope
   beforeEach inject ($controller, $rootScope) ->
     scope = $rootScope.$new()
-    PlanDetailCtrl = $controller 'PlanDetailCtrl', {
+    PlansDetailCtrl = $controller 'PlansDetailCtrl', {
       $scope: scope
     }
 
