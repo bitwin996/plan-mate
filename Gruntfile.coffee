@@ -43,6 +43,10 @@ module.exports = (grunt) ->
         files: ["<%= yeoman.app %>/{,**/}*.jade"]
         tasks: ["newer:jade:dist"]
 
+      less:
+        files: ["<%= yeoman.app %>/styles/{,**/}*.less"]
+        tasks: ["newer:less:dist"]
+
       stylus:
         files: ["<%= yeoman.app %>/styles/{,**/}*.styl"]
         tasks: ["newer:stylus:dist"]
@@ -192,6 +196,24 @@ module.exports = (grunt) ->
           ext: ".html"
         ]
 
+    less:
+      dist:
+        options:
+          paths: [
+            "<%= yeoman.app %>/bower_components/bootstrap/less"
+            "<%= yeoman.app %>/styles"
+          ]
+          compress: false  #TODO
+
+        files: [
+          expand: true
+          cwd: "<%= yeoman.app %>/styles"
+          #src: "{,**/}*.less"
+          src: "bootstrap.less"
+          dest: "<%= yeoman.tmp %>/styles"
+          ext: ".css"
+        ]
+    
     stylus:
       dist:
         files: [
@@ -329,6 +351,7 @@ module.exports = (grunt) ->
         "coffee:dist"
         "jade:index"
         "jade:dist"
+        "less:dist"
         "stylus:dist"
         "copy:styles"
       ]
@@ -340,6 +363,7 @@ module.exports = (grunt) ->
       dist: [
         "coffee"
         "jade"
+        "less"
         "stylus"
         "copy:styles"
         "imagemin"
