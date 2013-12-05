@@ -1,1 +1,21 @@
-p This is the plans/comments view.
+p.row
+  form(ng-submit="postComment()")
+    .form-group
+      textarea.form-control(rows="3")
+
+    .form-group
+      button.btn.btn-primary.btn-block(type="submit") Post
+
+
+p.row
+  .text-center(ng-show="plan.comments.length == 0")
+    em.text-muted No comments.
+
+  ul.list-group
+    li.list-group-item.clearfix(ng-repeat="comment in plan.comments")
+      p.col-xs-2(ng-class-odd="'pull-right'", ng-class-even="'pull-left'")
+        img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
+        small.centered {{ comment.user.name }}
+
+      pre.text-left.col-xs-10
+        {{ comment.body }}

@@ -17,7 +17,18 @@ angular.module('planMateApp')
           id: 27
           name: 'Test Building'
         dates: []
-        comments: []
+        _comments: []
+        comments: [
+            user:
+              id: 37
+              name: 'User 37'
+            body: 'Test comment 37 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+          ,
+            user:
+              id: 38
+              name: 'User 38'
+            body: 'Test comment 38'
+        ]
         attendants: []
 
       $scope.watch = ->
@@ -25,5 +36,7 @@ angular.module('planMateApp')
 
       $scope.apply = ->
         console.log "apply"
+
+      #$scope.postComment = (
 
   ]

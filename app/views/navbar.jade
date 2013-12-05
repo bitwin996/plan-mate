@@ -13,7 +13,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
   //.navbar-collapse.collapse
   .navbar-collapse(ng-class="isCollapsed ? 'collapse' : 'in'")
     ul.nav.navbar-nav
-      li.active(ng-class="getClass('/')")
+      li(ng-class="getClass('/')")
         a(href="#/") Home
       li(ng-class="getClass('/plans/7')")
         a(href="#/plans/7") Plan Detail
