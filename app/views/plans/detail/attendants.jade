@@ -1,1 +1,11 @@
-p This is the plans/attendants view.
+p.row
+  .text-center(ng-show="plan.attendants.length == 0")
+    em.text-muted No Attendant.
+
+  ul.list-group
+    li.list-group-item.clearfix(ng-repeat="attendant in plan.attendants")
+      p.pull-left.col-xs-2
+        img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
+
+      .text-left.col-xs-10
+        | {{ attendant.name }}

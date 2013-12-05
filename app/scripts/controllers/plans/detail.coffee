@@ -17,7 +17,6 @@ angular.module('planMateApp')
           id: 27
           name: 'Test Building'
         dates: []
-        _comments: []
         comments: [
             user:
               id: 37
@@ -29,7 +28,13 @@ angular.module('planMateApp')
               name: 'User 38'
             body: 'Test comment 38'
         ]
-        attendants: []
+        attendants: [
+            id: 37
+            name: 'User 37'
+          ,
+            id: 38
+            name: 'User 38'
+        ]
 
       $scope.newComment = {}
       $scope.postComment = (newComment) ->

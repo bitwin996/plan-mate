@@ -344,6 +344,12 @@ module.exports = (grunt) ->
         dest: "<%= yeoman.tmp %>/styles/"
         src: "{,**/}*.css"
 
+      glyphicons:
+        expand: true
+        cwd: "<%= yeoman.app %>/bower_components/bootstrap/fonts"
+        dest: "<%= yeoman.tmp %>/fonts/"
+        src: "{,**/}*"
+
     
     # Run some tasks in parallel to speed up the build process
     concurrent:
@@ -354,11 +360,13 @@ module.exports = (grunt) ->
         "less:dist"
         "stylus:dist"
         "copy:styles"
+        "copy:glyphicons"
       ]
       test: [
         "coffee"
         "jade"
         "copy:styles"
+        "copy:glyphicons"
       ]
       dist: [
         "coffee"
@@ -366,6 +374,7 @@ module.exports = (grunt) ->
         "less"
         "stylus"
         "copy:styles"
+        "copy:glyphicons"
         "imagemin"
         "svgmin"
         "htmlmin"
