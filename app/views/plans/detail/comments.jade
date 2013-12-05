@@ -1,7 +1,7 @@
 p.row
-  form(ng-submit="postComment()")
+  form(ng-submit="postComment(newComment)")
     .form-group
-      textarea.form-control(rows="3")
+      textarea.form-control(ng-model="newComment.body", rows="3")
 
     .form-group
       button.btn.btn-primary.btn-block(type="submit") Post

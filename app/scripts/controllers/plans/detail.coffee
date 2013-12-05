@@ -31,12 +31,22 @@ angular.module('planMateApp')
         ]
         attendants: []
 
+      $scope.newComment = {}
+      $scope.postComment = (newComment) ->
+        comment = angular.copy newComment
+
+        #TODO create account service
+        comment.user = id: 37, name: 'User 37'
+
+        #TODO post to server
+        $scope.plan.comments.push comment
+
+        $scope.newComment = {}
+
       $scope.watch = ->
         console.log "watch"
 
       $scope.apply = ->
         console.log "apply"
-
-      #$scope.postComment = (
 
   ]
