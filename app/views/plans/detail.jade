@@ -9,7 +9,7 @@ ul.nav.nav-tabs
   li(ng-class="{active: $routeSegment.startsWith('detail.comments')}")
     a(href="#/plans/{{plan.id}}/comments")
       | Comments &nbsp;
-      span.badge {{ plan.comments.length }}
+      span.badge {{ comments.length }}
 
   li(ng-class="{active: $routeSegment.startsWith('detail.attendants')}")
     a(href="#/plans/{{plan.id}}/attendants")

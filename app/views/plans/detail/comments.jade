@@ -8,11 +8,11 @@ p.row
 
 
 p.row
-  .text-center(ng-show="plan.comments.length == 0")
+  .text-center(ng-show="comments.length == 0")
     em.text-muted No comment.
 
   ul.list-group
-    li.list-group-item.clearfix(ng-repeat="comment in plan.comments")
+    li.list-group-item.clearfix(ng-repeat="comment in comments")
       p.col-xs-2(ng-class-odd="'pull-right'", ng-class-even="'pull-left'")
         img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
         small.centered {{ comment.user.name }}

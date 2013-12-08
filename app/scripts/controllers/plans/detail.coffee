@@ -33,17 +33,17 @@ angular.module('planMateApp')
             supporters: []
         ]
 
-        comments: [
-            user:
-              id: 37
-              name: 'User 37'
-            body: 'Test comment 37 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-          ,
-            user:
-              id: 38
-              name: 'User 38'
-            body: 'Test comment 38'
-        ]
+      $scope.comments = [
+          user:
+            id: 37
+            name: 'User 37'
+          body: 'Test comment 37 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+        ,
+          user:
+            id: 38
+            name: 'User 38'
+          body: 'Test comment 38'
+      ]
 
       $scope.attendants = [
           id: 37
@@ -58,10 +58,10 @@ angular.module('planMateApp')
         comment = angular.copy newComment
 
         #TODO create account service
-        comment.user = id: 37, name: 'User 37'
+        comment.user = $rootScope.currentUser
 
         #TODO post to server
-        $scope.plan.comments.push comment
+        $scope.comments.unshift comment
 
         $scope.newComment = {}
 
