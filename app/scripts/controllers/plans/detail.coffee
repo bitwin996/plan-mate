@@ -45,13 +45,13 @@ angular.module('planMateApp')
             body: 'Test comment 38'
         ]
 
-        attendants: [
-            id: 37
-            name: 'User 37'
-          ,
-            id: 38
-            name: 'User 38'
-        ]
+      $scope.attendants = [
+          id: 37
+          name: 'User 37'
+        ,
+          id: 38
+          name: 'User 38'
+      ]
 
       $scope.newComment = {}
       $scope.postComment = (newComment) ->

@@ -14,7 +14,7 @@ ul.nav.nav-tabs
   li(ng-class="{active: $routeSegment.startsWith('detail.attendants')}")
     a(href="#/plans/{{plan.id}}/attendants")
       | Attendants &nbsp;
-      span.badge {{ plan.attendants.length }}
+      span.badge {{ attendants.length }}
 
 // main contents
 .text-center
