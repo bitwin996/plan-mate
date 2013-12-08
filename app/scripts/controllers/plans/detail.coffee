@@ -2,8 +2,10 @@
 
 angular.module('planMateApp')
   .controller 'PlansDetailCtrl', [
-    '$scope', '$routeSegment',
-    ($scope, $routeSegment) ->
+    '$scope', '$routeSegment', '$rootScope',
+    ($scope, $routeSegment, $rootScope) ->
+
+      $rootScope.currentUser = id: 97, name: 'Current User'
 
       $scope.$routeSegment = $routeSegment
 
@@ -16,7 +18,21 @@ angular.module('planMateApp')
         location:
           id: 27
           name: 'Test Building'
-        dates: []
+
+        date_proposals: [
+            proposer:
+              id: 47
+              name: 'User 47'
+            date: new Date()
+            supporters: []
+          ,
+            proposer:
+              id: 48
+              name: 'User 48'
+            date: new Date()
+            supporters: []
+        ]
+
         comments: [
             user:
               id: 37
@@ -28,6 +44,7 @@ angular.module('planMateApp')
               name: 'User 38'
             body: 'Test comment 38'
         ]
+
         attendants: [
             id: 37
             name: 'User 37'
@@ -47,6 +64,19 @@ angular.module('planMateApp')
         $scope.plan.comments.push comment
 
         $scope.newComment = {}
+
+      $scope.isSupported = (dateProposal, user) ->
+        for supporter in dateProposal.supporters
+          return true if user.id is supporter.id
+        return false
+
+      $scope.enable = (dateProposal) ->
+        unless $scope.isSupported dateProposal $rootScope.current_user
+          #TODO post to server
+
+          $scope.dateProposals.push $rootScope.current_user
+
+
 
       $scope.watch = ->
         console.log "watch"
