@@ -11,7 +11,8 @@
     "angular-route": "~1.2.0",
     "angular-ui-bootstrap": "bootstrap3",
     "bootstrap": "~3.0.2",
-    "angular-route-segment": "~1.2.0"
+    "angular-route-segment": "~1.2.0",
+    "angular-moment": "~0.5.2"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

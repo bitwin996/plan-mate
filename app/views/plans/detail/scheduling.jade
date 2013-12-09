@@ -1,0 +1,17 @@
+p
+  .text-center.row(ng-show="dateProposals.length == 0")
+    em.text-muted No date offer.
+
+  ul.list-group
+    li.list-group-item.row(ng-repeat="dateProposal in dateProposals")
+      .text-left.col-xs-8
+        //{{ dateProposal.date | date:'MM-dd-yy' }}
+        {{ dateProposal.date | amDateFormat:'ddd, MMM D' }}
+        br
+        | offered by {{ dateProposal.proposer.name }}
+
+      .text-center.col-xs-4
+        button.btn.btn-primary(ng-disabled="!dateProposal.canBeAvailable", ng-click="addToAvailable(dateProposal)") Available
+        | &nbsp;
+        button.btn.btn-danger(ng-disabled="!dateProposal.canBeUnavailable", ng-click="addToUnavailable(dateProposal)") Unavailable
+

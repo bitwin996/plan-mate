@@ -3,8 +3,8 @@ ul.nav.nav-tabs
   li(ng-class="{active: $routeSegment.startsWith('detail.info')}")
     a(href="#/plans/{{plan.id}}") Info
 
-  li(ng-class="{active: $routeSegment.startsWith('detail.dates')}")
-    a(href="#/plans/{{plan.id}}/dates") Dates
+  li(ng-class="{active: $routeSegment.startsWith('detail.scheduling')}")
+    a(href="#/plans/{{plan.id}}/scheduling") Scheduling
 
   li(ng-class="{active: $routeSegment.startsWith('detail.comments')}")
     a(href="#/plans/{{plan.id}}/comments")

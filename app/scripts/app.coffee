@@ -7,6 +7,7 @@ angular.module('planMateApp', [
   'ngRoute'
   'route-segment'
   'view-segment'
+  'angularMoment'
 ])
 
   .config([
@@ -18,10 +19,10 @@ angular.module('planMateApp', [
       $routeSegmentProvider
         .when('/', 'main')
 
-        .when('/plans/:id',            'detail.info')
-        .when('/plans/:id/dates',      'detail.dates')
-        .when('/plans/:id/comments',   'detail.comments')
-        .when('/plans/:id/attendants', 'detail.attendants')
+        .when('/plans/:planId',            'detail.info')
+        .when('/plans/:planId/scheduling', 'detail.scheduling')
+        .when('/plans/:planId/comments',   'detail.comments')
+        .when('/plans/:planId/attendants', 'detail.attendants')
 
         .segment 'main',
           templateUrl: 'views/main.html'
@@ -34,32 +35,17 @@ angular.module('planMateApp', [
         .within()
           .segment 'info',
             templateUrl: 'views/plans/detail/info.html'
-            dependencies: ['id']
-          .segment 'dates',
-            templateUrl: 'views/plans/detail/dates.html'
-            dependencies: ['id']
+            dependencies: ['planId']
+          .segment 'scheduling',
+            templateUrl: 'views/plans/detail/scheduling.html'
+            dependencies: ['planId']
           .segment 'comments',
             templateUrl: 'views/plans/detail/comments.html'
-            dependencies: ['id']
+            dependencies: ['planId']
           .segment 'attendants',
             templateUrl: 'views/plans/detail/attendants.html'
-            dependencies: ['id']
+            dependencies: ['planId']
 
       $routeProvider.otherwise redirectTo: '/'
 
     ])
-
-###
-  .config(['$routeProvider', ($routeProvider) ->
-    $routeProvider
-      #.when '/plan-detail',
-      #  templateUrl: 'views/plan-detail.html'
-      #  controller: 'PlanDetailCtrl'
-      .when '/',
-        templateUrl: 'views/main.html'
-        controller: 'MainCtrl'
-      .otherwise
-        redirectTo: '/'
-  ])
-###
-
