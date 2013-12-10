@@ -7,6 +7,7 @@ angular.module('planMateApp', [
   'ngRoute'
   'route-segment'
   'view-segment'
+  'ui.bootstrap'
   'angularMoment'
 ])
 

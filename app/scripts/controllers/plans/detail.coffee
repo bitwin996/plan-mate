@@ -16,6 +16,39 @@ angular.module('planMateApp')
           delete arr[i] if obj.id is elem.id
           return elem
 
+      today = (obj = null) -> moment(obj).hours(0).minutes(0).seconds(0)
+
+      floorTime = (momentObj) ->
+        momentObj.hours(0).minutes(0).seconds(0)
+
+
+      isEqualDate = (date1, date2) ->
+        a = moment date1
+        b = moment date2
+        a.year() is b.year() and a.dayOfYear() is b.dayOfYear()
+
+      # constants in each controller
+      #$scope.dateFormat = 'dd MMM yyyy'
+      #$scope.timeFormat = 'hh:mm:ss a'
+
+      # date picker
+      $scope.datePicker =
+        config:
+          min: floorTime(moment()).toDate()
+          max: floorTime(moment()).add('years', 1).toDate()
+          opened: false
+          dateOptions:
+            'year-format': "'yy'"
+            'starting-day': 1
+        open: ->
+          $timeout ->
+            $scope.datePicker.config.opened = true
+
+        disabled: (date, mode) ->
+          for dateProposal in $scope.dateProposals
+            return true if isEqualDate date, dateProposal.date
+          false
+
 
       $rootScope.currentUser = id: 97, name: 'Current User'
 
@@ -27,7 +60,7 @@ angular.module('planMateApp')
 
       $scope.plan =
         id: 7
-        date: new Date()
+        date: floorTime(moment()).toDate()
         planner:
           id: 17
           name: 'Test organizer'
@@ -37,7 +70,7 @@ angular.module('planMateApp')
 
       $scope.dateProposals = [
           proposer: id: 47, name: 'User 47'
-          date: new Date()
+          date: floorTime(moment()).add('days', 5).toDate()
           availableUsers: [
               id: 48, name: 'User 48'
             ,
@@ -51,7 +84,7 @@ angular.module('planMateApp')
         ,
           proposer:
             id: 52, name: 'User 52'
-          date: new Date()
+          date: floorTime(moment()).add('days', 2).toDate()
           availableUsers: [
               id: 53, name: 'User 53'
             ,
