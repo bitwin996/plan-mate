@@ -208,8 +208,8 @@ module.exports = (grunt) ->
         files: [
           expand: true
           cwd: "<%= yeoman.app %>/styles"
-          #src: "{,**/}*.less"
-          src: "bootstrap.less"
+          src: "{,**/}*.less"
+          #src: "bootstrap.less"
           dest: "<%= yeoman.tmp %>/styles"
           ext: ".css"
         ]

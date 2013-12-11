@@ -9,6 +9,14 @@ p
         {{ dateProposal.date | amDateFormat:'ddd, MMM D' }}
         br
         | offered by {{ dateProposal.proposer.name }}
+        br
+        //span.glyphicon.glyphicon-ok
+        | available &nbsp;
+        {{ dateProposal.availableUsers.length }}
+        | &nbsp;
+        //span.glyphicon.glyphicon-remove
+        | unavailable &nbsp;
+        {{ dateProposal.unavailableUsers.length }}
 
       .text-center.col-xs-4
         button.btn.btn-primary(ng-disabled="!dateProposal.canBeAvailable", ng-click="addToAvailable(dateProposal)") Available
@@ -17,16 +25,24 @@ p
 
 
 p.row
-  form(ng-submit="addNewDate(newDateProposal)")
+  form(ng-submit="addDateProposal(newDateProposal)")
     //.form-group
       div(ng-model="date", style="width:280px")
         datepicker
 
     .form-group
-      input(type="text", ng-model="newDateProposal", datepicker-popup="EEE, MMM dd", is-open="opened", date-disabled="datePicker.disabled(date,mode)", ng-required="true", min="datePicker.config.min", max="datePicker.config.max")
-
-    .form-group
-      button.btn.btn-primary.btn-block(type="submit") Add
+      input.input-block-level(type="text",
+        ng-model="newDateProposal.date",
+        is-open="opened",
+        date-disabled="datePicker.disabled(date,mode)",
+        ng-required="true",
+        min="datePicker.config.min",
+        max="datePicker.config.max",
+        datepicker-popup="EEE, MMM dd",
+        placeholder="Click here to open date picker"
+        )
+      | &nbsp;
+      button.btn.btn-primary(type="submit") Add
 
 
 

@@ -13,8 +13,9 @@ angular.module('planMateApp')
 
       deleteFromArray = (arr, obj) ->
         for elem,i in arr
-          delete arr[i] if obj.id is elem.id
-          return elem
+          if obj.id is elem.id
+            arr.splice i
+            return elem
 
       today = (obj = null) -> moment(obj).hours(0).minutes(0).seconds(0)
 
@@ -69,8 +70,8 @@ angular.module('planMateApp')
           name: 'Test Building'
 
       $scope.dateProposals = [
-          proposer: id: 47, name: 'User 47'
           date: floorTime(moment()).add('days', 5).toDate()
+          proposer: id: 47, name: 'User 47'
           availableUsers: [
               id: 48, name: 'User 48'
             ,
@@ -82,9 +83,9 @@ angular.module('planMateApp')
               id: 51, name: 'User 51'
           ]
         ,
+          date: floorTime(moment()).add('days', 2).toDate()
           proposer:
             id: 52, name: 'User 52'
-          date: floorTime(moment()).add('days', 2).toDate()
           availableUsers: [
               id: 53, name: 'User 53'
             ,
@@ -118,6 +119,15 @@ angular.module('planMateApp')
         dateProposal.canBeAvailable = $scope.canBeAvailable dateProposal
         dateProposal.canBeUnavailable = $scope.canBeUnavailable dateProposal
 
+
+      $scope.addDateProposal = (dateProposal) ->
+        dp = angular.copy dateProposal
+        dp.proposer = $rootScope.currentUser
+        dp.availableUsers = [$rootScope.currentUser]
+        dp.unavailableUsers = []
+        dp.canBeAvailable = $scope.canBeAvailable dp
+        dp.canBeUnavailable = $scope.canBeUnavailable dp
+        $scope.dateProposals.push dp
 
       $scope.comments = [
           user:
