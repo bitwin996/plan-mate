@@ -43,7 +43,8 @@
     "grunt-open": "~0.2.2",
     "grunt-contrib-stylus": "~0.10.0",
     "grunt-contrib-jade": "~0.8.0",
-    "grunt-contrib-less": "~0.8.2"
+    "grunt-contrib-less": "~0.8.2",
+    "shelljs": "~0.2.6"
   },
   "engines": {
     "node": ">=0.8.0"

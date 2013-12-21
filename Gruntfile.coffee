@@ -1,6 +1,8 @@
 # Generated on 2013-11-27 using generator-angular 0.6.0-rc.2
 "use strict"
 
+require "shelljs/global"
+
 # # Globbing
 # for performance reasons we're only matching one level down:
 # 'test/spec/{,*/}*.js'
@@ -24,6 +26,9 @@ module.exports = (grunt) ->
       app: require("./bower.json").appPath or "app"
       tmp: ".tmp"
       dist: "dist"
+      backend:
+        src: "backend/src"
+        bin: "backend/bin"
 
     
     # Watches files for changes and runs tasks based on the changed files
@@ -61,6 +66,10 @@ module.exports = (grunt) ->
       index:
         files: ["<%= yeoman.app %>/index.jade"]
         tasks: ["newer:jade:index"]
+
+      python:
+        files: ["<%= yeoman.backend.src %>/{,**/}*.py"]
+        tasks: ["supervisord"]
 
       gruntfile:
         files: ["Gruntfile.coffee"]
@@ -459,3 +468,6 @@ module.exports = (grunt) ->
     "test"
     "build"
   ]
+  grunt.registerTask "supervisord", ->
+    console.log grunt.config.get('yeoman.backend.bin') + "/supervisorctl reload"
+    exec grunt.config.get('yeoman.backend.bin') + "/supervisorctl reload", silent:true

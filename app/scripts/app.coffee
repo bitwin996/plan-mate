@@ -20,6 +20,8 @@ angular.module('planMateApp', [
       $routeSegmentProvider
         .when('/', 'main')
 
+        .when('/auth/login', 'login')
+
         .when('/plans/:planId',            'detail.info')
         .when('/plans/:planId/scheduling', 'detail.scheduling')
         .when('/plans/:planId/comments',   'detail.comments')
@@ -28,6 +30,9 @@ angular.module('planMateApp', [
         .segment 'main',
           templateUrl: 'views/main.html'
           controller: 'MainCtrl'
+
+        .segment 'login',
+          templateUrl: 'views/auth/login.html'
 
         .segment 'detail',
           templateUrl: 'views/plans/detail.html'
