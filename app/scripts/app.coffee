@@ -11,6 +11,8 @@ angular.module('planMateApp', [
   'angularMoment'
 ])
 
+  .constant('baseUrl', "$BASE_URL$")
+
   .config([
     '$routeSegmentProvider', '$routeProvider',
     ($routeSegmentProvider, $routeProvider) ->

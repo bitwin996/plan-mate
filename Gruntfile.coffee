@@ -29,6 +29,7 @@ module.exports = (grunt) ->
       backend:
         src: "backend/src"
         bin: "backend/bin"
+        baseUrl: ""
 
     
     # Watches files for changes and runs tasks based on the changed files
@@ -36,6 +37,10 @@ module.exports = (grunt) ->
       coffee:
         files: ["<%= yeoman.app %>/scripts/{,**/}*.{coffee,litcoffee,coffee.md}"]
         tasks: ["newer:coffee:dist"]
+
+      appCoffee:
+        files: ["<%= yeoman.app %>/scripts/app.coffee"]
+        tasks: ["replaceBackend"]
 
       coffeeTest:
         files: ["test/spec/{,**/}*.{coffee,litcoffee,coffee.md}"]
@@ -233,6 +238,18 @@ module.exports = (grunt) ->
           ext: ".css"
         ]
     
+    'string-replace':
+      backend:
+        files:
+          "<%= yeoman.tmp %>/scripts/app.js": "<%= yeoman.tmp %>/scripts/app.js"
+
+        options:
+          replacements: [
+            pattern: "$BASE_URL$"
+            replacement: "<%= yeoman.backend.baseUrl %>"
+          ]
+
+
     # Renames files for browser caching purposes
     rev:
       dist:
@@ -432,6 +449,7 @@ module.exports = (grunt) ->
     grunt.task.run [
       "clean:server"
       "concurrent:server"
+      "replaceBackend"  #XXX backend
       "autoprefixer"
       "connect:livereload"
       "open"
@@ -453,6 +471,7 @@ module.exports = (grunt) ->
     "clean:dist"
     "useminPrepare"
     "concurrent:dist"
+    "replaceBackend"  #XXX backend
     "autoprefixer"
     "concat"
     "ngmin"
@@ -468,6 +487,14 @@ module.exports = (grunt) ->
     "test"
     "build"
   ]
+
+  # Pyramid supervisord
   grunt.registerTask "supervisord", ->
-    console.log grunt.config.get('yeoman.backend.bin') + "/supervisorctl reload"
     exec grunt.config.get('yeoman.backend.bin') + "/supervisorctl reload", silent:true
+
+  # Backend
+  grunt.registerTask "replaceBackend", ->
+    if grunt.option 'backend'
+      baseUrl = '//' + grunt.option('backend')
+      grunt.config.set 'yeoman.backend.baseUrl', baseUrl
+    grunt.task.run ["string-replace:backend"]

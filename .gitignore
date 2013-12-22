@@ -3,5 +3,6 @@ dist
 .tmp
 app/bower_components
 
+*.log
 *.swp
 *.bak
