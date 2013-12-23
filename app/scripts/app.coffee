@@ -35,6 +35,7 @@ angular.module('planMateApp', [
 
         .segment 'login',
           templateUrl: 'views/auth/login.html'
+          controller: 'AuthCtrl'
 
         .segment 'detail',
           templateUrl: 'views/plans/detail.html'
