@@ -33,6 +33,8 @@ def make_app():
     # oauth
     config.include('velruse.providers.facebook')
     config.add_facebook_login_from_settings(prefix='velruse.facebook.')
+    config.include('velruse.providers.twitter')
+    config.add_twitter_login_from_settings(prefix='velruse.twitter.')
 
     # session
     config.include('pyramid_beaker')
