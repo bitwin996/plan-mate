@@ -25,3 +25,5 @@ libraries:
   version: latest
 - name: setuptools
   version: latest
+- name: ssl
+  version: latest
