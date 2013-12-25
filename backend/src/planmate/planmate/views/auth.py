@@ -20,6 +20,7 @@ def login_complete_view(request):
     """
     provider_type = context.provider_type
     provider_userid = int(context.profile['accounts'][0]['userid'])
+    profile_image_url = context.profile['photos'][0]['value']
     print(provider_userid)
 
     query = User.query(
@@ -32,7 +33,8 @@ def login_complete_view(request):
         user = User(
             provider_type = provider_type,
             provider_userid = provider_userid,
-            name = context.profile['displayName']
+            name = context.profile['displayName'],
+            profile_image_url = profile_image_url
             )
         user.put()
     elif count is 1:
@@ -40,7 +42,6 @@ def login_complete_view(request):
     else:
         raise
 
-    print(user)
     request.session[SESSION_KEY] = user.key
 
     return {'project':'complete'}
