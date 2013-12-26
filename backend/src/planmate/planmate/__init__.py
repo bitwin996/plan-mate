@@ -25,7 +25,7 @@ def make_app():
 
     # config
     conf = ConfigParser.SafeConfigParser()
-    conf.read(os.path.join(__here__, 'development.ini'))
+    conf.read(os.path.join(__here__, '..', 'development.ini'))
 
     settings = dict(conf.items('app:main'))
     config.add_settings(settings)

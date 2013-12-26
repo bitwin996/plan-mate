@@ -498,3 +498,4 @@ module.exports = (grunt) ->
       baseUrl = '//' + grunt.option('backend')
       grunt.config.set 'yeoman.backend.baseUrl', baseUrl
     grunt.task.run ["string-replace:backend"]
+
