@@ -39,6 +39,9 @@ def make_app():
     # session
     config.include('pyramid_beaker')
 
+    # route
+    config.add_route('auth_login', '/auth/login/{provider_type}')
+
     config.scan()
 
     return config.make_wsgi_app()
