@@ -9,6 +9,7 @@ angular.module('planMateApp', [
   'view-segment'
   'ui.bootstrap'
   'angularMoment'
+  'ModelCore'
 ])
 
   .constant('baseUrl', "$BASE_URL$")
