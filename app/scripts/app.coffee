@@ -12,6 +12,15 @@ angular.module('planMateApp', [
 ])
 
   .constant('baseUrl', "$BASE_URL$")
+  .constant('endpoint', "$BASE_URL$")
+
+  .run([
+    '$rootScope',
+    ($rootScope) ->
+      $rootScope.$on 'routeSegmentChange', ->
+        $rootScope.resetFlash()
+
+  ])
 
   .config([
     '$routeSegmentProvider', '$routeProvider',
