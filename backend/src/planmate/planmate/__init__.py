@@ -41,6 +41,7 @@ def make_app():
 
     # route
     config.add_route('auth_login', '/auth/login/{provider_type}')
+    config.add_route('api_auth_status', '/api/auth/status')
 
     config.scan()
 

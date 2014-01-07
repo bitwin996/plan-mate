@@ -45,7 +45,8 @@
     "grunt-contrib-jade": "~0.8.0",
     "grunt-contrib-less": "~0.8.2",
     "shelljs": "~0.2.6",
-    "grunt-string-replace": "~0.2.7"
+    "grunt-string-replace": "~0.2.7",
+    "connect-livereload": "~0.3.2"
   },
   "engines": {
     "node": ">=0.8.0"

@@ -40,8 +40,8 @@ html.no-js
 
     // alert
     flash-alert(data="flash")
-    button(ng-click="updateFlash('updated')") Update
-    button(ng-click="resetFlash()") Reset
+    //button(ng-click="updateFlash('updated')") Update
+    //button(ng-click="resetFlash()") Reset
 
     // Add your site or application content here
     //.container(ng-view)
@@ -67,6 +67,7 @@ html.no-js
     // build:js({.tmp,app}) scripts/scripts.js
     script(src='scripts/app.js')
     script(src='scripts/directives/flash-alert.js')
+    script(src='scripts/services/authorization.js')
     script(src='scripts/controllers/navbar.js')
     script(src='scripts/controllers/main.js')
     script(src='scripts/controllers/auth.js')

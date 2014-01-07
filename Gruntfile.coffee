@@ -1,7 +1,14 @@
 # Generated on 2013-11-27 using generator-angular 0.6.0-rc.2
 "use strict"
 
+LIVERELOAD_PORT = 35729
+
 require "shelljs/global"
+
+lrSnippet = require("connect-livereload")(port: LIVERELOAD_PORT)
+
+mountFolder = (connect, dir) ->
+  connect.static require("path").resolve(dir)
 
 # # Globbing
 # for performance reasons we're only matching one level down:
@@ -97,7 +104,8 @@ module.exports = (grunt) ->
         
         # Change this to '0.0.0.0' to access the server from outside.
         hostname: "localhost"
-        livereload: 35729
+        #livereload: 35729
+        livereload: LIVERELOAD_PORT
 
       livereload:
         options:
@@ -106,6 +114,22 @@ module.exports = (grunt) ->
           base: [
             "<%= yeoman.tmp %>"
             "<%= yeoman.app %>"
+          ]
+          middleware: (connect) -> [
+            lrSnippet
+            mountFolder connect, grunt.config.get 'yeoman.tmp'
+            mountFolder connect, grunt.config.get 'yeoman.app'
+
+            # for CORS
+            (request, response, next) ->
+              if grunt.option 'backend'
+                baseUrl = 'http://' + grunt.option('backend')
+                response.setHeader 'Access-Control-Allow-Origin', baseUrl
+
+              response.setHeader 'Access-Control-Allow-Credentials', 'true'
+              response.setHeader 'Access-Control-Allow-Methods', '*'
+              response.setHeader 'Access-Control-Allow-Headers', '*'
+              next()
           ]
 
       test:
@@ -245,7 +269,7 @@ module.exports = (grunt) ->
 
         options:
           replacements: [
-            pattern: "$BASE_URL$"
+            pattern: /%BASE_URL%/g
             replacement: "<%= yeoman.backend.baseUrl %>"
           ]
 

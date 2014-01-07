@@ -71,10 +71,3 @@ def login_denied_view(request):
     base_url = request.registry.settings['frontend.base_url']
     reason = request.context.reason
     return HTTPFound(location = base_url + '/#/')
-
-
-@view_config(renderer='json')
-def info(request):
-    is_login = SESSION_KEY in request.session
-    return {'is_login': is_login}
-

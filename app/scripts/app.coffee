@@ -12,8 +12,8 @@ angular.module('planMateApp', [
   'ModelCore'
 ])
 
-  .constant('baseUrl', "$BASE_URL$")
-  .constant('endpoint', "$BASE_URL$")
+  .constant('baseUrl', "%BASE_URL%")
+  .constant('endpoint', "%BASE_URL%/api")
 
   .run([
     '$rootScope',
@@ -22,6 +22,14 @@ angular.module('planMateApp', [
         $rootScope.resetFlash()
 
   ])
+
+  #.config([
+  #  '$httpProvider',
+  #  ($httpProvider) ->
+  #    # for CORS
+  #    $httpProvider.defaults.useXDomain = true
+  #    delete $httpProvider.defaults.headers.common['X-Requested-With']
+  #])
 
   .config([
     '$routeSegmentProvider', '$routeProvider',
