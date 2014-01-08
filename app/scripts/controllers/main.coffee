@@ -10,5 +10,5 @@ angular.module('planMateApp')
         'Karma'
       ]
 
-      AuthorizationService.get()
+      AuthorizationService.update()
   ]

@@ -19,8 +19,9 @@ angular.module('planMateApp')
           type: null
           show: false
 
-      $rootScope.$on 'routeSegmentChange', ->
-        $rootScope.resetFlash()
+          #$rootScope.$on 'routeSegmentChange', ->
+          #  console.log '####'
+          #  $rootScope.resetFlash()
 
 
       restrict: 'E'

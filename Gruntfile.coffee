@@ -1,14 +1,7 @@
 # Generated on 2013-11-27 using generator-angular 0.6.0-rc.2
 "use strict"
 
-LIVERELOAD_PORT = 35729
-
 require "shelljs/global"
-
-lrSnippet = require("connect-livereload")(port: LIVERELOAD_PORT)
-
-mountFolder = (connect, dir) ->
-  connect.static require("path").resolve(dir)
 
 # # Globbing
 # for performance reasons we're only matching one level down:
@@ -68,6 +61,10 @@ module.exports = (grunt) ->
         files: ["<%= yeoman.app %>/styles/{,**/}*.styl"]
         tasks: ["newer:stylus:dist"]
 
+      cson:
+        files: ["<%= yeoman.app %>/api/{,**/}*.cson"]
+        tasks: ["newer:cson:dist"]
+
       styles:
         files: ["<%= yeoman.app %>/styles/{,**/}*.css"]
         tasks: [
@@ -104,8 +101,7 @@ module.exports = (grunt) ->
         
         # Change this to '0.0.0.0' to access the server from outside.
         hostname: "localhost"
-        #livereload: 35729
-        livereload: LIVERELOAD_PORT
+        livereload: 35729
 
       livereload:
         options:
@@ -114,22 +110,6 @@ module.exports = (grunt) ->
           base: [
             "<%= yeoman.tmp %>"
             "<%= yeoman.app %>"
-          ]
-          middleware: (connect) -> [
-            lrSnippet
-            mountFolder connect, grunt.config.get 'yeoman.tmp'
-            mountFolder connect, grunt.config.get 'yeoman.app'
-
-            # for CORS
-            (request, response, next) ->
-              if grunt.option 'backend'
-                baseUrl = 'http://' + grunt.option('backend')
-                response.setHeader 'Access-Control-Allow-Origin', baseUrl
-
-              response.setHeader 'Access-Control-Allow-Credentials', 'true'
-              response.setHeader 'Access-Control-Allow-Methods', '*'
-              response.setHeader 'Access-Control-Allow-Headers', '*'
-              next()
           ]
 
       test:
@@ -260,6 +240,17 @@ module.exports = (grunt) ->
           src: "{,**/}*.styl"
           dest: "<%= yeoman.tmp %>/styles"
           ext: ".css"
+        ]
+    
+    cson:
+      dist:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.app %>/api"
+          src: "{,**/}*.cson"
+          dest: "<%= yeoman.tmp %>/api"
+          rename: (dest, src) ->
+            dest + '/' + src.replace(/\.cson/, '')
         ]
     
     'string-replace':
@@ -409,6 +400,7 @@ module.exports = (grunt) ->
         "jade:dist"
         "less:dist"
         "stylus:dist"
+        "cson:dist"
         "copy:styles"
         "copy:glyphicons"
       ]
@@ -423,6 +415,7 @@ module.exports = (grunt) ->
         "jade"
         "less"
         "stylus"
+        #"cson"  #TODO
         "copy:styles"
         "copy:glyphicons"
         "imagemin"
