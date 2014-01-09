@@ -39,9 +39,7 @@ html.no-js
     div(ng-include="'views/navbar.html'")
 
     // alert
-    flash-alert(data="flash")
-    //button(ng-click="updateFlash('updated')") Update
-    //button(ng-click="resetFlash()") Reset
+    flash-alert(data="flashAlert")
 
     // Add your site or application content here
     //.container(ng-view)
@@ -62,6 +60,7 @@ html.no-js
     script(src='bower_components/moment/moment.js')
     script(src='bower_components/angular-moment/angular-moment.js')
     script(src='bower_components/ModelCore/src/ModelCore.js')
+    script(src='bower_components/ngstorage/ngStorage.js')
     // endbuild
 
     // build:js({.tmp,app}) scripts/scripts.js

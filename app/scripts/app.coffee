@@ -10,17 +10,23 @@ angular.module('planMateApp', [
   'ui.bootstrap'
   'angularMoment'
   'ModelCore'
+  'ngStorage'
 ])
 
   .constant('baseUrl', "%BASE_URL%")
   .constant('endpoint', "%BASE_URL%/api")
 
   .run([
-    '$rootScope',
-    ($rootScope) ->
-      $rootScope.$on 'routeSegmentChange', ->
-        $rootScope.resetFlash()
+    '$rootScope', '$localStorage',
+    ($rootScope, $localStorage) ->
+      # route-segment
+      #$rootScope.$on 'routeSegmentChange', ->
+      #  $rootScope.resetFlash()
 
+      # ngStorage
+      $rootScope.$storage = $localStorage.$default
+        auth:
+          isLoggedIn: false
   ])
 
   #.config([

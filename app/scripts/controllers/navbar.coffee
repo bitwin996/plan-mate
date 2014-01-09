@@ -2,32 +2,26 @@
 
 angular.module('planMateApp')
   .controller 'NavbarCtrl', [
-    '$scope', '$location',
-    ($scope, $location) ->
+    '$scope', '$location', '$http', 'endpoint', '$rootScope', 'FlashAlert',
+    ($scope, $location, $http, endpoint, $rootScope, FlashAlert) ->
 
       $scope.isCollapsed = true
 
       $scope.$on '$routeChangeSuccess', ->
         $scope.isCollapsed = true
 
-      $scope.getClass = (path) ->
-        ###
+      $scope.isActive = (path) ->
         if path is '/'
-          if $location.path() is '/'
-            return 'active'
-          else
-            return ''
-
-        if $location.path().substr(0, path.length) is path
-          return 'active'
+          $location.path() is '/'
         else
-          return ''
-        ###
+          $location.path().substr(0, path.length) is path
 
-        if path is '/'
-          return if $location.path() is '/' then 'active' else ''
-        else if $location.path().substr(0, path.length) is path
-          return 'active'
-        ''
+      $scope.logout = ->
+        request = $http.get endpoint + '/auth/logout'
 
+        request.success (response) ->
+          $location.path '/plans/7'  #TODO
+
+        request.error (response) ->
+          FlashAlert.update 'Fail to logout', 'danger'
   ]

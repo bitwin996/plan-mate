@@ -2,19 +2,17 @@
 
 angular.module('planMateApp')
   .service 'AuthorizationService', [
-    '$http', '$q', 'endpoint', 'baseUrl',
-    ($http, $q, endpoint, baseUrl) ->
-
-      #TODO use localStorage to initialize this value
-      @isLoggedIn = false
+    '$http', '$rootScope', 'endpoint', 'FlashAlert',
+    ($http, $rootScope, endpoint, FlashAlert) ->
 
       # AngularJS will instantiate a singleton by calling "new" on this function
       @update = ->
-        $http.get(endpoint + '/auth/status').
-          success (response) =>
-            @isLoggedIn = response.data.isLoggedIn
+        request = $http.get endpoint + '/auth/status'
 
-            #TODO save to localStorage
+        request.success (response) =>
+          $rootScope.$storage.authorization.isLoggedIn = response.data.isLoggedIn
+        request.error (response) ->
+          FlashAlert.update 'Fail to get login status', 'danger'
 
       return @
   ]
