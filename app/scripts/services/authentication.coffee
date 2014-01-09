@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('planMateApp')
-  .service 'AuthorizationService', [
+  .service 'AuthenticationService', [
     '$http', '$rootScope', 'endpoint', 'FlashAlert',
     ($http, $rootScope, endpoint, FlashAlert) ->
 
@@ -10,7 +10,7 @@ angular.module('planMateApp')
         request = $http.get endpoint + '/auth/status'
 
         request.success (response) =>
-          $rootScope.$storage.authorization.isLoggedIn = response.data.isLoggedIn
+          $rootScope.$storage.authentication.isLoggedIn = response.data.isLoggedIn
         request.error (response) ->
           FlashAlert.update 'Fail to get login status', 'danger'
 
