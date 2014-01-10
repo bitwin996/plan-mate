@@ -10,5 +10,6 @@ angular.module('planMateApp')
         'Karma'
       ]
 
-      AuthenticationService.update()
+      $scope.updateAuth = ->
+        AuthenticationService.update()
   ]

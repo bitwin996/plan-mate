@@ -2,8 +2,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
 
   .navbar-header
     a.navbar-brand(href="#") Plan Mate
-    //button.navbar-toggle(type="button", data-toggle="collapse", data-target=".nav-collapse")
-    button.navbar-toggle(type="button", ng-click="isCollapsed = !isCollapsed")
+    button.navbar-toggle(type="button", ng-click="toggle()")
       span.icon-bar
       span.icon-bar
       span.icon-bar
@@ -12,15 +11,15 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
     p.navbar-text
       a.navbar-link(href="#") Username
 
-  .navbar-collapse(ng-class="isCollapsed ? 'collapse' : 'in'")
+  .navbar-collapse(ng-class="{collapse:isCollapsed, in:!isCollapsed}")
     ul.nav.navbar-nav
       //li(ng-class="{active:isActive('/')}")
       //  a(href="#/") Home
       li(ng-class="{active:isActive('/plans/7')}")
         a(href="#/plans/7") Plan Detail
 
-      //TODO: Get username
       li(ng-class="{active:isActive('/account')}", ng-show="$storage.authentication.isLoggedIn")
+        //TODO: Get username
         a(href="#/account") Test User
 
       // Login / Logout

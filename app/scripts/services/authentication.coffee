@@ -2,17 +2,35 @@
 
 angular.module('planMateApp')
   .service 'AuthenticationService', [
-    '$http', '$rootScope', 'endpoint', 'FlashAlert',
-    ($http, $rootScope, endpoint, FlashAlert) ->
+    '$http', 'endpoint', 'FlashAlertService',
+    ($http, endpoint, FlashAlertService) ->
+      @storage = {}
 
-      # AngularJS will instantiate a singleton by calling "new" on this function
+      @setStorage = (storage) ->
+        unless storage instanceof Object
+          throw 'Passed storage should be an object.'
+        @oldStorage = @storage
+        @storage = storage
+
       @update = ->
         request = $http.get endpoint + '/auth/status'
 
         request.success (response) =>
-          $rootScope.$storage.authentication.isLoggedIn = response.data.isLoggedIn
+          FlashAlertService.update 'Success to get login status', 'info'
+          @storage.isLoggedIn = response.isLoggedIn
+
         request.error (response) ->
-          FlashAlert.update 'Fail to get login status', 'danger'
+          FlashAlertService.update 'Fail to get login status', 'danger'
+
+      @logout = (callback) ->
+        request = $http.get endpoint + '/auth/logout'
+
+        request.success (response) =>
+          @storage.isLoggedIn = false
+          callback()
+
+        request.error (response) ->
+          FlashAlertService.update 'Fail to logout', 'danger'
 
       return @
   ]

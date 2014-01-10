@@ -513,6 +513,8 @@ module.exports = (grunt) ->
   grunt.registerTask "replaceBackend", ->
     if grunt.option 'backend'
       baseUrl = '//' + grunt.option('backend')
-      grunt.config.set 'yeoman.backend.baseUrl', baseUrl
+    else
+      baseUrl = ''
+    grunt.config.set 'yeoman.backend.baseUrl', baseUrl
     grunt.task.run ["string-replace:backend"]
 

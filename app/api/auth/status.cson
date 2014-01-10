@@ -1,4 +1,3 @@
 {
-  data:
-    isLoggedIn: true
+  isLoggedIn: true
 }

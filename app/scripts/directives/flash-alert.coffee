@@ -1,27 +1,36 @@
 'use strict'
 
 angular.module('planMateApp')
-  .service 'FlashAlert', [
+  .service 'FlashAlertService', [
     '$rootScope',
     ($rootScope) ->
+      @storage = {}
+
+      @setStorage = (storage) ->
+        unless storage instanceof Object
+          throw 'Passed storage should be an object.'
+        @oldStorage = angular.copy @storage
+        @storage = storage
+
       @init = ->
-        $rootScope.flashAlert =
-          message: null
-          type: null
-          show: false
+        @storage.message = null
+        @storage.type = null
+        @storage.show = false
+
+      @reset = ->
+        @storage.message = null
+        @storage.type = null
+        @storage.show = false
 
       # type: success / info / warning / danger
       @update = (message, type = 'warning') ->
-        $rootScope.flashAlert =
-          message: message
-          type: type
-          show: true
+        @storage.message = message
+        @storage.type = type
+        @storage.show = true
 
-      @reset = ->
-        $rootScope.flashAlert =
-          message: null
-          type: null
-          show: false
+      #$rootScope.$on 'routeSegmentChange', =>
+      $rootScope.$on '$routeChangeStart', =>
+        @reset()
 
       return @
   ]
@@ -29,13 +38,8 @@ angular.module('planMateApp')
 
 angular.module('planMateApp')
   .directive 'flashAlert', [
-    '$rootScope', 'FlashAlert',
-    ($rootScope, FlashAlert) ->
-      FlashAlert.init()
-
-      $rootScope.$on 'routeSegmentChange', ->
-        FlashAlert.reset()
-
+    '$rootScope', 'FlashAlertService',
+    ($rootScope, FlashAlertService) ->
       restrict: 'E'
       transclude: true
       scope:
