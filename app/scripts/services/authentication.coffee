@@ -32,5 +32,8 @@ angular.module('planMateApp')
         request.error (response) ->
           FlashAlertService.update 'Fail to logout', 'danger'
 
+      @isLoggedIn = ->
+        @storage.isLoggedIn
+
       return @
   ]

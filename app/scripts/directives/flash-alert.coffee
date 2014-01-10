@@ -2,9 +2,10 @@
 
 angular.module('planMateApp')
   .service 'FlashAlertService', [
-    '$rootScope',
-    ($rootScope) ->
+    '$rootScope', '$location',
+    ($rootScope, $location) ->
       @storage = {}
+      REDIRECT_COUNT = 1
 
       @setStorage = (storage) ->
         unless storage instanceof Object
@@ -16,11 +17,15 @@ angular.module('planMateApp')
         @storage.message = null
         @storage.type = null
         @storage.show = false
+        @storage.countFromRedirect = REDIRECT_COUNT
 
       @reset = ->
-        @storage.message = null
-        @storage.type = null
-        @storage.show = false
+        if @storage.countFromRedirect > REDIRECT_COUNT
+          @storage.message = null
+          @storage.type = null
+          @storage.show = false
+        else
+          @storage.countFromRedirect++
 
       # type: success / info / warning / danger
       @update = (message, type = 'warning') ->
@@ -28,9 +33,9 @@ angular.module('planMateApp')
         @storage.type = type
         @storage.show = true
 
-      #$rootScope.$on 'routeSegmentChange', =>
-      $rootScope.$on '$routeChangeStart', =>
-        @reset()
+      # Use this method only in $rootScope.$on('$routeChangeStart') and so on.
+      @setRedirect = ->
+        @storage.countFromRedirect = 0
 
       return @
   ]
