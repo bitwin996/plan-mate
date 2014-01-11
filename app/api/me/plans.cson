@@ -1,0 +1,16 @@
+[
+  {
+    id: 3
+    place_name: "Tokyo Tower"
+    date: "2014-02-10"
+    attendants_count: 8
+    comments_count: 12
+  }
+  {
+    id: 7
+    place_name: "Asakusa"
+    date: null
+    attendants_count: 5
+    comments_count: 7
+  }
+]

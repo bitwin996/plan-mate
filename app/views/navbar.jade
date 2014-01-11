@@ -18,12 +18,14 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
       li(ng-class="{active:isActive('/plans/7')}")
         a(href="#/plans/7") Plan Detail
 
-      li(ng-class="{active:isActive('/account')}", ng-show="$storage.authentication.isLoggedIn")
+    ul.nav.navbar-nav.navbar-right
+      li(ng-class="{active:isActive('/users')}", ng-show="$storage.authentication.isLoggedIn")
         //TODO: Get username
-        a(href="#/account") Test User
+        a(href="#/me/plans") Test User
 
       // Login / Logout
       li(ng-class="{active:isActive('/auth')}", ng-show="!$storage.authentication.isLoggedIn")
         a(href="#/auth/login") Login
       li(ng-class="{active:isActive('/auth')}", ng-show="$storage.authentication.isLoggedIn")
         a(ng-click="logout()") Logout
+

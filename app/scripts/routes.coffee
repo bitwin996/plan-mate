@@ -18,6 +18,9 @@ app.config([
       .when('/plans/:planId/comments',   'detail.comments')
       .when('/plans/:planId/attendants', 'detail.attendants')
 
+      .when('/users/:userId/plans', 'users-plans')
+      .when('/me/plans',            'me-plans')
+
       .segment 'main',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
@@ -25,6 +28,15 @@ app.config([
       .segment 'login',
         templateUrl: 'views/auth/login.html'
         controller: 'AuthCtrl'
+
+      .segment 'me-plans',
+        templateUrl: 'views/users/plans.html'
+        controller: 'UsersPlansCtrl'
+
+      .segment 'users-plans',
+        templateUrl: 'views/users/plans.html'
+        controller: 'UsersPlansCtrl'
+        dependencies: ['userId']
 
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'

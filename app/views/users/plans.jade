@@ -1,0 +1,40 @@
+.page-header
+  h3 Plan list
+
+// Icon descriptions
+.align-right
+  span.ls-mark
+    i.ls-icon-dailycalendar
+  | : Date
+  | &nbsp; &nbsp; &nbsp;
+
+  span.ls-mark
+    i.ls-icon-walking
+  | : Attendants
+  | &nbsp; &nbsp; &nbsp;
+
+  span.ls-mark
+    i.ls-icon-comments
+  | : Comments
+
+
+.list-group(ng-repeat="plan in plans")
+  a.list-group-item(ng-href="#/plans/{{plan.id}}")
+    h4.list-group-item-heading
+      | {{ plan.place_name }}
+
+    p.list-group-item-text
+      div(style="font-size:larger")
+        i.ls-icon-dailycalendar.ls-mark
+        | &nbsp; {{ plan.date ? plan.date : '-'}}
+
+      i.ls-icon-walking.ls-mark
+      | &nbsp; {{ plan.attendants_count }} &nbsp; &nbsp;
+
+      i.ls-icon-comments.ls-mark
+      | &nbsp; {{ plan.comments_count }}
+
+
+.spacer
+
+a.btn.btn-block.btn-primary(href="#/me/plans/new") Add a new plan
