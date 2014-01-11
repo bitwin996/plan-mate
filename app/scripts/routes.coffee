@@ -20,6 +20,7 @@ app.config([
 
       .when('/users/:userId/plans', 'users-plans')
       .when('/me/plans',            'me-plans')
+      .when('/me/plans/new',        'me-plans-new')
 
       .segment 'main',
         templateUrl: 'views/main.html'
@@ -37,6 +38,10 @@ app.config([
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
         dependencies: ['userId']
+
+      .segment 'me-plans-new',
+        templateUrl: 'views/plans/new.html'
+        controller: 'UsersPlansNewCtrl'
 
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'

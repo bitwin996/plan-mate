@@ -1,0 +1,14 @@
+.page-header
+  h3 New Plan
+
+form(ng-submit="submit(plan)")
+
+  .form-group
+    label(for="place_name") Place name
+    input#place_name.form-control(type="text", ng-model="plan.place_name")
+
+  .form-group
+    button.btn.btn-block.btn-primary(type="submit")
+      i.ls-icon-plus
+      br
+      | Register

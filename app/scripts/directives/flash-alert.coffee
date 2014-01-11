@@ -37,6 +37,12 @@ angular.module('planMateApp')
       @setRedirect = ->
         @storage.countFromRedirect = 0
 
+      for type in ['success', 'info', 'warning', 'danger']
+        @[type] = (message) ->
+          @update message, type
+
+      @error = @danger
+
       return @
   ]
 
