@@ -21,7 +21,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
     ul.nav.navbar-nav.navbar-right
       li(ng-class="{active:isActive('/users')}", ng-show="$storage.authentication.isLoggedIn")
         //TODO: Get username
-        a(href="#/me/plans") Test User
+        a(href="#/mypage/plans") Test User
 
       // Login / Logout
       li(ng-class="{active:isActive('/auth')}", ng-show="!$storage.authentication.isLoggedIn")

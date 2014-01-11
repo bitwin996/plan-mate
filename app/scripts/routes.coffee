@@ -19,8 +19,8 @@ app.config([
       .when('/plans/:planId/attendants', 'detail.attendants')
 
       .when('/users/:userId/plans', 'users-plans')
-      .when('/me/plans',            'me-plans')
-      .when('/me/plans/new',        'me-plans-new')
+      .when('/mypage/plans',            'mypage-plans')
+      .when('/mypage/plans/new',        'mypage-plans-new')
 
       .segment 'main',
         templateUrl: 'views/main.html'
@@ -30,7 +30,7 @@ app.config([
         templateUrl: 'views/auth/login.html'
         controller: 'AuthCtrl'
 
-      .segment 'me-plans',
+      .segment 'mypage-plans',
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
 
@@ -39,7 +39,7 @@ app.config([
         controller: 'UsersPlansCtrl'
         dependencies: ['userId']
 
-      .segment 'me-plans-new',
+      .segment 'mypage-plans-new',
         templateUrl: 'views/plans/new.html'
         controller: 'UsersPlansNewCtrl'
 

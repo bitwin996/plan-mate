@@ -9,7 +9,6 @@ app = angular.module('planMateApp', [
   'view-segment'
   'ui.bootstrap'
   'angularMoment'
-  'ModelCore'
   'ngStorage'
 ])
 

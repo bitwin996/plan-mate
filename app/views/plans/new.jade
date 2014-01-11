@@ -8,6 +8,10 @@ form(ng-submit="submit(plan)")
     input#place_name.form-control(type="text", ng-model="plan.place_name")
 
   .form-group
+    label(for="description") Description
+    textarea#description.form-control(ng-model="plan.description")
+
+  .form-group
     button.btn.btn-block.btn-primary(type="submit")
       i.ls-icon-plus
       br
