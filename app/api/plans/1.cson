@@ -1,0 +1,8 @@
+{
+  id: 1
+  place_name: "Tokyo Tower"
+  description: "Test description 1"
+  date: "2014-02-10"
+  attendants_count: 8
+  comments_count: 12
+}

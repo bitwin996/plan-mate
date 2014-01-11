@@ -13,14 +13,17 @@ app.config([
 
       .when('/auth/login', 'login')
 
-      .when('/plans/:planId',            'detail.info')
-      .when('/plans/:planId/scheduling', 'detail.scheduling')
-      .when('/plans/:planId/comments',   'detail.comments')
-      .when('/plans/:planId/attendants', 'detail.attendants')
-
       .when('/users/:userId/plans', 'users-plans')
       .when('/mypage/plans',            'mypage-plans')
       .when('/mypage/plans/new',        'mypage-plans-new')
+
+      .when('/plans/:planId',            'plans-show')
+
+      #.when('/plans/:planId',            'detail.info')
+      .when('/plans/:planId/scheduling', 'detail.scheduling')
+      .when('/plans/:planId/comments',   'detail.comments')
+      .when('/plans/:planId/attendants', 'detail.attendants')
+      .when('/plans/:planId/scheduling', 'detail.scheduling')
 
       .segment 'main',
         templateUrl: 'views/main.html'
@@ -42,6 +45,10 @@ app.config([
       .segment 'mypage-plans-new',
         templateUrl: 'views/plans/new.html'
         controller: 'UsersPlansNewCtrl'
+
+      .segment 'plans-show',
+        templateUrl: 'views/plans/show.html'
+        controller: 'PlansShowCtrl'
 
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'

@@ -2,6 +2,7 @@
   {
     id: 3
     place_name: "Tokyo Tower"
+    description: "Test description 1"
     date: "2014-02-10"
     attendants_count: 8
     comments_count: 12
@@ -9,6 +10,7 @@
   {
     id: 7
     place_name: "Asakusa"
+    description: "Test description 2"
     date: null
     attendants_count: 5
     comments_count: 7

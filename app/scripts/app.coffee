@@ -10,19 +10,46 @@ app = angular.module('planMateApp', [
   'ui.bootstrap'
   'angularMoment'
   'ngStorage'
+  'jmdobry.angular-cache'
 ])
 
 
 app.constant('baseUrl', "%BASE_URL%")
 app.constant('endpoint', "%BASE_URL%/api")
 
+###
+# CORS
+app.config [
+  '$httpProvider',
+  ($httpProvider) ->
+    $httpProvider.defaults.useXDomain = true
+    delete $httpProvider.defaults.headers.common['X-Requested-With']
+]
+###
+
+# Cache
+app.config [
+  '$angularCacheFactoryProvider',
+  ($angularCacheFactoryProvider) ->
+    $angularCacheFactoryProvider.setCacheDefaults
+      maxAge: 900000
+      cacheFlushInterval: 6000000
+      deleteOnExpire: 'aggressive'
+      storageMode: 'localStorage'
+]
 
 # Initializations
-app.run([
-  '$rootScope', '$localStorage', '$location', 'FlashAlertService', 'AuthenticationService',
-  ($rootScope, $localStorage, $location, FlashAlertService, AuthenticationService) ->
+app.run [
+  '$rootScope', '$localStorage', '$location', '$angularCacheFactory', '$http',
+  'FlashAlertService', 'AuthenticationService',
+  ($rootScope, $localStorage, $location, $angularCacheFactory, $http,
+  FlashAlertService, AuthenticationService) ->
+
     # ngStorage
     $rootScope.$storage = $localStorage
+
+    # angular-cache
+    $http.defaults.cache = $angularCacheFactory 'httpCache'
 
     # FlashAlert
     $rootScope.flashAlert ?= {}
@@ -53,15 +80,4 @@ app.run([
             $location.path redirectPath
 
       FlashAlertService.reset()
-])
-
-
-###
-app.config([
-  '$httpProvider',
-  ($httpProvider) ->
-    # for CORS
-    $httpProvider.defaults.useXDomain = true
-    delete $httpProvider.defaults.headers.common['X-Requested-With']
-])
-###
+]
