@@ -2,7 +2,7 @@
   id: 1
   place_name: "Tokyo Tower"
   description: "Test description 1"
-  date: "2014-02-10"
+  date: "2014-01-30T14:36:22+08:00"
   attendants_count: 8
   comments_count: 12
 }

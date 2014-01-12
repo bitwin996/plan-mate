@@ -20,7 +20,7 @@ angular.module('planMateApp')
         @storage.countFromRedirect = REDIRECT_COUNT
 
       @reset = ->
-        if @storage.countFromRedirect > REDIRECT_COUNT
+        if @storage.countFromRedirect >= REDIRECT_COUNT
           @storage.message = null
           @storage.type = null
           @storage.show = false
@@ -34,7 +34,7 @@ angular.module('planMateApp')
         @storage.show = true
 
       # Use this method only in $rootScope.$on('$routeChangeStart') and so on.
-      @setRedirect = ->
+      @prepareRedirect = ->
         @storage.countFromRedirect = 0
 
       for type in ['success', 'info', 'warning', 'danger']

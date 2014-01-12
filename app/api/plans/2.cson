@@ -1,0 +1,9 @@
+{
+  content:
+    id: 2
+    place_name: "Tokyo Tower"
+    description: "Test description 2"
+    date: "2014-01-28T14:36:22+08:00"
+    attendants_count: 8
+    comments_count: 12
+}

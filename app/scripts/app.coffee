@@ -11,6 +11,7 @@ app = angular.module('planMateApp', [
   'angularMoment'
   'ngStorage'
   'jmdobry.angular-cache'
+  'ModelCore'
 ])
 
 
@@ -76,7 +77,7 @@ app.run [
         for path,redirectPath of needLoginRoutes
           if $location.path() is path
             FlashAlertService.update "Please login to move to the page", 'danger'
-            FlashAlertService.setRedirect()
+            FlashAlertService.prepareRedirect()
             $location.path redirectPath
 
       FlashAlertService.reset()

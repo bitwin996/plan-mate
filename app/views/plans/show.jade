@@ -3,19 +3,18 @@
 
 dl
   dt Description
-  dd
-    pre {{ plan.description }}
+  dd {{ plan.description }}
 
-//
-  h3.row
-    span.glyphicon.glyphicon-map-marker
-    {{ plan.location.name }}
-  p.row
-    span.glyphicon.glyphicon-user
-    {{ plan.planner.name }}
-  p.row
-    span.glyphicon.glyphicon-calendar
-    {{ plan.date | date:'MM-dd-yy' }}
+  dt Date
+  dd {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}
 
-  button.btn.btn-success(ng-click="attend()")
-    | Attend
+  dt Attendants
+  dd {{ plan.attendants_count }}
+
+  dt Comments
+  dd {{ plan.comments_count }}
+
+button.btn.btn-block.btn-success(ng-click="plan.$attend()")
+  i.ls-icon-plus
+  br
+  | Attend

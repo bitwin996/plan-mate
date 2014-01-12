@@ -13,7 +13,8 @@
     "bootstrap": "templated-customizer",
     "angular-route-segment": "~1.2.0",
     "angular-moment": "~0.6.0",
-    "angular-cache": "~2.3.0"
+    "angular-cache": "~2.3.0",
+    "ModelCore": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.6",
