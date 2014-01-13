@@ -12,6 +12,7 @@ app = angular.module('planMateApp', [
   'ngStorage'
   'jmdobry.angular-cache'
   'ModelCore'
+  'restangular'
 ])
 
 
@@ -39,18 +40,31 @@ app.config [
       storageMode: 'localStorage'
 ]
 
+
+# Restangular
+app.config [
+  'RestangularProvider', 'endpoint',
+  (RestangularProvider, endpoint) ->
+    RestangularProvider.setBaseUrl endpoint
+    #RestangularProvider.setDefaultHttpFields
+    #  cache: $angularCacheFactory 'httpCache'
+]
+
+
 # Initializations
 app.run [
-  '$rootScope', '$localStorage', '$location', '$angularCacheFactory', '$http',
-  'FlashAlertService', 'AuthenticationService',
-  ($rootScope, $localStorage, $location, $angularCacheFactory, $http,
-  FlashAlertService, AuthenticationService) ->
+  '$rootScope', '$http', '$location', 'Restangular', '$localStorage',
+  '$angularCacheFactory', 'FlashAlertService', 'AuthenticationService',
+  ($rootScope, $http, $location, Restangular, $localStorage,
+  $angularCacheFactory, FlashAlertService, AuthenticationService) ->
 
     # ngStorage
     $rootScope.$storage = $localStorage
 
-    # angular-cache
-    $http.defaults.cache = $angularCacheFactory 'httpCache'
+    #TODO angular-cache
+    httpCache = $angularCacheFactory 'httpCache'
+    $http.defaults.cache = httpCache
+    Restangular.setDefaultHttpFields cache:httpCache
 
     # FlashAlert
     $rootScope.flashAlert ?= {}

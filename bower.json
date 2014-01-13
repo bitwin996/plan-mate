@@ -14,7 +14,8 @@
     "angular-route-segment": "~1.2.0",
     "angular-moment": "~0.6.0",
     "angular-cache": "~2.3.0",
-    "ModelCore": "*"
+    "ModelCore": "*",
+    "restangular": "https://github.com/jbedard/restangular.git#remove_lodash"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.6",
