@@ -9,20 +9,9 @@ import ConfigParser
 
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
 
-from pyramid.request import Request
-from pyramid.request import Response
-
-from pyramid.events import subscriber, NewResponse
-
 
 __here__ = os.path.dirname(os.path.abspath(__file__))
 
-
-#@subscriber(NewResponse)
-#def add_access_list(event):
-#  event.response.headerlist.append(
-#    ('Access-Control-Allow-Origin', 'http://localhost:9000')
-#    )
 
 def make_app():
     """ This function returns a Pyramid WSGI application.
@@ -42,23 +31,6 @@ def make_app():
     settings = dict(conf.items('app:main'))
     config.add_settings(settings)
 
-    # CORS
-    #def request_factory(environ):
-    #    request = Request(environ)
-    #    #if request.is_xhr:
-    #    request.response = Response()
-    #    request.response.headerlist = []
-    #    request.response.headerlist.extend(
-    #            (
-    #                #('Access-Control-Allow-Origin', '*'),
-    #                ('Access-Control-Allow-Origin', 'http://localhost:9000')
-    #                #('Content-Type', 'application/json')
-    #            )
-    #    )
-    #    return request
-    #config.set_request_factory(request_factory)
-    #config.add_subscriber(add_access_list)
-
     # oauth
     config.include('velruse.providers.facebook')
     config.add_facebook_login_from_settings(prefix='velruse.facebook.')
@@ -72,6 +44,9 @@ def make_app():
     config.add_route('auth_login', '/auth/login/{provider_type}')
     config.add_route('api_auth_status', '/api/auth/status')
     config.add_route('api_me_plans', '/api/me/plans')
+
+    # debug
+    config.add_route('debug_login', '/debug/login/{offset}')
 
     config.scan()
 

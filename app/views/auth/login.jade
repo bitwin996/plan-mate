@@ -1,5 +1,8 @@
-p This is the auth/login view.
+a.btn.btn-block.btn-primary(href="{{ baseUrl }}/debug/login/0")
+  | Login by test user
 
-p
-  a.btn.btn-primary(href="{{ baseUrl }}/auth/login/facebook") f
-  a.btn.btn-primary(href="{{ baseUrl }}/auth/login/twitter") t
+a.btn.btn-block.btn-primary(href="{{ baseUrl }}/auth/login/facebook")
+  | Login by facebook
+
+a.btn.btn-block.btn-primary(href="{{ baseUrl }}/auth/login/twitter")
+  | Login by twitter

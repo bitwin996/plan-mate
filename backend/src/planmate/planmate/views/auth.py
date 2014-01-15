@@ -11,7 +11,7 @@ from pyramid.config.routes import RoutesConfiguratorMixin as Router
 
 
 @view_config(route_name='auth_login')
-def login(request):
+def auth_login(request):
     if SESSION_KEY in request.session:
       del request.session[SESSION_KEY]
     base_url = request.registry.settings['frontend.base_url']
