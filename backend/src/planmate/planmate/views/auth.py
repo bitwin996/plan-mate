@@ -71,3 +71,4 @@ def login_denied_view(request):
     base_url = request.registry.settings['frontend.base_url']
     reason = request.context.reason
     return HTTPFound(location = base_url + '/#/')
+

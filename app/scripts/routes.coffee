@@ -2,7 +2,7 @@
 
 app = angular.module('planMateApp')
 
-app.config([
+app.config [
   '$routeSegmentProvider', '$routeProvider',
   ($routeSegmentProvider, $routeProvider) ->
 
@@ -36,6 +36,10 @@ app.config([
       .segment 'mypage-plans',
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
+        resolve:
+          plans: ['Restangular', (Restangular) ->
+            Restangular.one('me').all('plans').getList()
+          ]
 
       .segment 'users-plans',
         templateUrl: 'views/users/plans.html'
@@ -49,6 +53,19 @@ app.config([
       .segment 'plans-show',
         templateUrl: 'views/plans/show.html'
         controller: 'PlansShowCtrl'
+        resolve:
+          plan: [
+            '$routeParams', 'Restangular', 'FlashAlertService',
+            ($routeParams, Restangular, FlashAlertService) ->
+              Restangular.one('plans', $routeParams.planId).get().then(
+                  (plan) -> plan
+                ,
+                  ->
+                    FlashAlertService.prepareRedirect()
+                    FlashAlertService.error 'There\'s not the plan data on the server.'
+                    history.back()
+              )
+          ]
 
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'
@@ -69,4 +86,4 @@ app.config([
           dependencies: ['planId']
 
     $routeProvider.otherwise redirectTo: '/'
-])
+]

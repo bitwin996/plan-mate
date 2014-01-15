@@ -18,7 +18,7 @@
   | : Comments
 
 
-.list-group(ng-repeat="plan in plans.$dataset")
+.list-group(ng-repeat="plan in plans")
   a.list-group-item(ng-href="#/plans/{{plan.id}}")
     h4.list-group-item-heading
       | {{ plan.place_name }}

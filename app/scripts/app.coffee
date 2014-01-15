@@ -11,7 +11,6 @@ app = angular.module('planMateApp', [
   'angularMoment'
   'ngStorage'
   'jmdobry.angular-cache'
-  'ModelCore'
   'restangular'
 ])
 
@@ -19,15 +18,16 @@ app = angular.module('planMateApp', [
 app.constant('baseUrl', "%BASE_URL%")
 app.constant('endpoint', "%BASE_URL%/api")
 
-###
+
 # CORS
 app.config [
   '$httpProvider',
   ($httpProvider) ->
-    $httpProvider.defaults.useXDomain = true
-    delete $httpProvider.defaults.headers.common['X-Requested-With']
+    #$httpProvider.defaults.useXDomain = true
+    #delete $httpProvider.defaults.headers.common['X-Requested-With']
+    #$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 ]
-###
+
 
 # Cache
 app.config [
@@ -62,9 +62,9 @@ app.run [
     $rootScope.$storage = $localStorage
 
     #TODO angular-cache
-    httpCache = $angularCacheFactory 'httpCache'
-    $http.defaults.cache = httpCache
-    Restangular.setDefaultHttpFields cache:httpCache
+    #httpCache = $angularCacheFactory 'httpCache'
+    #$http.defaults.cache = httpCache
+    #Restangular.setDefaultHttpFields cache:httpCache
 
     # FlashAlert
     $rootScope.flashAlert ?= {}
