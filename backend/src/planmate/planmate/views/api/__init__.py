@@ -1,6 +1,12 @@
-from pyramid.events import subscriber, NewResponse
+from pyramid.events import subscriber,NewResponse
+from planmate.lib.helpers import AuthenticationHelper
+
 
 @subscriber(NewResponse)
 def add_cors_header(event):
-    event.response.headers['Access-Control-Allow-Origin'] = 'http://localhost:9000'
-    event.response.headers['Access-Control-Allow-Credentials'] = 'true'
+  event.response.headers.update({
+    'Access-Control-Allow-Origin': 'http://localhost:9000',
+    'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type',
+    'Access-Control-Allow-Credentials': 'true',
+    'Content-Type': 'application/json; charset=UTF-8'
+    })

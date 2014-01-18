@@ -17,7 +17,7 @@ angular.module('planMateApp')
 
         request.success (response) =>
           FlashAlertService.update 'Success to get login status', 'info'
-          @storage.isLoggedIn = response.isLoggedIn
+          @storage.isLoggedIn = response.is_logged_in
 
         request.error (response) ->
           FlashAlertService.update 'Fail to get login status', 'danger'

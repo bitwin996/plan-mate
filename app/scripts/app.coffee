@@ -24,6 +24,8 @@ app.config [
   '$httpProvider',
   ($httpProvider) ->
     $httpProvider.defaults.withCredentials = true
+    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+    #delete $httpProvider.defaults.headers.common['X-Requested-With']
 ]
 
 
@@ -83,7 +85,7 @@ app.run [
         for path,redirectPath of needLogoutRoutes
           if $location.path() is path
             FlashAlertService.update "Please logout to move to the page", 'danger'
-            FlashAlertService.setRedirect()
+            FlashAlertService.prepareRedirect()
             $location.path redirectPath
       else
         for path,redirectPath of needLoginRoutes

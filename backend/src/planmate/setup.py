@@ -20,7 +20,7 @@ class PyTest(Command):
         errno = pytest.main("")
         raise SystemExit(errno)
 
-requires = ['pyramid', 'jinja2', 'velruse', 'oauthlib', 'requests', 'requests-oauthlib', 'Beaker', 'pyramid-beaker', 'Pillow']
+requires = ['pyramid', 'jinja2', 'velruse', 'oauthlib', 'requests', 'requests-oauthlib', 'Beaker', 'pyramid-beaker', 'Pillow', 'singleton']
 test_requires = requires + ["pytest"]
 setup(name='planmate',
       version='0.0',
