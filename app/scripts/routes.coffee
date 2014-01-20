@@ -40,6 +40,8 @@ app.config [
           plans: ['Restangular', (Restangular) ->
             Restangular.one('me').all('plans').getList()
           ]
+        resolveFailed:
+          plans: []
 
       .segment 'users-plans',
         templateUrl: 'views/users/plans.html'
@@ -57,15 +59,14 @@ app.config [
           plan: [
             '$routeParams', 'Restangular', 'FlashAlertService',
             ($routeParams, Restangular, FlashAlertService) ->
-              Restangular.one('plans', $routeParams.planId).get().then(
-                  (plan) -> plan
-                ,
-                  ->
-                    FlashAlertService.prepareRedirect()
-                    FlashAlertService.error 'There\'s not the plan data on the server.'
-                    history.back()
-              )
+              Restangular.one('plans', $routeParams.planId).get()
           ]
+        resolveFailed:
+          plan: ->
+            console.log('ARGUMENTS', arguments)
+            FlashAlertService.prepareRedirect()
+            FlashAlertService.error 'There\'s not the plan data on the server.'
+            #history.back()
 
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'

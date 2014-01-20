@@ -61,8 +61,8 @@ def login_complete_view(request):
     raise
 
   # Store user key to session
-  key_string = user.key.urlsafe()
-  AuthenticationHelper.instance().set_key_string(key_string)
+  user_key_string = user.key.urlsafe()
+  AuthenticationHelper.instance().set_user_key_string(user_key_string)
 
   # Redirect to main page
   base_url = request.registry.settings['frontend.base_url']

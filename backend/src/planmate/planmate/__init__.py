@@ -46,6 +46,9 @@ def make_app():
   config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
   config.add_route('api.auth.status.options', '/api/auth/status', request_method='OPTIONS')
 
+  config.add_route('api.plans.show.options', pattern='/api/plans/{id}', request_method='OPTIONS')
+  config.add_route('api.plans.show.get', pattern='/api/plans/{id}', request_method='GET')
+
   config.add_route('api.me.plans.get', pattern='/api/me/plans', request_method='GET')
   config.add_route('api.me.plans.options', pattern='/api/me/plans', request_method='OPTIONS')
   config.add_route('api.me.plans.post', pattern='/api/me/plans', request_method='POST')
