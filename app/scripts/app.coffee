@@ -25,6 +25,7 @@ app.config [
   ($httpProvider) ->
     $httpProvider.defaults.withCredentials = true
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+    #$httpProvider.defaults.headers.common['X-HTTP-Method-Override'] = 'Access-Control-Allow-Headers'
     #delete $httpProvider.defaults.headers.common['X-Requested-With']
 ]
 
@@ -48,6 +49,8 @@ app.config [
     RestangularProvider.setBaseUrl endpoint
     #RestangularProvider.setDefaultHttpFields
     #  cache: $angularCacheFactory 'httpCache'
+
+    RestangularProvider.setMethodOverriders ['put']
 ]
 
 

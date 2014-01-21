@@ -23,10 +23,7 @@ def get(request):
     return entities
 
   else:
-    request.response.status = 401
-    #return HTTPUnauthorized()
-    #TODO
-    return {'error':'Need to log in.'}
+    raise HTTPUnauthorized()
 
 
 @view_config(route_name='api.me.plans.options', renderer='string')

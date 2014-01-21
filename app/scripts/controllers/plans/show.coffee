@@ -5,4 +5,7 @@ angular.module('planMateApp')
     '$scope', 'plan',
     ($scope, plan) ->
       $scope.plan = plan
+
+      $scope.attend = ->
+        $scope.plan.customPOST {}, 'attend'
   ]
