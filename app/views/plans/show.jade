@@ -1,20 +1,24 @@
+// tabs
+ul.nav.nav-tabs
+  li(ng-class="{active: $routeSegment.startsWith('plans-show.info')}")
+    a(href="#/plans/{{plan.id}}") Info
+
+  li(ng-class="{active: $routeSegment.startsWith('plans-show.schedules')}")
+    a(href="#/plans/{{plan.id}}/schedules") Scheduling
+
+  li(ng-class="{active: $routeSegment.startsWith('plans-show.comments')}")
+    a(href="#/plans/{{plan.id}}/comments")
+      | Comments &nbsp;
+      span.badge {{ plan.comment_keys.length }}
+
+  li(ng-class="{active: $routeSegment.startsWith('plans-show.attendants')}")
+    a(href="#/plans/{{plan.id}}/attendants")
+      | Attendants &nbsp;
+      span.badge {{ plan.attendant_keys.length }}
+
+
 .page-header
   h4 {{ plan.place_name }}
 
-dl
-  dt Description
-  dd {{ plan.description }}
-
-  dt Date
-  dd {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}
-
-  dt Attendants
-  dd {{ plan.attendants_count }}
-
-  dt Comments
-  dd {{ plan.comments_count }}
-
-button.btn.btn-block.btn-success(ng-click="attend(plan)")
-  i.ls-icon-plus
-  br
-  | Attend
+// main contents
+.span(app-view-segment="1")

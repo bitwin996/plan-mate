@@ -10,32 +10,23 @@ def options(request): return
 
 @view_config(route_name='api.plans.one.get', renderer='json')
 def get(request):
-  key_string = request.matchdict.get('id')
-  key = ndb.Key(urlsafe = key_string)
-  plan = key.get()
+  print('PLANS-ONE', request.matchdict)
+  plan_key_string = request.matchdict.get('plan_key_string')
+  plan_key = ndb.Key(urlsafe = plan_key_string)
+  plan = plan_key.get()
   return to_dict_with_key(plan)
-
-
-"""
-@view_config(route_name='api.plans.one.post', renderer='json')
-def post(request):
-  params = request.json_body
-  print('PARAMS', params)
-"""
-
 
 @view_config(route_name='api.plans.one.attend-options', renderer='string')
 def attend_options(request): return
 
 @view_config(route_name='api.plans.one.attend', renderer='json')
 def attend(request):
-  key_string = request.matchdict.get('id')
-  key = ndb.Key(urlsafe = key_string)
-  plan = key.get()
+  plan_key_string = request.matchdict.get('plan_key_string')
+  plan_key = ndb.Key(urlsafe = plan_key_string)
+  plan = plan_key.get()
 
   user_key = AuthenticationHelper.instance().get_user_key()
   plan.attendant_keys.append(user_key)
   plan.put()
 
   return to_dict_with_key(plan)
-

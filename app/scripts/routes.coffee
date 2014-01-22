@@ -17,13 +17,16 @@ app.config [
       .when('/mypage/plans',            'mypage-plans')
       .when('/mypage/plans/new',        'mypage-plans-new')
 
-      .when('/plans/:planId',            'plans-show')
+      .when('/plans/:planId',            'plans-show.info')
+      .when('/plans/:planId/attendants', 'plans-show.attendants')
+      .when('/plans/:planId/schedules',  'plans-show.schedules')
+      .when('/plans/:planId/comments',   'plans-show.comments')
 
       #.when('/plans/:planId',            'detail.info')
-      .when('/plans/:planId/scheduling', 'detail.scheduling')
-      .when('/plans/:planId/comments',   'detail.comments')
-      .when('/plans/:planId/attendants', 'detail.attendants')
-      .when('/plans/:planId/scheduling', 'detail.scheduling')
+      #.when('/plans/:planId/scheduling', 'detail.scheduling')
+      #.when('/plans/:planId/comments',   'detail.comments')
+      #.when('/plans/:planId/attendants', 'detail.attendants')
+      #.when('/plans/:planId/scheduling', 'detail.scheduling')
 
       .segment 'main',
         templateUrl: 'views/main.html'
@@ -37,8 +40,10 @@ app.config [
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
         resolve:
-          plans: ['Restangular', (Restangular) ->
-            Restangular.one('me').all('plans').getList()
+          plans: [
+            'Restangular', 'FlashAlertService',
+            (Restangular, FlashAlertService) ->
+              Restangular.one('me').all('plans').getList()
           ]
         resolveFailed:
           plans: []
@@ -57,16 +62,48 @@ app.config [
         controller: 'PlansShowCtrl'
         resolve:
           plan: [
-            '$routeParams', 'Restangular', 'FlashAlertService',
-            ($routeParams, Restangular, FlashAlertService) ->
+            '$routeParams', 'Restangular',
+            ($routeParams, Restangular) ->
               Restangular.one('plans', $routeParams.planId).get()
           ]
         resolveFailed:
-          plan: ->
-            console.log('ARGUMENTS', arguments)
-            FlashAlertService.prepareRedirect()
-            FlashAlertService.error 'There\'s not the plan data on the server.'
-            #history.back()
+          plan: [
+            'FlashAlertService',
+            (FlashAlertService) ->
+              FlashAlertService.prepareRedirect()
+              FlashAlertService.error 'There\'s not the plan data on the server.'
+              #history.back()
+          ]
+
+      .within()
+        .segment 'info',
+          templateUrl: 'views/plans/show/info.html'
+          dependencies: ['planId']
+        .segment 'attendants',
+          templateUrl: 'views/plans/show/attendants.html'
+          dependencies: ['planId']
+        .segment 'schedules',
+          templateUrl: 'views/plans/show/schedules.html'
+          controller: 'PlansShowSchedulesCtrl'
+          dependencies: ['planId']
+          resolve:
+            schedules: [
+              '$routeParams', 'Restangular',
+              ($routeParams, Restangular) ->
+                #console.log $routeParams
+                Restangular.one('plans', $routeParams.planId).all('schedules').getList()
+            ]
+          resolveFailed:
+            schedules: [
+              'FlashAlertService',
+              (FlashAlertService) ->
+                FlashAlertService.prepareRedirect()
+                FlashAlertService.error 'Failed to get schedules of the plan.'
+            ]
+
+        .segment 'comments',
+          templateUrl: 'views/plans/show/comments.html'
+          dependencies: ['planId']
 
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'

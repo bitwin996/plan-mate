@@ -41,6 +41,7 @@ angular.module('planMateApp')
         @[type] = (message) ->
           @update message, type
 
+      @success = @info
       @error = @danger
 
       return @

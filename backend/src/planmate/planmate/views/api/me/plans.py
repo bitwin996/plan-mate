@@ -19,7 +19,6 @@ def get(request):
     entities = []
     for plan in plans:
       entities.append(to_dict_with_key(plan))
-
     return entities
 
   else:
@@ -39,6 +38,7 @@ def post(request):
     place_name = params.get('place_name'),
     description = params.get('description')
     )
+  plan_key = plan.put()
 
   return to_dict_with_key(plan)
 

@@ -25,7 +25,8 @@ def http_unauthorized(exception, request):
 
 @view_config(context=InvalidPropertyError, renderer='json')
 def invalid_property_error(exception, request):
-  request.response.status = 500
+  #TODO
+  request.response.status = 409
   message = exception.args[0] if exception.args else 'Some invalid parameters are posted.'
   return {'message':message}
 

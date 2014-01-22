@@ -78,7 +78,7 @@ app.run [
     $rootScope.$storage.authentication ?= {}
     AuthenticationService.setStorage $rootScope.$storage.authentication
 
-    # AuthN route restrictions
+    # Authentication route restrictions
     needLoginRoutes = {}
     needLogoutRoutes =
       '/auth/login': '/'

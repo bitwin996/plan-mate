@@ -1,0 +1,21 @@
+p.row
+  form(ng-submit="postComment(newComment)")
+    .form-group
+      textarea.form-control(ng-model="newComment.body", rows="3")
+
+    .form-group
+      button.btn.btn-primary.btn-block(type="submit") Post
+
+
+p.row
+  .text-center.col-xs-12(ng-show="plan.comment_keys.length == 0")
+    em.text-muted No comment.
+
+  ul.list-group
+    li.list-group-item.clearfix(ng-repeat="comment in plan.comment_keys")
+      p.col-xs-2(ng-class-odd="'pull-right'", ng-class-even="'pull-left'")
+        img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
+        small.centered {{ comment.user.name }}
+
+      pre.text-left.col-xs-10
+        {{ comment.body }}

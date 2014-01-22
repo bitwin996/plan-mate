@@ -11,9 +11,24 @@ class Plan(ndb.Model):
   comment_keys = mydb.SafeKeyProperty(kind='PlanComment', repeated=True)
   date_keys = mydb.SafeKeyProperty(kind='PlanDate', repeated=True)
 
+  #TODO move to lib.helpers
   def _pre_put_hook(self):
     list_properties = ['attendant_keys', 'comment_keys', 'date_keys']
     for prop in list_properties:
       values = getattr(self, prop)
       if len(set(values)) is not len(values):
         raise InvalidPropertyError(prop + ' property contains duplicated values.')
+
+
+class PlanSchedule(ndb.Model):
+  plan_key = mydb.SafeKeyProperty(kind='Plan', required=True)
+  date = ndb.DateProperty(required=True)
+  attendant_keys = mydb.SafeKeyProperty(kind='User', repeated=True)
+
+  def _pre_put_hook(self):
+    list_properties = ['attendant_keys']
+    for prop in list_properties:
+      values = getattr(self, prop)
+      if len(set(values)) is not len(values):
+        raise InvalidPropertyError(prop + ' property contains duplicated values.')
+

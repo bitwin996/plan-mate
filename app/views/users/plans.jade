@@ -29,10 +29,10 @@
         | &nbsp; {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}
 
       i.ls-icon-walking.ls-mark
-      | &nbsp; {{ plan.attendants_count }} &nbsp; &nbsp;
+      | &nbsp; {{ plan.attendant_keys.length }} &nbsp; &nbsp;
 
       i.ls-icon-comments.ls-mark
-      | &nbsp; {{ plan.comments_count }}
+      | &nbsp; {{ plan.comment_keys.length }}
 
 
 .spacer
@@ -41,3 +41,4 @@ a.btn.btn-block.btn-primary(href="#/mypage/plans/new")
   i.ls-icon-plus
   br
   | Add a new plan
+

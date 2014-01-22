@@ -1,0 +1,17 @@
+dl
+  dt Description
+  dd {{ plan.description }}
+
+  dt Date
+  dd {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}
+
+  dt Number of Attendants
+  dd {{ plan.attendant_keys.length }}
+
+  dt Number of Comments
+  dd {{ plan.comment_keys.length }}
+
+button.btn.btn-block.btn-success(ng-click="attend()")
+  i.ls-icon-plus
+  br
+  | Attend

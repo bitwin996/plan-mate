@@ -1,13 +1,16 @@
-from pyramid.config import Configurator
-from resources import Root
-import views
-import views.auth
-import pyramid_jinja2
 import os
 
+from pyramid.config import Configurator
 import ConfigParser
-
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
+
+import views
+import views.auth
+#import views.api.plans
+#import views.api.plans.one
+
+from resources import Root
+import pyramid_jinja2
 
 
 __here__ = os.path.dirname(os.path.abspath(__file__))
@@ -46,11 +49,15 @@ def make_app():
   config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
   config.add_route('api.auth.status.options', '/api/auth/status', request_method='OPTIONS')
 
-  config.add_route('api.plans.one.options', pattern='/api/plans/{id}', request_method='OPTIONS')
-  config.add_route('api.plans.one.get', pattern='/api/plans/{id}', request_method='GET')
-  config.add_route('api.plans.one.post', pattern='/api/plans/{id}', request_method='POST')
-  config.add_route('api.plans.one.attend-options', pattern='/api/plans/{id}/attend', request_method='OPTIONS')
-  config.add_route('api.plans.one.attend', pattern='/api/plans/{id}/attend', request_method='POST')
+  config.add_route('api.plans.one.options', pattern='/api/plans/{plan_key_string}', request_method='OPTIONS')
+  config.add_route('api.plans.one.get', pattern='/api/plans/{plan_key_string}', request_method='GET')
+  config.add_route('api.plans.one.post', pattern='/api/plans/{plan_key_string}', request_method='POST')
+
+  config.add_route('api.plans.one.attend-options', pattern='/api/plans/{plan_key_string}/attend', request_method='OPTIONS')
+  config.add_route('api.plans.one.attend', pattern='/api/plans/{plan_key_string}/attend', request_method='POST')
+
+  config.add_route('api.plans.one.schedules.options', pattern='/api/plans/{plan_key_string}/schedules', request_method='OPTIONS')
+  config.add_route('api.plans.one.schedules.get', pattern='/api/plans/{plan_key_string}/schedules', request_method='GET')
 
   config.add_route('api.me.plans.get', pattern='/api/me/plans', request_method='GET')
   config.add_route('api.me.plans.options', pattern='/api/me/plans', request_method='OPTIONS')
