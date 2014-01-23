@@ -49,15 +49,17 @@ def make_app():
   config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
   config.add_route('api.auth.status.options', '/api/auth/status', request_method='OPTIONS')
 
-  config.add_route('api.plans.one.options', pattern='/api/plans/{plan_key_string}', request_method='OPTIONS')
-  config.add_route('api.plans.one.get', pattern='/api/plans/{plan_key_string}', request_method='GET')
-  config.add_route('api.plans.one.post', pattern='/api/plans/{plan_key_string}', request_method='POST')
+  config.add_route('api.plans.one.options', pattern='/api/plans/{plan_key}', request_method='OPTIONS')
+  config.add_route('api.plans.one.get', pattern='/api/plans/{plan_key}', request_method='GET')
+  config.add_route('api.plans.one.post', pattern='/api/plans/{plan_key}', request_method='POST')
 
-  config.add_route('api.plans.one.attend-options', pattern='/api/plans/{plan_key_string}/attend', request_method='OPTIONS')
-  config.add_route('api.plans.one.attend', pattern='/api/plans/{plan_key_string}/attend', request_method='POST')
+  config.add_route('api.plans.one.attend-options', pattern='/api/plans/{plan_key}/attend', request_method='OPTIONS')
+  config.add_route('api.plans.one.attend', pattern='/api/plans/{plan_key}/attend', request_method='POST')
 
-  config.add_route('api.plans.one.schedules.options', pattern='/api/plans/{plan_key_string}/schedules', request_method='OPTIONS')
-  config.add_route('api.plans.one.schedules.get', pattern='/api/plans/{plan_key_string}/schedules', request_method='GET')
+  config.add_route('api.plans.one.schedules.options', pattern='/api/plans/{plan_key}/schedules', request_method='OPTIONS')
+  config.add_route('api.plans.one.schedules.get', pattern='/api/plans/{plan_key}/schedules', request_method='GET')
+  config.add_route('api.plans.one.attendants.options', pattern='/api/plans/{plan_key}/attendants', request_method='OPTIONS')
+  config.add_route('api.plans.one.attendants.get', pattern='/api/plans/{plan_key}/attendants', request_method='GET')
 
   config.add_route('api.me.plans.get', pattern='/api/me/plans', request_method='GET')
   config.add_route('api.me.plans.options', pattern='/api/me/plans', request_method='OPTIONS')

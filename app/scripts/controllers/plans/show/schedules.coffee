@@ -2,8 +2,8 @@
 
 angular.module('planMateApp')
   .controller 'PlansShowSchedulesCtrl', [
-    '$scope', '$timeout', 'schedules',
-    ($scope, $timeout, schedules) ->
+    '$scope', '$timeout', 'schedules', 'FlashAlertService',
+    ($scope, $timeout, schedules, FlashAlertService) ->
 
       floorTime = (momentObj) ->
         momentObj.hours(0).minutes(0).seconds(0)
@@ -33,9 +33,16 @@ angular.module('planMateApp')
           return true if isEqualDate date, schedule.date
         false
 
-      $scope.addSchedule = (schedule) ->
+      $scope.addSchedule = ->
         _schedule = angular.copy schedule
         #_schedule.canBeAvailable = $scope.canBeAvailable dp
         #_schedule.canBeUnavailable = $scope.canBeUnavailable dp
+        $scope.schedules.post($scope.newSchedule).then(
+            (response) ->
+              console.log response
+          ,
+            (response) ->
+              FlashAlertService.error 'Fail to add a schedule.'
+        )
         $scope.schedules.push _schedule
   ]

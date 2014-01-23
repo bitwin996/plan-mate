@@ -13,5 +13,3 @@ def get(request):
   is_logged_in = AuthenticationHelper.instance().is_logged_in()
   return {'is_logged_in': is_logged_in}
 
-
-

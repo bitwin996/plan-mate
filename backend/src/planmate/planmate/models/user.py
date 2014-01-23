@@ -1,5 +1,5 @@
 from google.appengine.ext import ndb
-from planmate.lib import mydb
+#from planmate.lib import mydb
 
 
 class User(ndb.Model):
@@ -8,4 +8,4 @@ class User(ndb.Model):
     name = ndb.StringProperty()
     profile_image_url = ndb.StringProperty()
 
-    plan_keys = mydb.SafeKeyProperty(kind='Plan', repeated=True)
+    #plan_keys = mydb.SafeKeyProperty(kind='Plan', repeated=True)

@@ -1,6 +1,7 @@
 dl
   dt Description
-  dd {{ plan.description }}
+  dd
+    pre.plain {{ plan.description }}
 
   dt Date
   dd {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}

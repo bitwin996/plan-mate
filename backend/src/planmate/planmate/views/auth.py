@@ -9,26 +9,24 @@ from pyramid.renderers import render_to_response
 from pyramid.config.routes import RoutesConfiguratorMixin as Router
 
 from planmate.models.user import User
-import planmate.lib.helpers
+from planmate.lib.helpers import AuthenticationHelper
 
 
 @view_config(route_name='auth_login')
 def auth_login(request):
-  if SESSION_KEY in request.session:
-    del request.session[SESSION_KEY]
+  #if SESSION_KEY in request.session:
+  #  del request.session[SESSION_KEY]
+  AuthenticationHelper.instance().logout()
+
   base_url = request.registry.settings['frontend.base_url']
 
-  #print(dict(request.session))
-  if SESSION_KEY in request.session:
-    return HTTPFound(location = base_url + '/#/')
-  else:
-    # Invoke login request
-    provider_type = request.matchdict['provider_type']
+  # Invoke login request
+  provider_type = request.matchdict['provider_type']
 
-    # sub request
-    sub_request = Request.blank('/login/' + provider_type, base_url = request.host_url)
-    response = request.invoke_subrequest(sub_request)
-    return response
+  # sub request
+  sub_request = Request.blank('/login/' + provider_type, base_url = request.host_url)
+  response = request.invoke_subrequest(sub_request)
+  return response
 
 
 @view_config(context='velruse.AuthenticationComplete')

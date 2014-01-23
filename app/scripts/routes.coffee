@@ -79,9 +79,24 @@ app.config [
         .segment 'info',
           templateUrl: 'views/plans/show/info.html'
           dependencies: ['planId']
+
         .segment 'attendants',
           templateUrl: 'views/plans/show/attendants.html'
           dependencies: ['planId']
+          #resolve:
+          #  attendants: [
+          #    '$routeParams', 'Restangular',
+          #    ($routeParams, Restangular) ->
+          #      Restangular.one('plans', $routeParams.planId).all('attendants').getList()
+          #  ]
+          #resolveFailed:
+          #  attendants: [
+          #    'FlashAlertService',
+          #    (FlashAlertService) ->
+          #      FlashAlertService.prepareRedirect()
+          #      FlashAlertService.error 'Failed to get attendants of the plan.'
+          #  ]
+
         .segment 'schedules',
           templateUrl: 'views/plans/show/schedules.html'
           controller: 'PlansShowSchedulesCtrl'
@@ -90,7 +105,6 @@ app.config [
             schedules: [
               '$routeParams', 'Restangular',
               ($routeParams, Restangular) ->
-                #console.log $routeParams
                 Restangular.one('plans', $routeParams.planId).all('schedules').getList()
             ]
           resolveFailed:

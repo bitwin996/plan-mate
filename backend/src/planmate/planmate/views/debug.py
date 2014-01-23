@@ -17,7 +17,8 @@ def debug_login(request):
   if not user:
     return HTTPNotFound()
 
-  request.session[SESSION_KEY] = user.key.urlsafe()
+  user_key_string = user.key.urlsafe()
+  AuthenticationHelper.instance().set_user_key_string(user_key_string)
 
   base_url = request.registry.settings['frontend.base_url']
   return HTTPFound(location = base_url)
