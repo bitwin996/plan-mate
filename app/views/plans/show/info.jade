@@ -4,15 +4,20 @@ dl
     pre.plain {{ plan.description }}
 
   dt Date
-  dd {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}
+  dd
+    span(ng-show="plan.date")
+      {{ plan.date | date:'MM-dd-yy' }}
+    span(ng-show="!plan.date")
+      em.text-muted Not fixed
 
   dt Number of Attendants
-  dd {{ plan.attendant_keys.length }}
+  dd {{ plan.attendants_count || 0 }}
 
   dt Number of Comments
-  dd {{ plan.comment_keys.length }}
+  dd {{ plan.comments_count || 0 }}
 
-button.btn.btn-block.btn-success(ng-click="attend()")
-  i.ls-icon-plus
-  br
-  | Attend
+form(ng-submit="attend()")
+  button.btn.btn-block.btn-success
+    i.ls-icon-plus
+    br
+    | Attend

@@ -1,14 +1,27 @@
 from pyramid.view import view_config
 from google.appengine.ext import ndb
+from pyramid.events import subscriber,NewRequest,ContextFound,BeforeRender
+from pyramid.httpexceptions import HTTPNotFound
 
 from planmate.models.plan import Plan,PlanSchedule
-from planmate.lib.helpers import to_dict_with_key,list_to_dict_with_key,AuthenticationHelper
+from planmate.lib.helpers import *
 
 
-#from pyramid.events import subscriber,NewRequest
-#@subscriber(NewRequest)
-#def initialize(event):
-#  print('ONE_DICT', event.request.matchdict)
+#TODO
+"""
+@subscriber(ContextFound)
+def get_plan_key(event):
+  request = event.request
+  if request.method == 'OPTIONS': return
+
+  print('EVENT', hasattr(request, 'matchdict'), event.request.subpath)
+
+  if not request.matchdict: return
+  plan_key_string = request.matchdict.get('plan_key')
+  plan_key = ndb.Key(urlsafe = plan_key_string)
+  request.plan_key = plan_key
+  if not plan_key: raise HTTPNotFound()
+"""
 
 
 @view_config(route_name='api.plans.one.attend-options', renderer='string')
@@ -43,12 +56,18 @@ def schedules_options(request): return
 
 @view_config(route_name='api.plans.one.schedules.get', renderer='json')
 def schedules_get(request):
-  plan_key_string = request.matchdict.get('plan_key')
-  plan_key = ndb.Key(urlsafe = plan_key_string)
+  #plan_key_string = request.matchdict.get('plan_key')
+  #plan_key = ndb.Key(urlsafe = plan_key_string)
+  #if not plan_key: raise HTTPNotFound()
+
+  plan_key = request.plan_key
+  print('PLAN_KEY', plan_key)
+
   plan_schedules = PlanSchedule.query(PlanSchedule.plan_key == plan_key).fetch()
   return list_to_dict_with_key(plan_schedules)
 
 
+"""
 @view_config(route_name='api.plans.one.attendants.options', renderer='string')
 def attendants_options(request): return
 
@@ -66,4 +85,4 @@ def attendants_get(request):
     attendants = User.query(key in attendant_keys).fetch()
 
   return list_to_dict_with_key(attendants)
-
+"""

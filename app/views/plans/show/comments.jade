@@ -1,10 +1,13 @@
 p.row
-  form(ng-submit="postComment(newComment)")
+  form(ng-submit="postComment()")
     .form-group
       textarea.form-control(ng-model="newComment.body", rows="3")
 
     .form-group
-      button.btn.btn-primary.btn-block(type="submit") Post
+      button.btn.btn-primary.btn-block(type="submit")
+        i.ls-icon-plus
+        br
+        | Post
 
 
 p.row
@@ -12,7 +15,7 @@ p.row
     em.text-muted No comment.
 
   ul.list-group
-    li.list-group-item.clearfix(ng-repeat="comment in plan.comment_keys")
+    li.list-group-item.clearfix(ng-repeat="comment in plan.comments")
       p.col-xs-2(ng-class-odd="'pull-right'", ng-class-even="'pull-left'")
         img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
         small.centered {{ comment.user.name }}

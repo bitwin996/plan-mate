@@ -1,13 +1,14 @@
-import os
-
 from pyramid.config import Configurator
 import ConfigParser
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
+import os
 
 import views
 import views.auth
-#import views.api.plans
-#import views.api.plans.one
+
+from planmate.lib.helpers import RootResource,ModelResource
+from planmate.models.user import User
+from planmate.models.plan import *
 
 from resources import Root
 import pyramid_jinja2
@@ -16,10 +17,21 @@ import pyramid_jinja2
 __here__ = os.path.dirname(os.path.abspath(__file__))
 
 
+class AppRoot(RootResource):
+  def init_resources(self):
+    users = ModelResource(self.request, name='test_users', model=User)
+    plans = ModelResource(self.request, name='plans', model=Plan)
+    plan_attendants = ModelResource(self.request, name='plan_attendants', model=PlanAttendant)
+
+    plans.add_resource(plan_attendants)
+    users.add_resource(plans)
+    self.add_resource(users)
+
+
 def make_app():
   """ This function returns a Pyramid WSGI application.
   """
-  config = Configurator(root_factory=Root)
+  config = Configurator(root_factory=AppRoot)
   config.add_renderer('.jinja2', pyramid_jinja2.Jinja2Renderer)
   config.add_view(views.my_view,
                   context=Root,
@@ -44,6 +56,9 @@ def make_app():
   config.include('pyramid_beaker')
 
   # route
+  config.add_route('spi', '/spi/*traverse', factory='planmate.AppRoot')
+  config.add_view('planmate.views.debug.traversal', route_name='spi', renderer='json')
+
   config.add_route('auth_login', '/auth/login/{provider_type}')
 
   config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
@@ -60,6 +75,7 @@ def make_app():
   config.add_route('api.plans.one.schedules.get', pattern='/api/plans/{plan_key}/schedules', request_method='GET')
   config.add_route('api.plans.one.attendants.options', pattern='/api/plans/{plan_key}/attendants', request_method='OPTIONS')
   config.add_route('api.plans.one.attendants.get', pattern='/api/plans/{plan_key}/attendants', request_method='GET')
+  config.add_route('api.plans.one.attendants.post', pattern='/api/plans/{plan_key}/attendants', request_method='POST')
 
   config.add_route('api.me.plans.get', pattern='/api/me/plans', request_method='GET')
   config.add_route('api.me.plans.options', pattern='/api/me/plans', request_method='OPTIONS')
