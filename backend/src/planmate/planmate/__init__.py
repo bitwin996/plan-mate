@@ -73,7 +73,10 @@ def make_app():
   config.scan()
 
   # route
-  config.add_route('spi', '/spi/*traverse', factory='planmate.AppRoot')
+  config.add_route('spi_options', '/spi/*traverse', request_method='OPTIONS', factory='planmate.lib.helpers.OptionsRoot')
+  config.add_view('planmate.views.debug.options', route_name='spi_options', renderer='string')
+
+  config.add_route('spi', '/spi/*traverse', request_method="GET", factory='planmate.AppRoot')
   config.add_view('planmate.views.debug.traversal', route_name='spi', renderer='json')
 
   config.add_route('auth_login', '/auth/login/{provider_type}')

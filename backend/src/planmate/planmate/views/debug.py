@@ -25,6 +25,8 @@ def debug_login(request):
 
 
 def traversal(context, request):
+  print('TRAVERSAL', context, request)
+
   if isinstance(context, ModelResource):
     entities = context.model.query().fetch()
     return list_to_dict_with_key(entities)
@@ -35,4 +37,7 @@ def traversal(context, request):
 
   else:
     NotImplemented
+
+
+def options(context, request): return
 
