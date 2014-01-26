@@ -4,6 +4,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 from planmate.models.user import User,MyResource
 from planmate.lib.helpers import *
+from planmate.lib import mydb
 
 
 @view_config(route_name='debug_login')
@@ -24,20 +25,30 @@ def debug_login(request):
   return HTTPFound(location = base_url)
 
 
-def traversal(context, request):
-  print('TRAVERSAL', context, request)
+def options(context, request): return
 
-  if isinstance(context, ModelResource):
+
+def get(context, request):
+  #print('GET', context, request)
+
+  if context.is_model():
     entities = context.model.query().fetch()
-    return list_to_dict_with_key(entities)
+    return mydb.list_to_dict_with_id(entities)
 
-  elif isinstance(context, EntityResource) or isinstance(context, MyResource):
+  elif context.is_entity():
     entity = context.key.get()
-    return to_dict_with_key(entity)
+    return mydb.to_dict_with_id(entity)
 
   else:
     NotImplemented
 
 
-def options(context, request): return
+def post(context, request):
+  #print('POST', context, request)
+  if isinstance(context, ModelResource):
+    key = context.put()
+    return mydb.to_dict_with_id(key.get())
+
+  else:
+    NotImplemented
 

@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 
-from planmate.lib.helpers import EntityResource,BaseResource,AuthenticationHelper
+from planmate.lib.helpers import EntityResource,BaseEntityResource,AuthenticationHelper
 
 
 class User(ndb.Model):
@@ -10,7 +10,7 @@ class User(ndb.Model):
   profile_image_url = ndb.StringProperty()
 
 
-class MyResource(BaseResource):
+class MyResource(BaseEntityResource):
   def __init__(self, *args, **kwds):
     super(MyResource, self).__init__(args, kwds)
     self.__name__ = kwds.get('name')
@@ -20,7 +20,6 @@ class MyResource(BaseResource):
     self.key = key
 
   def __getitem__(self, name):
-    for resource in self.resources:
-      if resource.__name__ == name:
-        return resource
-    raise KeyError
+    model_resource = self.get_model_resource(name)
+    if not model_resource: raise KeyError
+    return model_resource
