@@ -16,7 +16,7 @@ app = angular.module('planMateApp', [
 
 
 app.constant('baseUrl', "%BASE_URL%")
-app.constant('endpoint', "%BASE_URL%/api")
+app.constant('endpoint', "%BASE_URL%/spi")
 
 
 # CORS

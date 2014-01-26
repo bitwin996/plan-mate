@@ -7,7 +7,7 @@ import views
 import views.auth
 
 from planmate.lib.helpers import RootResource,ModelResource
-from planmate.models.user import User
+from planmate.models.user import User,MyResource
 from planmate.models.plan import *
 
 from resources import Root
@@ -19,13 +19,27 @@ __here__ = os.path.dirname(os.path.abspath(__file__))
 
 class AppRoot(RootResource):
   def init_resources(self):
-    users = ModelResource(self.request, name='test_users', model=User)
+    users = ModelResource(self.request, name='users', model=User)
     plans = ModelResource(self.request, name='plans', model=Plan)
-    plan_attendants = ModelResource(self.request, name='plan_attendants', model=PlanAttendant)
-
+    plan_attendants = ModelResource(self.request, name='attendants', model=PlanAttendant)
+    plan_schedules = ModelResource(self.request, name='schedules', model=PlanSchedule)
+    plan_comments = ModelResource(self.request, name='comments', model=PlanComment)
     plans.add_resource(plan_attendants)
+    plans.add_resource(plan_schedules)
+    plans.add_resource(plan_comments)
     users.add_resource(plans)
     self.add_resource(users)
+
+    me = MyResource(self.request, name='me')
+    my_plans = ModelResource(self.request, name='plans', model=Plan)
+    my_plan_attendants = ModelResource(self.request, name='attendants', model=PlanAttendant)
+    my_plan_schedules = ModelResource(self.request, name='schedules', model=PlanSchedule)
+    my_plan_comments = ModelResource(self.request, name='comments', model=PlanComment)
+    my_plans.add_resource(my_plan_attendants)
+    my_plans.add_resource(my_plan_schedules)
+    my_plans.add_resource(my_plan_comments)
+    me.add_resource(my_plans)
+    self.add_resource(me)
 
 
 def make_app():
@@ -55,6 +69,9 @@ def make_app():
   # session
   config.include('pyramid_beaker')
 
+  # scan first for initialize session
+  config.scan()
+
   # route
   config.add_route('spi', '/spi/*traverse', factory='planmate.AppRoot')
   config.add_view('planmate.views.debug.traversal', route_name='spi', renderer='json')
@@ -83,8 +100,6 @@ def make_app():
 
   # debug
   config.add_route('debug_login', '/debug/login/{offset}')
-
-  config.scan()
 
   return config.make_wsgi_app()
 

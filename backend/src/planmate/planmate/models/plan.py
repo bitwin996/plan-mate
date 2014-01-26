@@ -6,9 +6,10 @@ from planmate.models.user import User
 
 
 class Plan(ndb.Model):
-  parent_key = mydb.SafeKeyProperty(kind='User', required=True)
+  user_key = mydb.SafeKeyProperty(kind='User', required=True)
   place_name = ndb.StringProperty(required=True)
   description = ndb.TextProperty()
+  parent_key = user_key
 
   attendants_count = ndb.ComputedProperty(lambda self: self._attendants_count())
   comments_count = ndb.ComputedProperty(lambda self: self._comments_count())
@@ -21,16 +22,19 @@ class Plan(ndb.Model):
 
 
 class PlanAttendant(ndb.Model):
-  parent_key = mydb.SafeKeyProperty(kind='Plan', required=True)
+  plan_key = mydb.SafeKeyProperty(kind='Plan', required=True)
   user = ndb.StructuredProperty(User, required=True)
+  parent_key = plan_key
 
 class PlanSchedule(ndb.Model):
-  parent_key = mydb.SafeKeyProperty(kind='Plan', required=True)
+  plan_key = mydb.SafeKeyProperty(kind='Plan', required=True)
   date = ndb.DateProperty(required=True)
   attendants = ndb.StructuredProperty(User, repeated=True)
+  parent_key = plan_key
 
 class PlanComment(ndb.Model):
-  parent_key = mydb.SafeKeyProperty(kind='Plan', required=True)
+  plan_key = mydb.SafeKeyProperty(kind='Plan', required=True)
   user = ndb.StructuredProperty(User, required=True)
   body = ndb.TextProperty(required=True)
+  parent_key = plan_key
 

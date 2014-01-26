@@ -1,15 +1,15 @@
 .page-header
   h3 New Plan
 
-form(ng-submit="submit(plan)")
+form(ng-submit="submit()")
 
   .form-group
     label(for="place_name") Place name
-    input#place_name.form-control(type="text", ng-model="plan.place_name")
+    input#place_name.form-control(type="text", ng-model="newPlan.place_name")
 
   .form-group
     label(for="description") Description
-    textarea#description.form-control(ng-model="plan.description")
+    textarea#description.form-control(ng-model="newPlan.description")
 
   .form-group
     button.btn.btn-block.btn-primary(type="submit")
