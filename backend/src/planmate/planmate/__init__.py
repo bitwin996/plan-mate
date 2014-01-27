@@ -16,10 +16,13 @@ import pyramid_jinja2
 __here__ = os.path.dirname(os.path.abspath(__file__))
 
 
+#from planmate.views.debug import BpiRoot
+
 def make_app():
   """ This function returns a Pyramid WSGI application.
   """
-  config = Configurator(root_factory=AppRoot)
+  #config = Configurator(root_factory=BpiRoot)
+  config = Configurator(root_factory='planmate.views.debug.ApiRoot')
   config.add_renderer('.jinja2', pyramid_jinja2.Jinja2Renderer)
   config.add_view(views.my_view,
                   context=Root,
@@ -47,13 +50,15 @@ def make_app():
   config.scan()
 
   # route
-  config.add_route('spi_options', '/spi/*traverse', request_method='OPTIONS', factory='planmate.lib.resources.OptionsRoot')
+  #config.add_route('api', '/api/*traverse', factory='planmate:views.debug.ApiRoot')
+
+  config.add_route('spi_options', '/bpi/*traverse', request_method='OPTIONS', factory='planmate.lib.resources.OptionsRoot')
   config.add_view('planmate.views.debug.options', route_name='spi_options', renderer='string')
 
-  config.add_route('spi_get', '/spi/*traverse', request_method="GET", factory='planmate.resources.AppRoot')
+  config.add_route('spi_get', '/bpi/*traverse', request_method="GET", factory='planmate.resources.AppRoot')
   config.add_view('planmate.views.debug.get', route_name='spi_get', renderer='json')
 
-  config.add_route('spi_post', '/spi/*traverse', request_method="POST", factory='planmate.resources.AppRoot')
+  config.add_route('spi_post', '/bpi/*traverse', request_method="POST", factory='planmate.resources.AppRoot')
   config.add_view('planmate.views.debug.post', route_name='spi_post', renderer='json')
 
   config.add_route('auth_login', '/auth/login/{provider_type}')
