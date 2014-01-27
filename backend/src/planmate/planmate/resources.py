@@ -1,4 +1,4 @@
-from planmate.lib.helpers import AuthenticationHelper
+from planmate.lib.helpers import AuthenticationHelper,get_user_key
 from planmate.lib.resources import *
 from planmate.models.user import User
 from planmate.models.plan import *
@@ -11,15 +11,25 @@ class Root(object):
 
 class AppRoot(RootResource):
   def init_resources(self):
-    def set_user_key(entity):
-      user_key = AuthenticationHelper.instance().get_user_key()
-      entity.user_key = user_key
 
     users = ModelResource(self.request, name='users', model=User)
-    plans = ModelResource(self.request, name='plans', model=Plan, pre_put_hook=set_user_key)
-    plan_attendants = ModelResource(self.request, name='attendants', model=PlanAttendant)
-    plan_schedules = ModelResource(self.request, name='schedules', model=PlanSchedule)
-    plan_comments = ModelResource(self.request, name='comments', model=PlanComment)
+
+    plans = ModelResource(self.request,
+      name='plans', model=Plan,
+      set_user_key='user_key')
+
+    plan_attendants = ModelResource(self.request,
+      name='attendants', model=PlanAttendant,
+      set_user_key='user_key')
+
+    plan_schedules = ModelResource(self.request,
+      name='schedules', model=PlanSchedule,
+      set_user_key='user_key')
+
+    plan_comments = ModelResource(self.request,
+      name='comments', model=PlanComment,
+      set_user_key='user_key')
+
     plans.add_model_resources([plan_attendants, plan_schedules, plan_comments])
     users.add_model_resource(plans)
     self.add_model_resource(users)

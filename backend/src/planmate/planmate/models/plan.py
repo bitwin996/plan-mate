@@ -27,7 +27,7 @@ class PlanAttendant(ndb.Model):
 
 class PlanComment(ndb.Model):
   plan_key = ndb.KeyProperty(kind='Plan', required=True)
-  user_key = ndb.StructuredProperty(User, required=True)
+  user_key = ndb.KeyProperty(kind='User', required=True)
   body = ndb.TextProperty(required=True)
   _parent_key_name = 'plan_key'
 
