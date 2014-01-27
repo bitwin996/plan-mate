@@ -22,17 +22,22 @@ class Plan(ndb.Model):
 
 class PlanAttendant(ndb.Model):
   plan_key = ndb.KeyProperty(kind='Plan', required=True)
-  user = ndb.StructuredProperty(User, required=True)
+  user_key = ndb.KeyProperty(kind='User', required=True)
+  _parent_key_name = 'plan_key'
+
+class PlanComment(ndb.Model):
+  plan_key = ndb.KeyProperty(kind='Plan', required=True)
+  user_key = ndb.StructuredProperty(User, required=True)
+  body = ndb.TextProperty(required=True)
   _parent_key_name = 'plan_key'
 
 class PlanSchedule(ndb.Model):
   plan_key = ndb.KeyProperty(kind='Plan', required=True)
   date = ndb.DateProperty(required=True)
-  attendants = ndb.StructuredProperty(User, repeated=True)
+  #attendants = ndb.StructuredProperty(User, repeated=True)
   _parent_key_name = 'plan_key'
 
-class PlanComment(ndb.Model):
-  plan_key = ndb.KeyProperty(kind='Plan', required=True)
-  user = ndb.StructuredProperty(User, required=True)
-  body = ndb.TextProperty(required=True)
-  _parent_key_name = 'plan_key'
+class PlanScheduleAttendant(ndb.Model):
+  plan_schedule_key = ndb.KeyProperty(kind='PlanSchedule', required=True)
+  user_key = ndb.KeyProperty(kind='User', required=True)
+  _parent_key_name = 'plan_schedule_key'

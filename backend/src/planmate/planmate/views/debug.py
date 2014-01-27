@@ -2,9 +2,10 @@ from pyramid.view import view_config
 from google.appengine.ext import ndb
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
-from planmate.models.user import User,MyResource
-from planmate.lib.helpers import *
 from planmate.lib import mydb
+from planmate.lib.helpers import *
+from planmate.lib.resources import *
+from planmate.models.user import User
 
 
 @view_config(route_name='debug_login')

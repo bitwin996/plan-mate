@@ -6,41 +6,14 @@ import os
 import views
 import views.auth
 
-from planmate.lib.helpers import RootResource,ModelResource,AuthenticationHelper
-from planmate.models.user import User,MyResource
+from planmate.models.user import User
 from planmate.models.plan import *
 
-from resources import Root
+from planmate.resources import Root,AppRoot
 import pyramid_jinja2
 
 
 __here__ = os.path.dirname(os.path.abspath(__file__))
-
-
-#TODO move to another routing file
-class AppRoot(RootResource):
-  def init_resources(self):
-    def set_user_key(entity):
-      user_key = AuthenticationHelper.instance().get_user_key()
-      entity.user_key = user_key
-
-    users = ModelResource(self.request, name='users', model=User)
-    plans = ModelResource(self.request, name='plans', model=Plan, pre_put_hook=set_user_key)
-    plan_attendants = ModelResource(self.request, name='attendants', model=PlanAttendant)
-    plan_schedules = ModelResource(self.request, name='schedules', model=PlanSchedule)
-    plan_comments = ModelResource(self.request, name='comments', model=PlanComment)
-    plans.add_model_resources([plan_attendants, plan_schedules, plan_comments])
-    users.add_model_resource(plans)
-    self.add_model_resource(users)
-
-    me = MyResource(self.request, name='me')
-    my_plans = ModelResource(self.request, name='plans', model=Plan)
-    my_plan_attendants = ModelResource(self.request, name='attendants', model=PlanAttendant)
-    my_plan_schedules = ModelResource(self.request, name='schedules', model=PlanSchedule)
-    my_plan_comments = ModelResource(self.request, name='comments', model=PlanComment)
-    my_plans.add_model_resources([my_plan_attendants, my_plan_schedules, my_plan_comments])
-    me.add_model_resource(my_plans, me)
-    self.add_model_resource(me)
 
 
 def make_app():
@@ -74,13 +47,13 @@ def make_app():
   config.scan()
 
   # route
-  config.add_route('spi_options', '/spi/*traverse', request_method='OPTIONS', factory='planmate.lib.helpers.OptionsRoot')
+  config.add_route('spi_options', '/spi/*traverse', request_method='OPTIONS', factory='planmate.lib.resources.OptionsRoot')
   config.add_view('planmate.views.debug.options', route_name='spi_options', renderer='string')
 
-  config.add_route('spi_get', '/spi/*traverse', request_method="GET", factory='planmate.AppRoot')
+  config.add_route('spi_get', '/spi/*traverse', request_method="GET", factory='planmate.resources.AppRoot')
   config.add_view('planmate.views.debug.get', route_name='spi_get', renderer='json')
 
-  config.add_route('spi_post', '/spi/*traverse', request_method="POST", factory='planmate.AppRoot')
+  config.add_route('spi_post', '/spi/*traverse', request_method="POST", factory='planmate.resources.AppRoot')
   config.add_view('planmate.views.debug.post', route_name='spi_post', renderer='json')
 
   config.add_route('auth_login', '/auth/login/{provider_type}')
