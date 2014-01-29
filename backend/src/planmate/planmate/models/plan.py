@@ -46,7 +46,6 @@ class PlanComment(mydb.Model):
 class PlanSchedule(mydb.Model):
   plan_key = ndb.KeyProperty(kind='Plan', required=True)
   date = ndb.DateProperty(required=True)
-  #attendants = ndb.StructuredProperty(User, repeated=True)
 
   @classmethod
   def get_parent_key_property(self):
