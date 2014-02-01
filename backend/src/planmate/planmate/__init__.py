@@ -9,7 +9,6 @@ from pyramid_beaker import session_factory_from_settings, set_cache_regions_from
 def make_app():
   """ This function returns a Pyramid WSGI application.
   """
-  #config = Configurator(root_factory='planmate.views.debug.ApiRoot')
   config = Configurator()
 
   # config
@@ -39,6 +38,7 @@ def make_app():
 
   config.add_view('planmate.views.api.get', route_name='api', name='', request_method='GET', renderer='json')
   config.add_view('planmate.views.api.post', route_name='api', name='', request_method='POST', renderer='json')
+  #TODO PUT
   config.add_view('planmate.views.api.delete', route_name='api', name='', request_method='DELETE', renderer='json')
 
   # auth
@@ -60,11 +60,6 @@ def make_app():
     ]
   for exception in ndb_exceptions:
     config.add_view('planmate.views.api.exceptions.view', context='google.appengine.ext.ndb.model.'+exception)
-
-  """
-  config.add_route('spi_options', '/bpi/*traverse', request_method='OPTIONS', factory='planmate.lib.resources.OptionsRoot')
-  config.add_view('planmate.views.debug.options', route_name='spi_options', renderer='string')
-  """
 
   return config.make_wsgi_app()
 
