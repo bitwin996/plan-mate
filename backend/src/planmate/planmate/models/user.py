@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
+from planmate.lib import mydb
 
-class User(ndb.Model):
+class User(mydb.Model):
   provider_type = ndb.StringProperty()
   provider_userid = ndb.IntegerProperty()
   name = ndb.StringProperty()

@@ -1,71 +1,17 @@
-from planmate.models.plan import Plan
-
-from pyramid.httpexceptions import HTTPUnauthorized
-from google.appengine.ext.ndb.model import InvalidPropertyError
 from pyramid.events import subscriber,NewRequest,BeforeRender
+from pyramid.view import view_config
+
+from pyramid.httpexceptions import *
 
 from planmate.lib.helpers import AuthenticationHelper
 from planmate.lib import mydb
 from planmate.lib.resources import PrefixResource,RootResource,ModelResource
-from pyramid.view import view_config
 from planmate.models.user import User
-
-
-"""
-class ApiRoot(PrefixResource):
-  __prefix__ = 'api'
-
-  def init_child_resources(self, child):
-    plans = ModelResource(self.request, name='plans', model=Plan)
-    child.add_model_resource(plans)
-
-  def __init__(self, *args, **kwds):
-    super(ApiRoot, self).__init__(args, kwds)
-
-    #self.request.response.headers.update({
-    #  'Access-Control-Allow-Origin': 'http://localhost:9000',
-    #  'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, X-HTTP-Method-Override',
-    #  'Access-Control-Allow-Credentials': 'true',
-    #  'Access-Control-Allow-Methods': '*',
-    #  'Content-Type': 'application/json; charset=UTF-8'
-    #  })
-"""
-
-
-"""
-class ApiRoot(RootResource):
-  def init_resources(self):
-    plans = ModelResource(self.request, name='plans', model=Plan)
-    self.add_model_resource(plans)
-"""
-
-
-@view_config(context=HTTPUnauthorized, renderer='json')
-def http_unauthorized(exception, request):
-  request.response.status = 401
-  return {'message':'Please log in to continue.'}
-
-
-@view_config(context=InvalidPropertyError, renderer='json')
-def invalid_property_error(exception, request):
-  #TODO
-  request.response.status = 409
-  message = exception.args[0] if exception.args else 'Some invalid parameters are posted.'
-  return {'message':message}
+from planmate.models.plan import Plan,PlanAttendant,PlanScheduleAttendant
+from planmate.resources.plan import PlanScheduleAttendantModelResource
 
 
 def options(context, request): return
-
-
-def root(context, request):
-  return 'root'
-
-def add(context, request):
-  return 'add'
-
-def show(context, request):
-  return 'show'
-
 
 
 def get(context, request):
@@ -79,9 +25,39 @@ def get(context, request):
     entity = context.get_entity()
     return mydb.to_dict_with_id(entity)
 
-  else:
-    NotImplemented
+  raise HTTPNotFound()
 
+
+def post(context, request):
+  print('POST', context, request)
+
+  if context.is_model():
+    if hasattr(request, 'json_body'):
+      params = request.json_body
+      key = context.put(attributes=params)
+    else:
+      key = context.put()
+
+    return mydb.to_dict_with_id(key.get())
+
+  else:
+    raise HTTPMethodNotAllowed('You cannnot use the action at this URL.')
+
+
+def delete(context, request):
+  print('DELETE', context, request)
+
+  if context.is_entity():
+    if context.exists():
+      context.delete()
+      request.response.status = 200
+      return {'message':'Success to delete the data.'}
+
+    else:
+      raise HTTPNotFound('You do not attend yet.')
+
+  else:
+    raise HTTPMethodNotAllowed('You cannnot use the action at this URL.')
 
 
 # auth debug
@@ -104,7 +80,6 @@ def debug_login(request):
 
 
 # api/auth
-
 #@view_config(route_name='api.auth.status.options', request_method='OPTIONS', renderer='string')
 #def options(request): return
 

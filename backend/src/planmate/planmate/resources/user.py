@@ -1,9 +1,12 @@
+from pyramid.httpexceptions import HTTPMethodNotAllowed
 from planmate.lib.resources import ModelResource,EntityResource,CurrentUserEntityResource
 from planmate.models.user import User
 from planmate.lib.helpers import AuthenticationHelper
 
 
-class UserEntityResource(EntityResource): pass
+class UserEntityResource(EntityResource):
+  def delete():
+    raise HTTPMethodNotAllowed()
 
 
 class UserModelResource(ModelResource):

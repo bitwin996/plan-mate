@@ -18,13 +18,15 @@ class ApiRoot(RootResource):
     _plans = copy(plans)
     self.add_model_resource(_plans)
 
-    #users = UserModelResource(self.request)
     me = MyResource(self.request)
-
     _plans = copy(plans)
     me.add_model_resource(_plans)
     self.add_model_resource(me)
 
+    users = UserModelResource(self.request)
+    _plans = copy(plans)
+    users.add_model_resource(_plans)
+    self.add_model_resource(users)
 
 """
 class AppRoot(RootResource):
