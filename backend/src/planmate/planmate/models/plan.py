@@ -41,6 +41,7 @@ class Plan(mydb.Model):
 class PlanAttendant(mydb.Model):
   plan_key = ndb.KeyProperty(kind='Plan', required=True)
   user_key = ndb.KeyProperty(kind='User', required=True)
+  #users = ndb.StructuredProperty(kind='User', repeated=True)
 
   _parent_key = 'plan_key'
   _current_user_key = 'user_key'
@@ -57,7 +58,7 @@ class PlanAttendant(mydb.Model):
       cls.user_key == self.user_key).count()
 
     if count != 0:
-      raise HTTPConflict('You have already attended this date.')
+      raise HTTPConflict('You have already attended this plan.')
 
 
 class PlanComment(mydb.Model):
@@ -68,20 +69,12 @@ class PlanComment(mydb.Model):
   _parent_key = 'plan_key'
   _current_user_key = 'user_key'
 
-  #@classmethod
-  #def get_parent_key_property(self):
-  #  return self.plan_key
-
 
 class PlanSchedule(mydb.Model):
   plan_key = ndb.KeyProperty(kind='Plan', required=True)
   date = mydb.DateProperty(required=True)
 
   _parent_key = 'plan_key'
-
-  #@classmethod
-  #def get_parent_key_property(self):
-  #  return self.plan_key
 
   def _pre_put_hook(self):
     print('DATETIME', self.date, date.today())
@@ -109,10 +102,6 @@ class PlanScheduleAttendant(mydb.Model):
   _parent_key = 'plan_schedule_key'
   _current_user_key = 'user_key'
 
-  #@classmethod
-  #def get_parent_key_property(self):
-  #  return self.plan_schedule_key
-
   def _pre_put_hook(self):
     cls = self.__class__
 
@@ -124,6 +113,7 @@ class PlanScheduleAttendant(mydb.Model):
       raise HTTPConflict('You have already attended this date.')
 
 
+# child models
 User_child_models = [Plan]
 Plan._child_models = [PlanAttendant, PlanSchedule, PlanComment]
 PlanSchedule._child_models = [PlanScheduleAttendant]

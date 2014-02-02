@@ -5,10 +5,7 @@ __here__ = os.path.dirname(os.path.abspath(__file__))
 from pyramid.config import Configurator
 import ConfigParser
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
-#from pyramid.httpexceptions import status_map
 from planmate.views.api.exceptions import status_map
-
-#import views
 
 
 def make_app():
@@ -41,6 +38,12 @@ def make_app():
 
   config.add_route('api', '/api/*traverse', factory='planmate.resources.ApiRoot')
 
+  # specific views
+  config.add_view('planmate.views.api.plans.get_attendants',
+    context='planmate.resources.plan.PlanAttendantModelResource',
+    route_name='api', name='', request_method='GET', renderer='json')
+
+  # base views
   config.add_view('planmate.views.api.get', route_name='api', name='', request_method='GET', renderer='json')
   config.add_view('planmate.views.api.post', route_name='api', name='', request_method='POST', renderer='json')
   #TODO PUT
@@ -54,10 +57,6 @@ def make_app():
   #config.add_route('api.auth.status.options', '/api/auth/status', request_method='OPTIONS')
 
   # exceptions
-  #http_exceptions = [
-  #  'Unauthorized', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'Conflict',
-  #  ]
-  #for exception in http_exceptions:
   for code in status_map:
     cls = status_map[code]
     config.add_view('planmate.views.api.exceptions.view', context='pyramid.httpexceptions.' + cls.__name__)
@@ -70,8 +69,9 @@ def make_app():
     config.add_view('planmate.views.api.exceptions.view', context=exception)
 
   # subscribers
-  config.add_subscriber('planmate.subscribers.cors.update_headers', 'pyramid.events.NewRequest')
+  config.add_subscriber('planmate.subscribers.cors.update_headers', 'pyramid.events.NewResponse')
 
   return config.make_wsgi_app()
+
 
 application = make_app()

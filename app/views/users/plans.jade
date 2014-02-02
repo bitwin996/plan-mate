@@ -29,10 +29,10 @@
         | &nbsp; {{ plan.date ? (plan.date|date:'MM-dd-yy') : '-' }}
 
       i.ls-icon-walking.ls-mark
-      | &nbsp; {{ plan.attendant_keys.length }} &nbsp; &nbsp;
+      | &nbsp; {{ plan.attendants_count }} &nbsp; &nbsp;
 
       i.ls-icon-comments.ls-mark
-      | &nbsp; {{ plan.comment_keys.length }}
+      | &nbsp; {{ plan.comments_count }}
 
 
 .spacer

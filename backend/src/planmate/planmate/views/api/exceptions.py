@@ -1,7 +1,6 @@
 from pyramid.response import Response
 from pyramid import httpexceptions
 from pyramid.httpexceptions import HTTPBadRequest,HTTPNotFound,HTTPNotImplemented
-#from google.appengine.ext.ndb.model import InvalidPropertyError
 from google.appengine.api.datastore_errors import *
 
 import copy
@@ -42,7 +41,7 @@ def _get_http_exception(exception, request):
 
 def view(exception, request):
   result = _get_http_exception(exception, request)
-  print('EXCEPTION_VIEW', result)
+
   if not result:
     result =  _get_datastore_exception(exception)
     if not result:
@@ -50,7 +49,6 @@ def view(exception, request):
 
   (error_code, message) = result
 
-  print('ERROR_CODE', error_code, message)
   response = Response(json={'message':message})
   response.status = error_code
 

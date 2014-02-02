@@ -44,7 +44,7 @@ app.config [
 
 # Restangular
 app.config [
-  'RestangularProvider', 'endpoint',
+  'RestangularProvider', 'endpoint',# 'FlashAlertService',
   (RestangularProvider, endpoint) ->
     RestangularProvider.setBaseUrl endpoint
     #RestangularProvider.setDefaultHttpFields
@@ -53,20 +53,20 @@ app.config [
     RestangularProvider.setMethodOverriders ['put']
 
 
-    RestangularProvider.setResponseExtractor = (response) ->
+    RestangularProvider.setResponseExtractor((response) ->
       newResponse = response
 
       if angular.isArray(response)
         angular.forEach newResponse, (value, key) ->
           newResponse[key].originalElement = angular.copy value
-          console.log 'NEW_RESPONSE', newResponse[key].originalElement
+          #console.log 'NEW_RESPONSE', newResponse[key].originalElement
 
       else
         newResponse.originalElement = angular.copy response
-
-        console.log 'NEW_RESPONSE', newResponse.originalElement
+        #console.log 'NEW_RESPONSE', newResponse.originalElement
 
       return newResponse
+    )
 ]
 
 
@@ -81,6 +81,7 @@ app.run [
     $rootScope.$storage = $localStorage
 
     #TODO angular-cache
+    $http.defaults.cache = false
     #httpCache = $angularCacheFactory 'httpCache'
     #$http.defaults.cache = httpCache
     #Restangular.setDefaultHttpFields cache:httpCache
@@ -89,6 +90,12 @@ app.run [
     $rootScope.flashAlert ?= {}
     FlashAlertService.setStorage $rootScope.flashAlert
     FlashAlertService.init()
+
+    # Restangular (couldn't set up in .config())
+    Restangular.setErrorInterceptor((response) ->
+      FlashAlertService.error response.data.message
+      return false
+    )
 
     # Authentication
     $rootScope.$storage.authentication ?= {}
