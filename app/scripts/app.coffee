@@ -16,7 +16,7 @@ app = angular.module('planMateApp', [
 
 
 app.constant('baseUrl', "%BASE_URL%")
-app.constant('endpoint', "%BASE_URL%/spi")
+app.constant('endpoint', "%BASE_URL%/api")
 
 
 # CORS
@@ -51,6 +51,22 @@ app.config [
     #  cache: $angularCacheFactory 'httpCache'
 
     RestangularProvider.setMethodOverriders ['put']
+
+
+    RestangularProvider.setResponseExtractor = (response) ->
+      newResponse = response
+
+      if angular.isArray(response)
+        angular.forEach newResponse, (value, key) ->
+          newResponse[key].originalElement = angular.copy value
+          console.log 'NEW_RESPONSE', newResponse[key].originalElement
+
+      else
+        newResponse.originalElement = angular.copy response
+
+        console.log 'NEW_RESPONSE', newResponse.originalElement
+
+      return newResponse
 ]
 
 

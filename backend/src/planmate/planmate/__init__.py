@@ -5,6 +5,11 @@ __here__ = os.path.dirname(os.path.abspath(__file__))
 from pyramid.config import Configurator
 import ConfigParser
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
+#from pyramid.httpexceptions import status_map
+from planmate.views.api.exceptions import status_map
+
+#import views
+
 
 def make_app():
   """ This function returns a Pyramid WSGI application.
@@ -49,17 +54,23 @@ def make_app():
   #config.add_route('api.auth.status.options', '/api/auth/status', request_method='OPTIONS')
 
   # exceptions
-  http_exceptions = [
-    'Unauthorized', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'Conflict',
-    ]
-  for exception in http_exceptions:
-    config.add_view('planmate.views.api.exceptions.view', context='pyramid.httpexceptions.HTTP'+exception)
+  #http_exceptions = [
+  #  'Unauthorized', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'Conflict',
+  #  ]
+  #for exception in http_exceptions:
+  for code in status_map:
+    cls = status_map[code]
+    config.add_view('planmate.views.api.exceptions.view', context='pyramid.httpexceptions.' + cls.__name__)
 
-  ndb_exceptions = [
-    'InvalidPropertyError'
+  db_exceptions = [
+    'google.appengine.ext.ndb.model.InvalidPropertyError',
+    'google.appengine.api.datastore_errors.BadValueError'
     ]
-  for exception in ndb_exceptions:
-    config.add_view('planmate.views.api.exceptions.view', context='google.appengine.ext.ndb.model.'+exception)
+  for exception in db_exceptions:
+    config.add_view('planmate.views.api.exceptions.view', context=exception)
+
+  # subscribers
+  config.add_subscriber('planmate.subscribers.cors.update_headers', 'pyramid.events.NewRequest')
 
   return config.make_wsgi_app()
 

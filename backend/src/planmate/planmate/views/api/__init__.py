@@ -1,3 +1,5 @@
+from google.appengine.ext import ndb
+
 from pyramid.events import subscriber,NewRequest,BeforeRender
 from pyramid.view import view_config
 
@@ -18,6 +20,11 @@ def get(context, request):
   print('GET', context, request)
 
   if context.is_model():
+    #TODO remove here or not
+    if context.__parent__.is_entity() and not context.__parent__.key.get():
+      raise HTTPNotFound()
+
+    #TODO pagination
     entities = context.query().fetch()
     return mydb.list_to_dict_with_id(entities)
 
@@ -32,12 +39,7 @@ def post(context, request):
   print('POST', context, request)
 
   if context.is_model():
-    if hasattr(request, 'json_body'):
-      params = request.json_body
-      key = context.put(attributes=params)
-    else:
-      key = context.put()
-
+    key = context.put()
     return mydb.to_dict_with_id(key.get())
 
   else:

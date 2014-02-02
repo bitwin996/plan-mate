@@ -7,13 +7,16 @@ angular.module('planMateApp')
       $scope.plan = plan
 
       $scope.attend = ->
-        $scope.plan.customPOST({}, 'attend').then(
+        console.log 'PLAN', $scope.plan
+        $scope.plan.all('attendants').post().then(
             (response) ->
+              console.log 'SUCCESS', response, angular.copy(response)
               #TODO fix to success()
               FlashAlertService.update 'Success to attending application.', 'info'
               $scope.plan = response
           ,
             (response) ->
+              console.log 'ERROR', response
               FlashAlertService.error response.data.message
           )
   ]
