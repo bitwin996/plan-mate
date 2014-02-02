@@ -33,7 +33,6 @@ class Base(object):
     parent_key = self.get_parent_key()
     if parent_key: key_options['parent'] = parent_key
 
-    #key = ndb.Key(model, int_id, **key_options)
     key = ndb.Key(model, int_id, parent=parent_key)
     return key
 

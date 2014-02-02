@@ -51,7 +51,8 @@ def make_app():
     'plans.attendants.PlanAttendantModel',
     'plans.comments.PlanCommentModel',
     'plans.schedules.PlanScheduleModel',
-    'plans.schedules.attendants.PlanScheduleAttendantModel'
+    'plans.schedules.attendants.PlanScheduleAttendantModel',
+    'me.plans.MyPlanModel'
     ]
   for resource in model_resources:
     context = 'planmate.resources.api.' + resource
@@ -72,7 +73,9 @@ def make_app():
     'plans.attendants.PlanAttendantEntity',
     'plans.comments.PlanCommentEntity',
     'plans.schedules.PlanScheduleEntity',
-    'plans.schedules.attendants.PlanScheduleAttendantEntity'
+    'plans.schedules.attendants.PlanScheduleAttendantEntity',
+    'me.MyEntity',
+    'me.plans.MyPlanEntity'
     ]
   for resource in entity_resources:
     context = 'planmate.resources.api.' + resource

@@ -1,5 +1,6 @@
 from planmate.resources import api
 from planmate.resources.api.plans import PlanModel
+from planmate.resources.api.me import MyEntity
 
 
 class Root(api.Base):
@@ -7,7 +8,8 @@ class Root(api.Base):
   __name__ = ''
 
   _item_map = {
-    'plans': PlanModel
+    'plans': PlanModel,
+    'me': MyEntity
     }
 
   def __getitem__(self, name):
