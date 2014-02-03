@@ -19,17 +19,23 @@ def options(context, request): return
 def get(context, request):
   print('GET', context, request)
 
+  #from planmate.resources.key_resources import KeyRoot
+  #print('KEY_ROOT', KeyRoot)
+  #root = KeyRoot(request)
+  #r = root['users'][5629499534213120]
+  #print('ROOT', r.__name__)
+
   if context.is_model():
     #TODO remove here or not
-    if context.__parent__.is_entity() and not context.__parent__.key.get():
+    if context.__parent__.is_key() and not context.__parent__.key.get():
       raise HTTPNotFound()
 
     #TODO pagination
     entities = context.query().fetch()
     return mydb.list_to_dict_with_id(entities)
 
-  elif context.is_entity():
-    entity = context.get_entity()
+  elif context.is_key():
+    entity = context.key.get()
     return mydb.to_dict_with_id(entity)
 
   raise HTTPNotFound()
@@ -49,9 +55,10 @@ def post(context, request):
 def delete(context, request):
   print('DELETE', context, request)
 
-  if context.is_entity():
-    if context.exists():
-      context.delete()
+  if context.is_key():
+    entity = context.key.get()
+    if entity:
+      entity.delete()
       request.response.status = 200
       return {'message':'Success to delete the data.'}
 

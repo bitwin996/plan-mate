@@ -14,3 +14,8 @@ indexes:
   properties:
   - name: plan_key
   - name: user_key
+
+- kind: PlanAttendant
+  ancestor: yes
+  properties:
+  - name: user_key

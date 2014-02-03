@@ -5,6 +5,8 @@ from google.appengine.api.datastore_errors import *
 
 import copy
 
+import traceback
+
 
 datastore_exceptions = [
   (BadValueError, 400, 'Sent data were invalid.')
@@ -22,7 +24,9 @@ status_map = copy.copy(httpexceptions.status_map)
 status_map[400] = HTTPBadRequest
 
 def _get_http_exception(exception, request):
-  print('Exception', exception, status_map[400])
+  print('Exception', exception)
+  #traceback.print_stack()
+
   if exception.__class__ == HTTPNotFound and exception.args[0] == request.path_info:
     return (404, 'URL %s is not found.' % request.path_info)
 

@@ -108,13 +108,13 @@ app.config [
               ($routeParams, Restangular) ->
                 Restangular.one('plans', $routeParams.planId).all('schedules').getList()
             ]
-          resolveFailed:
-            schedules: [
-              'FlashAlertService',
-              (FlashAlertService) ->
-                FlashAlertService.prepareRedirect()
-                FlashAlertService.error 'Failed to get schedules of the plan.'
-            ]
+            #resolveFailed:
+            #  schedules: [
+            #    'FlashAlertService',
+            #    (FlashAlertService) ->
+            #      FlashAlertService.prepareRedirect()
+            #      FlashAlertService.error 'Failed to get schedules of the plan.'
+            #  ]
 
         .segment 'comments',
           templateUrl: 'views/plans/show/comments.html'

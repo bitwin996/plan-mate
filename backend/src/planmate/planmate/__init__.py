@@ -36,11 +36,68 @@ def make_app():
   config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.lib.resources.OptionsRoot')
   config.add_view('planmate.views.api.options', route_name='api_options', request_method='OPTIONS', renderer='string')
 
-  config.add_route('api', '/api/*traverse', factory='planmate.resources.ApiRoot')
+
+  # API routes and views
+  config.add_route('bpi', '/bpi/*traverse', factory='planmate.resources.api.root.Root')
+
+  # root view
+  config.add_view(
+    'planmate.views.api.crud.root',
+    context='planmate.resources.api.root.Root',
+    route_name='bpi', name='', request_method='GET', renderer='json')
+
+  model_resources = [
+    'plans.PlanModel',
+    'plans.attendants.PlanAttendantModel',
+    'plans.comments.PlanCommentModel',
+    'plans.schedules.PlanScheduleModel',
+    'plans.schedules.attendants.PlanScheduleAttendantModel'
+    ]
+  for resource in model_resources:
+    context = 'planmate.resources.api.' + resource
+
+    # list view
+    config.add_view('planmate.views.api.crud.index',
+      context=context, route_name='bpi', renderer='json',
+      request_method='GET', name='')
+
+    # create view
+    config.add_view('planmate.views.api.crud.create',
+      context=context, route_name='bpi', renderer='json',
+      request_method='POST', name='')
+
+
+  entity_resources = [
+    'plans.PlanEntity',
+    'plans.attendants.PlanAttendantEntity',
+    'plans.comments.PlanCommentEntity',
+    'plans.schedules.PlanScheduleEntity',
+    'plans.schedules.attendants.PlanScheduleAttendantEntity'
+    ]
+  for resource in entity_resources:
+    context = 'planmate.resources.api.' + resource
+
+    # show view
+    config.add_view('planmate.views.api.crud.show',
+      context=context, route_name='bpi', renderer='json',
+      request_method='GET', name='')
+
+    # update view
+    config.add_view('planmate.views.api.crud.update',
+      context=context, route_name='bpi', renderer='json',
+      request_method='PUT', name='')
+
+    # delete view
+    config.add_view('planmate.views.api.crud.destroy',
+      context=context, route_name='bpi', renderer='json',
+      request_method='DELETE', name='')
+
+
+  config.add_route('api', '/api/*traverse', factory='planmate.resources.key_resources.KeyRoot')
 
   # specific views
   config.add_view('planmate.views.api.plans.get_attendants',
-    context='planmate.resources.plan.PlanAttendantModelResource',
+    context='planmate.resources.key_resources.PlanAttendantModelResource',
     route_name='api', name='', request_method='GET', renderer='json')
 
   # base views
