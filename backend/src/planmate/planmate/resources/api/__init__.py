@@ -50,3 +50,12 @@ class Entity(Base):
 
     super(Entity, self).__init__(*args, **options)
 
+
+class Options(object):
+  def __init__(self, request, name='', parent=None):
+    self.__name__ = name
+    self.__parent__ = parent
+
+  def __getitem__(self, name):
+    return self.__class__(self.request, name=name, parent=self)
+

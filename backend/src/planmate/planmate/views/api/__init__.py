@@ -7,66 +7,12 @@ from pyramid.httpexceptions import *
 
 from planmate.lib.helpers import AuthenticationHelper
 from planmate.lib import mydb
-from planmate.lib.resources import PrefixResource,RootResource,ModelResource
 from planmate.models.user import User
 from planmate.models.plan import Plan,PlanAttendant,PlanScheduleAttendant
-from planmate.resources.plan import PlanScheduleAttendantModelResource
 
 
-def options(context, request): return
-
-
-def get(context, request):
-  print('GET', context, request)
-
-  #from planmate.resources.key_resources import KeyRoot
-  #print('KEY_ROOT', KeyRoot)
-  #root = KeyRoot(request)
-  #r = root['users'][5629499534213120]
-  #print('ROOT', r.__name__)
-
-  if context.is_model():
-    #TODO remove here or not
-    if context.__parent__.is_key() and not context.__parent__.key.get():
-      raise HTTPNotFound()
-
-    #TODO pagination
-    entities = context.query().fetch()
-    return mydb.list_to_dict_with_id(entities)
-
-  elif context.is_key():
-    entity = context.key.get()
-    return mydb.to_dict_with_id(entity)
-
-  raise HTTPNotFound()
-
-
-def post(context, request):
-  print('POST', context, request)
-
-  if context.is_model():
-    key = context.put()
-    return mydb.to_dict_with_id(key.get())
-
-  else:
-    raise HTTPMethodNotAllowed('You cannnot use the action at this URL.')
-
-
-def delete(context, request):
-  print('DELETE', context, request)
-
-  if context.is_key():
-    entity = context.key.get()
-    if entity:
-      entity.delete()
-      request.response.status = 200
-      return {'message':'Success to delete the data.'}
-
-    else:
-      raise HTTPNotFound('You do not attend yet.')
-
-  else:
-    raise HTTPMethodNotAllowed('You cannnot use the action at this URL.')
+def options(context, request):
+  pass
 
 
 # auth debug

@@ -33,18 +33,18 @@ def make_app():
   #config.scan()
 
   # API
-  config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.lib.resources.OptionsRoot')
+  config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.resources.api.Options')
   config.add_view('planmate.views.api.options', route_name='api_options', request_method='OPTIONS', renderer='string')
 
 
   # API routes and views
-  config.add_route('bpi', '/bpi/*traverse', factory='planmate.resources.api.root.Root')
+  config.add_route('api', '/api/*traverse', factory='planmate.resources.api.root.Root')
 
   # root view
   config.add_view(
     'planmate.views.api.crud.root',
     context='planmate.resources.api.root.Root',
-    route_name='bpi', name='', request_method='GET', renderer='json')
+    route_name='api', name='', request_method='GET', renderer='json')
 
   model_resources = [
     'plans.PlanModel',
@@ -59,12 +59,12 @@ def make_app():
 
     # list view
     config.add_view('planmate.views.api.crud.index',
-      context=context, route_name='bpi', renderer='json',
+      context=context, route_name='api', renderer='json',
       request_method='GET', name='')
 
     # create view
     config.add_view('planmate.views.api.crud.create',
-      context=context, route_name='bpi', renderer='json',
+      context=context, route_name='api', renderer='json',
       request_method='POST', name='')
 
 
@@ -82,22 +82,21 @@ def make_app():
 
     # show view
     config.add_view('planmate.views.api.crud.show',
-      context=context, route_name='bpi', renderer='json',
+      context=context, route_name='api', renderer='json',
       request_method='GET', name='')
 
     # update view
     config.add_view('planmate.views.api.crud.update',
-      context=context, route_name='bpi', renderer='json',
+      context=context, route_name='api', renderer='json',
       request_method='PUT', name='')
 
     # delete view
     config.add_view('planmate.views.api.crud.destroy',
-      context=context, route_name='bpi', renderer='json',
+      context=context, route_name='api', renderer='json',
       request_method='DELETE', name='')
 
 
-  config.add_route('api', '/api/*traverse', factory='planmate.resources.key_resources.KeyRoot')
-
+  """
   # specific views
   config.add_view('planmate.views.api.plans.get_attendants',
     context='planmate.resources.key_resources.PlanAttendantModelResource',
@@ -108,6 +107,7 @@ def make_app():
   config.add_view('planmate.views.api.post', route_name='api', name='', request_method='POST', renderer='json')
   #TODO PUT
   config.add_view('planmate.views.api.delete', route_name='api', name='', request_method='DELETE', renderer='json')
+  """
 
   # auth
   config.add_route('debug_login', '/debug/login/{offset}')
