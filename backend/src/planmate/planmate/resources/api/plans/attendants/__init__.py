@@ -5,26 +5,33 @@ from planmate.models.plan import PlanAttendant
 from planmate.lib.helpers import AuthenticationHelper
 
 
-class PlanAttendantEntity(api.Entity):
+class PlanAttendantEntityResource(api.EntityResource):
   def __getitem__(self, name):
     return KeyError
 
 
-class PlanAttendantModel(api.Model):
+class PlanAttendantModelResource(api.ModelResource):
   model = PlanAttendant
 
   def get_new_entity(self):
+    return self._get_new_entity_with_current_user()
+    """
+    new_entity = super(PlanAttendantModelResource, self).get_new_entity()
+
     model = self.get_model()
     parent_key = self.get_parent_key()
 
-    user_key = AuthenticationHelper.instance().get_user_key()
+    current_user = AuthenticationHelper.instance().get_user()
     if not user_key:
       raise HTTPUnauthorized('Need to log in.')
 
-    new_entity = model(user_key=user_key, parent=parent_key)
+    #new_entity = model(user_key=user_key, parent=parent_key)
+
+    new_entity.user = current_user
     return new_entity
+    """
 
   def __getitem__(self, unicode_id):
     key = self.create_key(self.get_model(), unicode_id, self.get_parent_key())
-    return PlanAttendantEntity(self.request, key=key, parent=self)
+    return PlanAttendantEntityResource(self.request, key=key, parent=self)
 

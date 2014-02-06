@@ -1,7 +1,11 @@
 from google.appengine.ext import ndb
 
+from planmate.lib.helpers import AuthenticationHelper
 
-class Base(object):
+
+class BaseResource(object):
+  _render_options = {}
+
   # accept: parent
   def __init__(self, *args, **options):
     self.request = args[0]
@@ -36,23 +40,50 @@ class Base(object):
     key = ndb.Key(model, int_id, parent=parent_key)
     return key
 
+  def get_render_options(self):
+    if hasattr(self, '_render_options'):
+      return self._render_options
+    elif hasattr(self.__class__, '_render_options'):
+      return self.__class__._render_options
+    else:
+      return {}
 
-class Model(Base):
-  pass
+
+class ModelResource(BaseResource):
+  def _get_new_entity(self):
+    model = self.get_model()
+    parent_key = self.get_parent_key()
+
+    new_entity = model(parent=parent_key)
+    return new_entity
+
+  def _get_new_entity_with_current_user(self, property_name='user'):
+    new_entity = self._get_new_entity()
+
+    current_user = AuthenticationHelper.instance().get_user()
+    if not current_user:
+      raise HTTPUnauthorized('Need to log in.')
+    setattr(new_entity, property_name, current_user)
+
+    return new_entity
+
+  def get_new_entity(self):
+    raise NotImplementedError()
 
 
-class Entity(Base):
+class EntityResource(BaseResource):
   def __init__(self, *args, **options):
     if not options.has_key('key'):
       raise NotImplementedError()
     self.key = options.pop('key')
     self.__name__ = self.key.id()
 
-    super(Entity, self).__init__(*args, **options)
+    super(EntityResource, self).__init__(*args, **options)
 
 
-class Options(object):
+class OptionsResource(object):
   def __init__(self, request, name='', parent=None):
+    self.request = request
     self.__name__ = name
     self.__parent__ = parent
 

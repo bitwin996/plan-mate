@@ -5,12 +5,12 @@ from planmate.models.plan import PlanComment
 from planmate.lib.helpers import AuthenticationHelper
 
 
-class PlanCommentEntity(api.Entity):
+class PlanCommentEntityResource(api.EntityResource):
   def __getitem__(self, name):
     return KeyError
 
 
-class PlanCommentModel(api.Model):
+class PlanCommentModelResource(api.ModelResource):
   model = PlanComment
 
   def get_new_entity(self):
@@ -26,5 +26,5 @@ class PlanCommentModel(api.Model):
 
   def __getitem__(self, unicode_id):
     key = self.create_key(self.get_model(), unicode_id, self.get_parent_key())
-    return PlanCommentEntity(self.request, key=key, parent=self)
+    return PlanCommentEntityResource(self.request, key=key, parent=self)
 

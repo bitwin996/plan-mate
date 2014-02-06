@@ -10,17 +10,21 @@ from planmate.models.user import User
 
 
 class Plan(mydb.Model):
+  #user_key = ndb.KeyProperty(kind='User', required=True)
+  user = ndb.StructuredProperty(User, required=True)
   place_name = ndb.StringProperty(required=True)
   description = ndb.TextProperty()
 
-  attendants_count = ndb.ComputedProperty(lambda self: self._attendants_count())
+  attendants = ndb.StructuredProperty(User, repeated=True)
+
+  #attendants_count = ndb.ComputedProperty(lambda self: self._attendants_count())
   comments_count = ndb.ComputedProperty(lambda self: self._comments_count())
 
-  def _attendants_count(self):
-    if self.key.id():
-      return PlanAttendant.query(ancestor=self.key).count()
-    else:
-      return 0
+  #def _attendants_count(self):
+  #  if self.key.id():
+  #    return PlanAttendant.query(ancestor=self.key).count()
+  #  else:
+  #    return 0
 
   def _comments_count(self):
     if self.key.id():
@@ -34,9 +38,10 @@ class Plan(mydb.Model):
 
 
 class PlanAttendant(mydb.Model):
-  user_key = ndb.KeyProperty(kind='User', required=True)
+  #user_key = ndb.KeyProperty(kind='User', required=True)
+  user = ndb.StructuredProperty(User, required=True)
 
-  _current_user_key = 'user_key'
+  #_current_user_key = 'user_key'
 
   def _pre_put_hook(self):
     cls = self.__class__
@@ -54,14 +59,16 @@ class PlanAttendant(mydb.Model):
 
 
 class PlanComment(mydb.Model):
-  user_key = ndb.KeyProperty(kind='User', required=True)
+  #user_key = ndb.KeyProperty(kind='User', required=True)
+  user = ndb.StructuredProperty(User, required=True)
   body = ndb.TextProperty(required=True)
 
-  _current_user_key = 'user_key'
+  #_current_user_key = 'user_key'
 
 
 class PlanSchedule(mydb.Model):
   date = mydb.DateProperty(required=True)
+  attendants = ndb.StructuredProperty(User, repeated=True)
 
   def _pre_put_hook(self):
     if self.date < date.today():
@@ -86,9 +93,10 @@ class PlanSchedule(mydb.Model):
 
 
 class PlanScheduleAttendant(mydb.Model):
-  user_key = ndb.KeyProperty(kind='User', required=True)
+  #user_key = ndb.KeyProperty(kind='User', required=True)
+  user = ndb.LocalStructuredProperty(User, required=True)
 
-  _current_user_key = 'user_key'
+  #_current_user_key = 'user_key'
 
   def _pre_put_hook(self):
     cls = self.__class__

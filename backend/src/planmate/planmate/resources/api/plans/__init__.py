@@ -1,16 +1,18 @@
 from planmate.resources import api
-from planmate.resources.api.plans.attendants import PlanAttendantModel
-from planmate.resources.api.plans.comments import PlanCommentModel
-from planmate.resources.api.plans.schedules import PlanScheduleModel
+from planmate.resources.api.plans.attendants import PlanAttendantModelResource
+from planmate.resources.api.plans.comments import PlanCommentModelResource
+from planmate.resources.api.plans.schedules import PlanScheduleModelResource
 from planmate.models.plan import Plan
 
 
-class PlanEntity(api.Entity):
+class PlanEntityResource(api.EntityResource):
   _item_map = {
-    'attendants': PlanAttendantModel,
-    'comments': PlanCommentModel,
-    'schedules': PlanScheduleModel
+    'attendants': PlanAttendantModelResource,
+    'comments': PlanCommentModelResource,
+    'schedules': PlanScheduleModelResource
     }
+  
+  _render_options = {'extract_keys': ['user_key']}
 
   def __getitem__(self, name):
     name = str(name)
@@ -22,10 +24,12 @@ class PlanEntity(api.Entity):
     return resource
 
 
-class PlanModel(api.Model):
+class PlanModelResource(api.ModelResource):
   model = Plan
+
+  _render_options = {'extract_keys': ['user_key']}
 
   def __getitem__(self, unicode_id):
     key = self.create_key(self.get_model(), unicode_id, self.get_parent_key())
-    return PlanEntity(self.request, key=key, parent=self)
+    return PlanEntityResource(self.request, key=key, parent=self)
 

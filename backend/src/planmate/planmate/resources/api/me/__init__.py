@@ -1,17 +1,17 @@
 from pyramid.httpexceptions import HTTPUnauthorized
 
 from planmate.resources import api
-from planmate.resources.api.me.plans import MyPlanModel
+from planmate.resources.api.me.plans import MyPlanModelResource
 from planmate.lib.helpers import AuthenticationHelper
 
 
-class MyEntity(api.Base):
+class MyEntityResource(api.BaseResource):
   _item_map = {
-    'plans': MyPlanModel
+    'plans': MyPlanModelResource
     }
 
   def __init__(self, *args, **options):
-    super(MyEntity, self).__init__(*args, **options)
+    super(MyEntityResource, self).__init__(*args, **options)
 
     auth = AuthenticationHelper.instance()
     auth.set_session(self.request.session)

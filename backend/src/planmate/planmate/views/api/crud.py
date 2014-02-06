@@ -11,13 +11,17 @@ def index(context, request):
   print('INDEX', context)
   query = context.get_model().query(ancestor=context.get_parent_key())
   entities = query.fetch(5)
-  return mydb.list_to_dict_with_id(entities)
+  json_body = [entity.to_json() for entity in entities]
+  return json_body
 
 
 def show(context, request):
   print('SHOW', context.get_key())
-  entity = context.get_key().get()
-  return mydb.to_dict_with_id(entity)
+  key = context.get_key()
+  entity = key.get()
+
+  json_body = entity.to_json()
+  return json_body
 
 
 def create(context, request):
@@ -32,7 +36,8 @@ def create(context, request):
   new_entity.populate(**request_params)
   new_entity.put()
 
-  return mydb.to_dict_with_id(new_entity)
+  json_body = new_entity.to_json()
+  return json_body
 
 
 def update(context, request):
@@ -45,7 +50,8 @@ def update(context, request):
   entity.populate(**request_params)
   entity.put()
 
-  return mydb.to_dict_with_id(entity)
+  json_body = entity.to_json()
+  return json_body
 
 
 def destroy(context, request):

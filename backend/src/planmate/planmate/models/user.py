@@ -22,6 +22,7 @@ class User(mydb.Model):
       if count != 0:
         raise HTTPConflict('You have already attended this date.')
 
-  @classmethod
-  def _pre_delete_hook(self, key):
-    self._delete_child_models(key)
+  #TODO
+  #@classmethod
+  #def _pre_delete_hook(self, key):
+  #  self._delete_child_models(key)

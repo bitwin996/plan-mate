@@ -1,15 +1,15 @@
 from planmate.resources import api
-from planmate.resources.api.plans import PlanModel
-from planmate.resources.api.me import MyEntity
+from planmate.resources.api.plans import PlanModelResource
+from planmate.resources.api.me import MyEntityResource
 
 
-class Root(api.Base):
+class RootResource(api.BaseResource):
   __parent__ = None
   __name__ = ''
 
   _item_map = {
-    'plans': PlanModel,
-    'me': MyEntity
+    'plans': PlanModelResource,
+    'me': MyEntityResource
     }
 
   def __getitem__(self, name):

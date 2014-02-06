@@ -5,12 +5,12 @@ from planmate.models.plan import PlanScheduleAttendant
 from planmate.lib.helpers import AuthenticationHelper
 
 
-class PlanScheduleAttendantEntity(api.Entity):
+class PlanScheduleAttendantEntityResource(api.EntityResource):
   def __getitem__(self, name):
     return KeyError
 
 
-class PlanScheduleAttendantModel(api.Model):
+class PlanScheduleAttendantModelResource(api.ModelResource):
   model = PlanScheduleAttendant
 
   def get_new_entity(self):
@@ -26,5 +26,5 @@ class PlanScheduleAttendantModel(api.Model):
 
   def __getitem__(self, unicode_id):
     key = self.create_key(self.get_model(), unicode_id, self.get_parent_key())
-    return PlanScheduleAttendantEntity(self.request, key=key, parent=self)
+    return PlanScheduleAttendantEntityResource(self.request, key=key, parent=self)
 

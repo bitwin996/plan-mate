@@ -33,26 +33,26 @@ def make_app():
   #config.scan()
 
   # API
-  config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.resources.api.Options')
+  config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.resources.api.OptionsResource')
   config.add_view('planmate.views.api.options', route_name='api_options', request_method='OPTIONS', renderer='string')
 
 
   # API routes and views
-  config.add_route('api', '/api/*traverse', factory='planmate.resources.api.root.Root')
+  config.add_route('api', '/api/*traverse', factory='planmate.resources.api.root.RootResource')
 
   # root view
   config.add_view(
     'planmate.views.api.crud.root',
-    context='planmate.resources.api.root.Root',
+    context='planmate.resources.api.root.RootResource',
     route_name='api', name='', request_method='GET', renderer='json')
 
   model_resources = [
-    'plans.PlanModel',
-    'plans.attendants.PlanAttendantModel',
-    'plans.comments.PlanCommentModel',
-    'plans.schedules.PlanScheduleModel',
-    'plans.schedules.attendants.PlanScheduleAttendantModel',
-    'me.plans.MyPlanModel'
+    'plans.PlanModelResource',
+    'plans.attendants.PlanAttendantModelResource',
+    'plans.comments.PlanCommentModelResource',
+    'plans.schedules.PlanScheduleModelResource',
+    'plans.schedules.attendants.PlanScheduleAttendantModelResource',
+    'me.plans.MyPlanModelResource'
     ]
   for resource in model_resources:
     context = 'planmate.resources.api.' + resource
@@ -69,13 +69,13 @@ def make_app():
 
 
   entity_resources = [
-    'plans.PlanEntity',
-    'plans.attendants.PlanAttendantEntity',
-    'plans.comments.PlanCommentEntity',
-    'plans.schedules.PlanScheduleEntity',
-    'plans.schedules.attendants.PlanScheduleAttendantEntity',
-    'me.MyEntity',
-    'me.plans.MyPlanEntity'
+    'plans.PlanEntityResource',
+    'plans.attendants.PlanAttendantEntityResource',
+    'plans.comments.PlanCommentEntityResource',
+    'plans.schedules.PlanScheduleEntityResource',
+    'plans.schedules.attendants.PlanScheduleAttendantEntityResource',
+    'me.MyEntityResource',
+    'me.plans.MyPlanEntityResource'
     ]
   for resource in entity_resources:
     context = 'planmate.resources.api.' + resource
