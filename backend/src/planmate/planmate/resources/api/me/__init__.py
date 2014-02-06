@@ -11,20 +11,14 @@ class MyEntityResource(api.BaseResource):
     }
 
   def __init__(self, *args, **options):
-    super(MyEntityResource, self).__init__(*args, **options)
+    super(self.__class__, self).__init__(*args, **options)
 
-    auth = AuthenticationHelper.instance()
-    auth.set_session(self.request.session)
-    #AuthenticationHelper.instance().debug_login()
-
-    if not auth.is_logged_in():
+    if not AuthenticationHelper.instance().is_logged_in():
       raise HTTPUnauthorized('Need logging in to continue.')
 
-    self.key = auth.get_user_key()
+    self.key = self.get_key()
 
   def __getitem__(self, name):
-    name = str(name)
-
     cls = self.__class__._item_map[name]
     if not cls: return KeyError
 

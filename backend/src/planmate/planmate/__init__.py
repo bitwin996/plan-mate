@@ -47,11 +47,12 @@ def make_app():
     route_name='api', name='', request_method='GET', renderer='json')
 
   model_resources = [
-    'plans.PlanModelResource',
-    'plans.attendants.PlanAttendantModelResource',
-    'plans.comments.PlanCommentModelResource',
-    'plans.schedules.PlanScheduleModelResource',
-    'plans.schedules.attendants.PlanScheduleAttendantModelResource',
+    'users.UserModelResource',
+    'users.plans.PlanModelResource',
+    'users.plans.attendants.PlanAttendantModelResource',
+    'users.plans.comments.PlanCommentModelResource',
+    'users.plans.schedules.PlanScheduleModelResource',
+    'users.plans.schedules.attendants.PlanScheduleAttendantModelResource',
     'me.plans.MyPlanModelResource'
     ]
   for resource in model_resources:
@@ -69,11 +70,12 @@ def make_app():
 
 
   entity_resources = [
-    'plans.PlanEntityResource',
-    'plans.attendants.PlanAttendantEntityResource',
-    'plans.comments.PlanCommentEntityResource',
-    'plans.schedules.PlanScheduleEntityResource',
-    'plans.schedules.attendants.PlanScheduleAttendantEntityResource',
+    'users.UserEntityResource',
+    'users.plans.PlanEntityResource',
+    'users.plans.attendants.PlanAttendantEntityResource',
+    'users.plans.comments.PlanCommentEntityResource',
+    'users.plans.schedules.PlanScheduleEntityResource',
+    'users.plans.schedules.attendants.PlanScheduleAttendantEntityResource',
     'me.MyEntityResource',
     'me.plans.MyPlanEntityResource'
     ]

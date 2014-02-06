@@ -1,7 +1,7 @@
 from pyramid.httpexceptions import HTTPUnauthorized
 
 from planmate.resources import api
-from planmate.resources.api.plans.schedules.attendants import PlanScheduleAttendantModelResource
+from planmate.resources.api.users.plans.schedules.attendants import PlanScheduleAttendantModelResource
 from planmate.models.plan import PlanSchedule
 from planmate.lib.helpers import AuthenticationHelper
 

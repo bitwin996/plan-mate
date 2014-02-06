@@ -40,14 +40,6 @@ class BaseResource(object):
     key = ndb.Key(model, int_id, parent=parent_key)
     return key
 
-  def get_render_options(self):
-    if hasattr(self, '_render_options'):
-      return self._render_options
-    elif hasattr(self.__class__, '_render_options'):
-      return self.__class__._render_options
-    else:
-      return {}
-
 
 class ModelResource(BaseResource):
   def _get_new_entity(self):
@@ -57,18 +49,28 @@ class ModelResource(BaseResource):
     new_entity = model(parent=parent_key)
     return new_entity
 
-  def _get_new_entity_with_current_user(self, property_name='user'):
+  def _get_new_entity_with_current_user_key(self, property_name='user_key'):
     new_entity = self._get_new_entity()
 
-    current_user = AuthenticationHelper.instance().get_user()
-    if not current_user:
+    current_user_key = AuthenticationHelper.instance().get_user_key()
+    if not current_user_key:
       raise HTTPUnauthorized('Need to log in.')
-    setattr(new_entity, property_name, current_user)
+    setattr(new_entity, property_name, current_user_key)
 
     return new_entity
 
   def get_new_entity(self):
     raise NotImplementedError()
+
+
+  def get_query(self, *args, **options):
+    return self._get_query(*args, **options)
+
+  def _get_query(self, *args, **options):
+    model = self.get_model()
+    options['ancestor'] = self.get_parent_key()
+    query = model.query(*args, **options)
+    return query
 
 
 class EntityResource(BaseResource):

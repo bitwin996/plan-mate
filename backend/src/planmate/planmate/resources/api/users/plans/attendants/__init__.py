@@ -14,7 +14,7 @@ class PlanAttendantModelResource(api.ModelResource):
   model = PlanAttendant
 
   def get_new_entity(self):
-    return self._get_new_entity_with_current_user()
+    return self._get_new_entity_with_current_user_key()
     """
     new_entity = super(PlanAttendantModelResource, self).get_new_entity()
 

@@ -9,9 +9,12 @@ def root(context, request):
 
 def index(context, request):
   print('INDEX', context)
-  query = context.get_model().query(ancestor=context.get_parent_key())
+
+  query = context.get_query()
   entities = query.fetch(5)
+
   json_body = [entity.to_json() for entity in entities]
+  print('JSON', json_body)
   return json_body
 
 
@@ -27,13 +30,10 @@ def show(context, request):
 def create(context, request):
   print('CREATE', context)
 
-  from planmate.lib.helpers import AuthenticationHelper
-  AuthenticationHelper.instance().debug_login()
+  new_entity = context.get_new_entity()
 
   request_params = request.json_body if hasattr(request, 'json_body') else {}
-
-  new_entity = context.get_new_entity()
-  new_entity.populate(**request_params)
+  new_entity.set_prop_values(**request_params)
   new_entity.put()
 
   json_body = new_entity.to_json()
@@ -42,12 +42,12 @@ def create(context, request):
 
 def update(context, request):
   print('UPDATE', context, hasattr(request, 'json_body'))
-  request_params = request.json_body if hasattr(request, 'json_body') else {}
 
   key = context.get_key()
   entity = key.get()
 
-  entity.populate(**request_params)
+  request_params = request.json_body if hasattr(request, 'json_body') else {}
+  entity.set_prop_values(**request_params)
   entity.put()
 
   json_body = entity.to_json()
