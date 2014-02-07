@@ -29,7 +29,7 @@ class BaseResource(object):
   def create_key(self, model, unicode_id, parent_key=None):
     # id
     if not unicode.isnumeric(unicode_id):
-      return KeyError
+      raise KeyError
     int_id = int(unicode_id)
 
     # parent key

@@ -7,7 +7,7 @@ from planmate.lib.helpers import AuthenticationHelper
 
 class PlanCommentEntityResource(api.EntityResource):
   def __getitem__(self, name):
-    return KeyError
+    raise KeyError
 
 
 class PlanCommentModelResource(api.ModelResource):

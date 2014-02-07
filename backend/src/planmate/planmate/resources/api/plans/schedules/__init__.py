@@ -1,7 +1,7 @@
 from pyramid.httpexceptions import HTTPUnauthorized
 
 from planmate.resources import api
-from planmate.resources.api.users.plans.schedules.attendants import PlanScheduleAttendantModelResource
+from planmate.resources.api.plans.schedules.attendants import PlanScheduleAttendantModelResource
 from planmate.models.plan import PlanSchedule
 from planmate.lib.helpers import AuthenticationHelper
 
@@ -15,7 +15,7 @@ class PlanScheduleEntityResource(api.EntityResource):
     name = str(name)
 
     cls = self.__class__._item_map[name]
-    if not cls: return KeyError
+    if not cls: raise KeyError
 
     resource = cls(self.request, name=name, parent=self)
     return resource

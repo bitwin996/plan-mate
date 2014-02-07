@@ -5,7 +5,7 @@ __here__ = os.path.dirname(os.path.abspath(__file__))
 from pyramid.config import Configurator
 import ConfigParser
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
-from planmate.views.api.exceptions import status_map
+from planmate.lib.exceptions import status_map
 
 
 def make_app():
@@ -44,15 +44,23 @@ def make_app():
   config.add_view(
     'planmate.views.api.crud.root',
     context='planmate.resources.api.root.RootResource',
-    route_name='api', name='', request_method='GET', renderer='json')
+    route_name='api', renderer='json',
+    request_method='GET', name='')
+
+  # auth
+  config.add_view(
+    'planmate.views.auth.status',
+    context='planmate.resources.api.auth.AuthenticationResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='status')
 
   model_resources = [
     'users.UserModelResource',
-    'users.plans.PlanModelResource',
-    'users.plans.attendants.PlanAttendantModelResource',
-    'users.plans.comments.PlanCommentModelResource',
-    'users.plans.schedules.PlanScheduleModelResource',
-    'users.plans.schedules.attendants.PlanScheduleAttendantModelResource',
+    'plans.PlanModelResource',
+    'plans.attendants.PlanAttendantModelResource',
+    'plans.comments.PlanCommentModelResource',
+    'plans.schedules.PlanScheduleModelResource',
+    'plans.schedules.attendants.PlanScheduleAttendantModelResource',
     'me.plans.MyPlanModelResource'
     ]
   for resource in model_resources:
@@ -71,11 +79,11 @@ def make_app():
 
   entity_resources = [
     'users.UserEntityResource',
-    'users.plans.PlanEntityResource',
-    'users.plans.attendants.PlanAttendantEntityResource',
-    'users.plans.comments.PlanCommentEntityResource',
-    'users.plans.schedules.PlanScheduleEntityResource',
-    'users.plans.schedules.attendants.PlanScheduleAttendantEntityResource',
+    'plans.PlanEntityResource',
+    'plans.attendants.PlanAttendantEntityResource',
+    'plans.comments.PlanCommentEntityResource',
+    'plans.schedules.PlanScheduleEntityResource',
+    'plans.schedules.attendants.PlanScheduleAttendantEntityResource',
     'me.MyEntityResource',
     'me.plans.MyPlanEntityResource'
     ]
@@ -97,26 +105,16 @@ def make_app():
       context=context, route_name='api', renderer='json',
       request_method='DELETE', name='')
 
-
-  """
-  # specific views
-  config.add_view('planmate.views.api.plans.get_attendants',
-    context='planmate.resources.key_resources.PlanAttendantModelResource',
-    route_name='api', name='', request_method='GET', renderer='json')
-
-  # base views
-  config.add_view('planmate.views.api.get', route_name='api', name='', request_method='GET', renderer='json')
-  config.add_view('planmate.views.api.post', route_name='api', name='', request_method='POST', renderer='json')
-  #TODO PUT
-  config.add_view('planmate.views.api.delete', route_name='api', name='', request_method='DELETE', renderer='json')
-  """
-
   # auth
   config.add_route('debug_login', '/debug/login/{offset}')
-  config.add_route('auth_login', '/auth/login/{provider_type}')
 
-  config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
-  #config.add_route('api.auth.status.options', '/api/auth/status', request_method='OPTIONS')
+  config.add_route('auth_login', '/auth/login/{provider_type}')
+  config.add_view('planmate.views.auth.login', route_name='auth_login')
+
+  config.add_view('planmate.views.auth.complete', context='velruse.AuthenticationComplete')
+  config.add_view('planmate.views.auth.denied', context='velruse.AuthenticationDenied')
+
+  #config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
 
   # exceptions
   for code in status_map:

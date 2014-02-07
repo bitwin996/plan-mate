@@ -7,7 +7,7 @@ from planmate.lib.helpers import AuthenticationHelper
 
 class PlanScheduleAttendantEntityResource(api.EntityResource):
   def __getitem__(self, name):
-    return KeyError
+    raise KeyError
 
 
 class PlanScheduleAttendantModelResource(api.ModelResource):

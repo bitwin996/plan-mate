@@ -20,7 +20,7 @@ class MyEntityResource(api.BaseResource):
 
   def __getitem__(self, name):
     cls = self.__class__._item_map[name]
-    if not cls: return KeyError
+    if not cls: raise KeyError
 
     resource = cls(self.request, name=name, parent=self)
     return resource
