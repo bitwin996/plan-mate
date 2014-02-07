@@ -18,7 +18,7 @@ class RootResource(api.BaseResource):
     }
 
   def __init__(self, *args, **options):
-    super(self.__class__, self).__init__(*args, **options)
+    super(RootResource, self).__init__(*args, **options)
 
     # session
     auth = AuthenticationHelper.instance()

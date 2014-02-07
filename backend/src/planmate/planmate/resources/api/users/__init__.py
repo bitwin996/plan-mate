@@ -22,6 +22,6 @@ class UserModelResource(api.ModelResource):
   model = User
 
   def __getitem__(self, unicode_id):
-    key = self.create_key(self.get_model(), unicode_id) #, self.get_parent_key())
+    key = self.generate_key(unicode_id, parent=None)
     return UserEntityResource(self.request, key=key, parent=self)
 

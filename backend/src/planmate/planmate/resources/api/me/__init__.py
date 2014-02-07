@@ -1,8 +1,7 @@
-from pyramid.httpexceptions import HTTPUnauthorized
-
 from planmate.resources import api
 from planmate.resources.api.me.plans import MyPlanModelResource
 from planmate.lib.helpers import AuthenticationHelper
+from planmate.lib.exceptions import AppNotLoginError
 
 
 class MyEntityResource(api.BaseResource):
@@ -11,10 +10,10 @@ class MyEntityResource(api.BaseResource):
     }
 
   def __init__(self, *args, **options):
-    super(self.__class__, self).__init__(*args, **options)
+    super(MyEntityResource, self).__init__(*args, **options)
 
     if not AuthenticationHelper.instance().is_logged_in():
-      raise HTTPUnauthorized('Need logging in to continue.')
+      raise AppNotLoginError()
 
     self.key = self.get_key()
 

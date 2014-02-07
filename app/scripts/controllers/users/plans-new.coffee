@@ -6,14 +6,17 @@ angular.module('planMateApp')
     ($scope, $http, $location, $rootScope, endpoint, Restangular, FlashAlertService) ->
 
       $scope.submit = ->
+        console.log $scope.newPlan
         Restangular.one('me').all('plans').post($scope.newPlan).then(
-            (data) ->
-              FlashAlertService.success "Registered a new plan"
-              $rootScope.$storage['plans-' + data.id] = data
-              $location.path '/plans/' + data.id
-          ,
             (response) ->
-              FlashAlertService.error "Failed to register a new plan"
+              console.log response
+              FlashAlertService.prepareRedirect()
+              FlashAlertService.success "Registered a new plan."
+              $rootScope.$storage['plans-' + response.id] = response
+              $location.path '/plans/' + response.id
+              #,
+              #  (response) ->
+              #    FlashAlertService.error "Failed to register a new plan"
         )
 
       ###

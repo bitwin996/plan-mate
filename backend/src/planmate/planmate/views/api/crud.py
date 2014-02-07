@@ -14,16 +14,23 @@ def index(context, request):
   entities = query.fetch(5)
 
   json_body = [entity.to_json() for entity in entities]
-  print('JSON', json_body)
   return json_body
 
 
 def show(context, request):
   print('SHOW', context.get_key())
   key = context.get_key()
+
+  from google.appengine.ext import ndb
+  _key = ndb.Key(urlsafe='agxkZXZ-cGxhbm1hdGVyEQsSBFBsYW4YgICAgKDMggoM')
+  _key = ndb.Key('Plan', 5640915557285888)
+  print('ENTITY', _key.get())
+
   entity = key.get()
+  print('ENTITY', entity)
 
   json_body = entity.to_json()
+  print('JSON', json_body)
   return json_body
 
 

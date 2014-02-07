@@ -19,13 +19,13 @@ class Plan(mydb.Model):
   comments_count = ndb.ComputedProperty(lambda self: self._comments_count())
 
   def _attendants_count(self):
-    if self.key.id():
+    if self.is_saved():
       return PlanAttendant.query(ancestor=self.key).count()
     else:
       return 0
 
   def _comments_count(self):
-    if self.key.id():
+    if self.is_saved():
       return PlanComment.query(ancestor=self.key).count()
     else:
       return 0
@@ -42,7 +42,7 @@ class PlanAttendant(mydb.Model):
     cls = self.__class__
 
     # Unique constraint in creating a new entity
-    if not self.key.id():
+    if not self.is_saved():
       query = cls.query(
         cls.user_key == self.user_key,
         ancestor = self.key.parent()
@@ -68,7 +68,7 @@ class PlanSchedule(mydb.Model):
     cls = self.__class__
 
     # Unique constraint in creating a new entity
-    if not self.key.id():
+    if not self.is_saved():
       query = cls.query(
         cls.date == self.date,
         ancestor = self.key.parent()
@@ -90,7 +90,7 @@ class PlanScheduleAttendant(mydb.Model):
     cls = self.__class__
 
     # Unique constraint in creating a new entity
-    if not self.key.id():
+    if not self.is_saved():
       query = cls.query(
         cls.user_key == self.user_key,
         ancestor = self.key.parent()

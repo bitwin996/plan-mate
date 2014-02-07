@@ -12,7 +12,7 @@ class MyPlanModelResource(api.ModelResource):
   model = Plan
 
   def __getitem__(self, unicode_id):
-    key = self.create_key(self.get_model(), unicode_id, self.get_parent_key())
+    key = self.generate_key(unicode_id, parent=None)
     return MyPlanEntityResource(self.request, key=key, parent=self)
 
   def get_query(self, *args, **options):
@@ -22,5 +22,5 @@ class MyPlanModelResource(api.ModelResource):
     return self._get_query(*list_args, **options)
 
   def get_new_entity(self):
-    return self._get_new_entity_with_current_user_key()
+    return self._get_new_entity(add_parent=False, current_user_key='user_key')
 

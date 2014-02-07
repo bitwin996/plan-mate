@@ -1,5 +1,3 @@
-from pyramid.httpexceptions import HTTPUnauthorized
-
 from planmate.resources import api
 from planmate.resources.api.plans.schedules.attendants import PlanScheduleAttendantModelResource
 from planmate.models.plan import PlanSchedule
@@ -32,6 +30,6 @@ class PlanScheduleModelResource(api.ModelResource):
     return new_entity
 
   def __getitem__(self, unicode_id):
-    key = self.create_key(self.get_model(), unicode_id, self.get_parent_key())
+    key = self.generate_key(unicode_id, parent=self.get_parent_key())
     return PlanScheduleEntityResource(self.request, key=key, parent=self)
 
