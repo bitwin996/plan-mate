@@ -11,7 +11,7 @@ def index(context, request):
   print('INDEX', context)
 
   query = context.get_query()
-  entities = query.fetch(5)
+  entities = query.fetch()
 
   json_body = [entity.to_json() for entity in entities]
   return json_body
@@ -20,17 +20,10 @@ def index(context, request):
 def show(context, request):
   print('SHOW', context.get_key())
   key = context.get_key()
-
-  from google.appengine.ext import ndb
-  _key = ndb.Key(urlsafe='agxkZXZ-cGxhbm1hdGVyEQsSBFBsYW4YgICAgKDMggoM')
-  _key = ndb.Key('Plan', 5640915557285888)
-  print('ENTITY', _key.get())
-
   entity = key.get()
-  print('ENTITY', entity)
 
   json_body = entity.to_json()
-  print('JSON', json_body)
+  #print('JSON', json_body)
   return json_body
 
 
@@ -39,8 +32,9 @@ def create(context, request):
 
   new_entity = context.get_new_entity()
 
-  request_params = request.json_body if hasattr(request, 'json_body') else {}
-  new_entity.set_prop_values(**request_params)
+  post_params = request.json_body if hasattr(request, 'json_body') else {}
+  print 'PARAMS', post_params
+  new_entity.set_prop_values(**post_params)
   new_entity.put()
 
   json_body = new_entity.to_json()
@@ -53,8 +47,8 @@ def update(context, request):
   key = context.get_key()
   entity = key.get()
 
-  request_params = request.json_body if hasattr(request, 'json_body') else {}
-  entity.set_prop_values(**request_params)
+  post_params = request.json_body if hasattr(request, 'json_body') else {}
+  entity.set_prop_values(**post_params)
   entity.put()
 
   json_body = entity.to_json()

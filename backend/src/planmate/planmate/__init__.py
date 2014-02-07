@@ -54,56 +54,75 @@ def make_app():
     route_name='api', renderer='json',
     request_method='GET', name='status')
 
-  model_resources = [
-    'users.UserModelResource',
-    'plans.PlanModelResource',
-    'plans.attendants.PlanAttendantModelResource',
-    'plans.comments.PlanCommentModelResource',
-    'plans.schedules.PlanScheduleModelResource',
-    'plans.schedules.attendants.PlanScheduleAttendantModelResource',
-    'me.plans.MyPlanModelResource'
-    ]
-  for resource in model_resources:
+  # other special views
+  config.add_view(
+    'planmate.views.api.plans.index_plan_attendants',
+    context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='')
+
+  config.add_view(
+    'planmate.views.api.plans.create_plan_attendants',
+    context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
+    route_name='api', renderer='json',
+    request_method='POST', name='')
+
+
+  model_resources = {
+    'users.UserModelResource': ['index', 'create'],
+    'plans.PlanModelResource': ['index', 'create'],
+    'plans.attendants.PlanAttendantModelResource': [],
+    'plans.comments.PlanCommentModelResource': ['index', 'create'],
+    'plans.schedules.PlanScheduleModelResource': ['index', 'create'],
+    'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index', 'create'],
+    'me.plans.MyPlanModelResource': ['index', 'create']
+    }
+  for resource, views in model_resources.iteritems():
     context = 'planmate.resources.api.' + resource
 
-    # list view
-    config.add_view('planmate.views.api.crud.index',
-      context=context, route_name='api', renderer='json',
-      request_method='GET', name='')
+    # index view
+    if 'index' in views:
+      config.add_view('planmate.views.api.crud.index',
+        context=context, route_name='api', renderer='json',
+        request_method='GET', name='')
 
     # create view
-    config.add_view('planmate.views.api.crud.create',
-      context=context, route_name='api', renderer='json',
-      request_method='POST', name='')
+    if 'create' in views:
+      config.add_view('planmate.views.api.crud.create',
+        context=context, route_name='api', renderer='json',
+        request_method='POST', name='')
 
 
-  entity_resources = [
-    'users.UserEntityResource',
-    'plans.PlanEntityResource',
-    'plans.attendants.PlanAttendantEntityResource',
-    'plans.comments.PlanCommentEntityResource',
-    'plans.schedules.PlanScheduleEntityResource',
-    'plans.schedules.attendants.PlanScheduleAttendantEntityResource',
-    'me.MyEntityResource',
-    'me.plans.MyPlanEntityResource'
-    ]
-  for resource in entity_resources:
+  entity_resources = {
+    'users.UserEntityResource': ['show', 'update', 'destroy'],
+    'plans.PlanEntityResource': ['show', 'update', 'destroy'],
+    'plans.attendants.PlanAttendantEntityResource': ['show', 'update', 'destroy'],
+    'plans.comments.PlanCommentEntityResource': ['show', 'update', 'destroy'],
+    'plans.schedules.PlanScheduleEntityResource': ['show', 'update', 'destroy'],
+    'plans.schedules.attendants.PlanScheduleAttendantEntityResource': ['show', 'update', 'destroy'],
+    'me.MyEntityResource': ['show', 'update', 'destroy'],
+    'me.plans.MyPlanEntityResource': ['show', 'update', 'destroy']
+    }
+  for resource, views in entity_resources.iteritems():
     context = 'planmate.resources.api.' + resource
 
     # show view
-    config.add_view('planmate.views.api.crud.show',
-      context=context, route_name='api', renderer='json',
-      request_method='GET', name='')
+    if 'show' in views:
+      config.add_view('planmate.views.api.crud.show',
+        context=context, route_name='api', renderer='json',
+        request_method='GET', name='')
 
     # update view
-    config.add_view('planmate.views.api.crud.update',
-      context=context, route_name='api', renderer='json',
-      request_method='PUT', name='')
+    if 'update' in views:
+      config.add_view('planmate.views.api.crud.update',
+        context=context, route_name='api', renderer='json',
+        request_method='PUT', name='')
 
-    # delete view
-    config.add_view('planmate.views.api.crud.destroy',
-      context=context, route_name='api', renderer='json',
-      request_method='DELETE', name='')
+    # destroy view
+    if 'destroy' in views:
+      config.add_view('planmate.views.api.crud.destroy',
+        context=context, route_name='api', renderer='json',
+        request_method='DELETE', name='')
 
   # auth
   config.add_route('debug_login', '/debug/login/{offset}')

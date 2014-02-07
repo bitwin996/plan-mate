@@ -5,6 +5,8 @@ from planmate.lib.exceptions import get_datastore_exception,get_http_exception,g
 
 
 def view(exception, request):
+  result = (HTTPNotImplemented.code, HTTPNotImplemented.explanation)
+
   if exception.__class__ == HTTPNotFound and exception.args[0] == request.path_info:
     result = (404, 'URL %s is not found.' % request.path_info)
 
@@ -14,8 +16,6 @@ def view(exception, request):
     result = get_http_exception(exception, request)
   if not result:
     result =  get_datastore_exception(exception)
-  if not result:
-    result = (HTTPNotImplemented.code, HTTPNotImplemented.explanation)
 
   (error_code, message) = result
 

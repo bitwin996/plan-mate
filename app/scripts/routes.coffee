@@ -45,8 +45,6 @@ app.config [
             (Restangular, FlashAlertService) ->
               Restangular.one('me').all('plans').getList()
           ]
-          #resolveFailed:
-          #  plans: []
 
       .segment 'users-plans',
         templateUrl: 'views/users/plans.html'
@@ -66,14 +64,6 @@ app.config [
             ($routeParams, Restangular) ->
               Restangular.one('plans', $routeParams.planId).get()
           ]
-          #resolveFailed:
-          #  plan: [
-          #    'FlashAlertService',
-          #    (FlashAlertService) ->
-          #      FlashAlertService.prepareRedirect()
-          #      FlashAlertService.error 'There\'s not the plan data on the server.'
-          #      #history.back()
-          #  ]
 
       .within()
         .segment 'info',
@@ -120,6 +110,8 @@ app.config [
           templateUrl: 'views/plans/show/comments.html'
           dependencies: ['planId']
 
+      ###
+
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'
         controller: 'PlansDetailCtrl'
@@ -137,6 +129,7 @@ app.config [
         .segment 'attendants',
           templateUrl: 'views/plans/detail/attendants.html'
           dependencies: ['planId']
+      ###
 
     $routeProvider.otherwise redirectTo: '/'
 ]
