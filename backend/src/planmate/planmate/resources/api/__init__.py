@@ -77,11 +77,17 @@ class ModelResource(BaseResource):
     return key
 
   def get_query(self, *args, **options):
-    return self._get_query(*args, **options)
+    return self._get_query_with_ancestor(*args, **options)
+
+  def _get_query_with_ancestor(self, *args, **options):
+    if not options.has_key('ancestor'):
+      options['ancestor'] = self.get_parent_key()
+
+    query = self._get_query(*args, **options)
+    return query
 
   def _get_query(self, *args, **options):
     model = self.get_model()
-    options['ancestor'] = self.get_parent_key()
     query = model.query(*args, **options)
     return query
 
@@ -91,6 +97,7 @@ class EntityResource(BaseResource):
     if not options.has_key('key'):
       raise NotImplementedError()
     self.key = options.pop('key')
+
     self.__name__ = self.key.id()
 
     super(EntityResource, self).__init__(*args, **options)

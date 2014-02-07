@@ -29,6 +29,7 @@ angular.module('planMateApp')
 
       # type: success / info / warning / danger
       @update = (message, type = 'warning') ->
+        console.log 'UPDATE', message, type
         @storage.message = message
         @storage.type = type
         @storage.show = true
@@ -37,11 +38,11 @@ angular.module('planMateApp')
       @prepareRedirect = ->
         @storage.countFromRedirect = 0
 
-      for type in ['success', 'info', 'warning', 'danger']
-        @[type] = (message) ->
-          @update message, type
+      @success = (message) -> @update message, 'success'
+      @info = (message) -> @update message, 'info'
+      @warning = (message) -> @update message, 'warning'
+      @danger = (message) -> @update message, 'danger'
 
-      @success = @info
       @error = @danger
 
       return @
