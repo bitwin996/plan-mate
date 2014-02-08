@@ -5,6 +5,7 @@ from planmate.lib.exceptions import get_datastore_exception,get_http_exception,g
 
 
 def view(exception, request):
+  print 'EXCEPTION', exception
   result = None
 
   if exception.__class__ == HTTPNotFound and exception.args[0] == request.path_info:

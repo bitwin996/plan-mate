@@ -11,14 +11,14 @@ p.row
 
 
 p.row
-  .text-center.col-xs-12(ng-show="plan.comment_keys.length == 0")
+  .text-center.col-xs-12(ng-show="planComments.length == 0")
     em.text-muted No comment.
 
   ul.list-group
-    li.list-group-item.clearfix(ng-repeat="comment in plan.comments")
+    li.list-group-item.clearfix(ng-repeat="planComment in planComments")
       p.col-xs-2(ng-class-odd="'pull-right'", ng-class-even="'pull-left'")
-        img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
-        small.centered {{ comment.user.name }}
+        img.img-responsive.user-icon-small.centered(src="{{users[planComment.user_id].profile_image_url}}", alt="{{users[planComment.user_id].name}}")
+        small.centered {{ users[planComment.user_id].name }}
 
       pre.text-left.col-xs-10
-        {{ comment.body }}
+        {{ planComment.body }}

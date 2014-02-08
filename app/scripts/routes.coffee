@@ -89,6 +89,20 @@ app.config [
           resolveFailed:
             apiResponse: apiResolveFailed
 
+        .segment 'comments',
+          templateUrl: 'views/plans/show/comments.html'
+          controller: 'PlansShowCommentsCtrl'
+          dependencies: ['planId']
+          resolve:
+            apiResponse: [
+              'PlanComment', '$routeParams',
+              (PlanComment, $routeParams) ->
+                request = PlanComment.query planId:$routeParams.planId
+                request.$promise
+            ]
+          resolveFailed:
+            apiResponse: apiResolveFailed
+
         .segment 'schedules',
           templateUrl: 'views/plans/show/schedules.html'
           controller: 'PlansShowSchedulesCtrl'
@@ -106,10 +120,6 @@ app.config [
             #      FlashAlertService.prepareRedirect()
             #      FlashAlertService.error 'Failed to get schedules of the plan.'
             #  ]
-
-        .segment 'comments',
-          templateUrl: 'views/plans/show/comments.html'
-          dependencies: ['planId']
 
       ###
 

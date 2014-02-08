@@ -20,6 +20,7 @@ class BaseResource(object):
   def get_model(self):
     if hasattr(self, 'model'):
       return self.model
+
     elif hasattr(self.__class__, 'model'):
       return self.__class__.model
 

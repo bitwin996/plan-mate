@@ -9,12 +9,12 @@ ul.nav.nav-tabs
   li(ng-class="{active: $routeSegment.startsWith('plans-show.comments')}")
     a(href="#/plans/{{plan.id}}/comments")
       | Comments &nbsp;
-      span.badge {{ comments.length || plan.comments_count }}
+      span.badge {{ plan.comments_count }}
 
   li(ng-class="{active: $routeSegment.startsWith('plans-show.attendants')}")
     a(href="#/plans/{{plan.id}}/attendants")
       | Attendants &nbsp;
-      span.badge {{ attendants.length || plan.attendants_count }}
+      span.badge {{ plan.attendants_count }}
 
 
 .page-header

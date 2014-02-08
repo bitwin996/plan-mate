@@ -55,24 +55,24 @@ def make_app():
     request_method='GET', name='status')
 
   # other special views
-  config.add_view(
-    'planmate.views.api.plans.attendants.index',
-    context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
-    route_name='api', renderer='json',
-    request_method='GET', name='')
+  #config.add_view(
+  #  'planmate.views.api.crud.index_with_users',
+  #  context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
+  #  route_name='api', renderer='json',
+  #  request_method='GET', name='')
 
-  config.add_view(
-    'planmate.views.api.plans.attendants.create',
-    context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
-    route_name='api', renderer='json',
-    request_method='POST', name='')
+  #config.add_view(
+  #  'planmate.views.api.plans.attendants.create',
+  #  context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
+  #  route_name='api', renderer='json',
+  #  request_method='POST', name='')
 
 
   model_resources = {
     'users.UserModelResource': ['index', 'create'],
     'plans.PlanModelResource': ['index', 'create'],
-    'plans.attendants.PlanAttendantModelResource': [],
-    'plans.comments.PlanCommentModelResource': ['index', 'create'],
+    'plans.attendants.PlanAttendantModelResource': ['index_with_users', 'create_with_users_response'],
+    'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users_response'],
     'plans.schedules.PlanScheduleModelResource': ['index', 'create'],
     'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index', 'create'],
     'me.plans.MyPlanModelResource': ['index', 'create']
@@ -86,9 +86,20 @@ def make_app():
         context=context, route_name='api', renderer='json',
         request_method='GET', name='')
 
+    # index_with_users view
+    if 'index_with_users' in views:
+      config.add_view('planmate.views.api.crud.index_with_users',
+        context=context, route_name='api', renderer='json',
+        request_method='GET', name='')
+
     # create view
     if 'create' in views:
       config.add_view('planmate.views.api.crud.create',
+        context=context, route_name='api', renderer='json',
+        request_method='POST', name='')
+
+    if 'create_with_users_response' in views:
+      config.add_view('planmate.views.api.crud.create_with_users_response',
         context=context, route_name='api', renderer='json',
         request_method='POST', name='')
 

@@ -29,7 +29,6 @@ angular.module('planMateApp')
 
       # type: success / info / warning / danger
       @update = (message, type = 'warning') ->
-        console.log 'UPDATE', message, type
         @storage.message = message
         @storage.type = type
         @storage.show = true

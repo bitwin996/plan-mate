@@ -13,6 +13,15 @@ angular.module('planMateApp')
 
       $scope.setPlanAttendants = (response) ->
         $scope.planAttendants = response.plan_attendants
+        #TODO attendants_count
+        $scope.plan.attendants_count = $scope.planAttendants.length
+        for user in response.users
+          $scope.users[user.id] = user
+
+      $scope.setPlanComments = (response) ->
+        $scope.planComments = response.plan_comments
+        #TODO comments_count
+        $scope.plan.comments_count = $scope.planComments.length
         for user in response.users
           $scope.users[user.id] = user
 

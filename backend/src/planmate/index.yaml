@@ -19,3 +19,9 @@ indexes:
   ancestor: yes
   properties:
   - name: user_key
+
+- kind: PlanComment
+  ancestor: yes
+  properties:
+  - name: created
+    direction: desc

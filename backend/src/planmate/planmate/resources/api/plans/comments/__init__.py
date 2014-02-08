@@ -12,6 +12,10 @@ class PlanCommentEntityResource(api.EntityResource):
 class PlanCommentModelResource(api.ModelResource):
   model = PlanComment
 
+  def __getitem__(self, unicode_id):
+    key = self.generate_key(unicode_id, parent=self.get_parent_key())
+    return PlanCommentEntityResource(self.request, key=key, parent=self)
+
   def get_new_entity(self):
     model = self.get_model()
     parent_key = self.get_parent_key()
@@ -23,7 +27,6 @@ class PlanCommentModelResource(api.ModelResource):
     new_entity = model(user_key=user_key, parent=parent_key)
     return new_entity
 
-  def __getitem__(self, unicode_id):
-    key = self.generate_key(unicode_id, parent=self.get_parent_key())
-    return PlanCommentEntityResource(self.request, key=key, parent=self)
-
+  def get_query(self, *args, **options):
+    query = self._get_query_with_ancestor(*args, **options)
+    return query.order(-self.get_model().created)
