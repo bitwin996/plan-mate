@@ -61,14 +61,14 @@ app.config [
         templateUrl: 'views/plans/show.html'
         controller: 'PlansShowCtrl'
         resolve:
-          planResponse: [
+          apiResponse: [
             'Plan', '$routeParams',
             (Plan, $routeParams) ->
               request = Plan.get planId:$routeParams.planId
               request.$promise
           ]
         resolveFailed:
-          planResponse: apiResolveFailed
+          apiResponse: apiResolveFailed
 
       .within()
         .segment 'info',
@@ -80,18 +80,14 @@ app.config [
           controller: 'PlansShowAttendantsCtrl'
           dependencies: ['planId']
           resolve:
-            attendantsResponse: [
-              '$routeParams', 'Restangular',
-              ($routeParams, Restangular) ->
-                Restangular.one('plans', $routeParams.planId).getList('attendants')
+            apiResponse: [
+              'PlanAttendant', '$routeParams',
+              (PlanAttendant, $routeParams) ->
+                request = PlanAttendant.query planId:$routeParams.planId
+                request.$promise
             ]
-          #resolveFailed:
-          #  attendants: [
-          #    'FlashAlertService',
-          #    (FlashAlertService) ->
-          #      FlashAlertService.prepareRedirect()
-          #      FlashAlertService.error 'Failed to get attendants of the plan.'
-          #  ]
+          resolveFailed:
+            apiResponse: apiResolveFailed
 
         .segment 'schedules',
           templateUrl: 'views/plans/show/schedules.html'

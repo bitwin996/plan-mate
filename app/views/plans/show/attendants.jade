@@ -1,11 +1,11 @@
 p.row
-  .text-center(ng-show="attendants.length == 0")
+  .text-center(ng-show="planAttendants.length == 0")
     em.text-muted No Attendant.
 
   ul.list-group
-    li.list-group-item.clearfix(ng-repeat="attendant in attendants")
+    li.list-group-item.clearfix(ng-repeat="planAttendant in planAttendants")
       p.pull-left.col-xs-2
-        img.img-responsive.user-icon-small.centered(src="images/yeoman.png", alt="{{comment.user.name}}")
+        img.img-responsive.user-icon-small.centered(src="{{users[planAttendant.user_id].profile_image_url}}", alt="{{users[planAttendant.user_id].name}}")
 
       .text-left.col-xs-10
-        | {{ attendant.user.name }}
+        | {{ users[planAttendant.user_id].name }}
