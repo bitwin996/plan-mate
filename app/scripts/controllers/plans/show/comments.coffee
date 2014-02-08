@@ -6,11 +6,6 @@ angular.module('planMateApp')
     ($scope, apiResponse, PlanComment, FlashAlertService) ->
       $scope.$parent.setPlanComments apiResponse
 
-      a = {c:1}
-      b = {d:2}
-      c = angular.extend a, b
-      console.log 'CALC', a,b,c
-
       $scope.postComment = ->
         params = angular.extend plan_id:$scope.plan.id, $scope.newComment
         planComment = new PlanComment params
