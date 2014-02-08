@@ -56,13 +56,13 @@ def make_app():
 
   # other special views
   config.add_view(
-    'planmate.views.api.plans.index_plan_attendants',
+    'planmate.views.api.plans.attendants.index',
     context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
     route_name='api', renderer='json',
     request_method='GET', name='')
 
   config.add_view(
-    'planmate.views.api.plans.create_plan_attendants',
+    'planmate.views.api.plans.attendants.create',
     context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
     route_name='api', renderer='json',
     request_method='POST', name='')

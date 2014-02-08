@@ -14,17 +14,19 @@ def index(context, request):
   entities = query.fetch()
 
   json_body = [entity.to_json() for entity in entities]
-  return json_body
+  response = {context.__name__: json_body}
+  return response
 
 
 def show(context, request):
-  print('SHOW', context.get_key())
+  print('SHOW', context, request)
   key = context.get_key()
   entity = key.get()
+  name = mydb.underscorize(key.kind())
 
   json_body = entity.to_json()
-  #print('JSON', json_body)
-  return json_body
+  response = {name: json_body}
+  return response
 
 
 def create(context, request):
@@ -33,12 +35,12 @@ def create(context, request):
   new_entity = context.get_new_entity()
 
   post_params = request.json_body if hasattr(request, 'json_body') else {}
-  print 'PARAMS', post_params
   new_entity.set_prop_values(**post_params)
   new_entity.put()
 
   json_body = new_entity.to_json()
-  return json_body
+  response = {context.__name__: json_body}
+  return response
 
 
 def update(context, request):
@@ -52,7 +54,8 @@ def update(context, request):
   entity.put()
 
   json_body = entity.to_json()
-  return json_body
+  response = {context.__name__: json_body}
+  return response
 
 
 def destroy(context, request):

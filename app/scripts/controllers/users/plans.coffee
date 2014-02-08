@@ -2,9 +2,10 @@
 
 angular.module('planMateApp')
   .controller 'UsersPlansCtrl', [
-    '$scope', 'plans',
-    ($scope, plans) ->
-      $scope.plans = plans
+    '$scope', 'plansResponse',
+    ($scope, plansResponse) ->
+      $scope.plans = plansResponse.plans
+      $scope.users = plansResponse.users
 
       ###
       $scope.plans = new Plan

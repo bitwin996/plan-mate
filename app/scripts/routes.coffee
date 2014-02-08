@@ -8,6 +8,12 @@ app.config [
 
     $routeSegmentProvider.options.autoLoadTemplates = true
 
+    apiResolveFailed = [
+      'FlashAlertService', (FlashAlertService) ->
+        FlashAlertService.prepareRedirect()
+        FlashAlertService.error 'Failed to get data from server.'
+    ]
+
     $routeSegmentProvider
       .when('/', 'main')
 
@@ -22,11 +28,6 @@ app.config [
       .when('/plans/:planId/schedules',  'plans-show.schedules')
       .when('/plans/:planId/comments',   'plans-show.comments')
 
-      #.when('/plans/:planId',            'detail.info')
-      #.when('/plans/:planId/scheduling', 'detail.scheduling')
-      #.when('/plans/:planId/comments',   'detail.comments')
-      #.when('/plans/:planId/attendants', 'detail.attendants')
-      #.when('/plans/:planId/scheduling', 'detail.scheduling')
 
       .segment 'main',
         templateUrl: 'views/main.html'
@@ -40,10 +41,11 @@ app.config [
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
         resolve:
-          plans: [
-            'Restangular', 'FlashAlertService',
-            (Restangular, FlashAlertService) ->
-              Restangular.one('me').all('plans').getList()
+          plansResponse: [
+            'Restangular',
+            (Restangular) ->
+              #Restangular.one('me').all('plans').getList()
+              Restangular.one('me').getList('plans')
           ]
 
       .segment 'users-plans',
@@ -59,11 +61,14 @@ app.config [
         templateUrl: 'views/plans/show.html'
         controller: 'PlansShowCtrl'
         resolve:
-          plan: [
-            '$routeParams', 'Restangular',
-            ($routeParams, Restangular) ->
-              Restangular.one('plans', $routeParams.planId).get()
+          planResponse: [
+            'Plan', '$routeParams',
+            (Plan, $routeParams) ->
+              request = Plan.get planId:$routeParams.planId
+              request.$promise
           ]
+        resolveFailed:
+          planResponse: apiResolveFailed
 
       .within()
         .segment 'info',
@@ -75,10 +80,10 @@ app.config [
           controller: 'PlansShowAttendantsCtrl'
           dependencies: ['planId']
           resolve:
-            attendants: [
+            attendantsResponse: [
               '$routeParams', 'Restangular',
               ($routeParams, Restangular) ->
-                Restangular.one('plans', $routeParams.planId).all('attendants').getList()
+                Restangular.one('plans', $routeParams.planId).getList('attendants')
             ]
           #resolveFailed:
           #  attendants: [
@@ -93,10 +98,10 @@ app.config [
           controller: 'PlansShowSchedulesCtrl'
           dependencies: ['planId']
           resolve:
-            schedules: [
+            schedulesResponse: [
               '$routeParams', 'Restangular',
               ($routeParams, Restangular) ->
-                Restangular.one('plans', $routeParams.planId).all('schedules').getList()
+                Restangular.one('plans', $routeParams.planId).getList('schedules')
             ]
             #resolveFailed:
             #  schedules: [

@@ -2,18 +2,34 @@
 
 angular.module('planMateApp')
   .controller 'PlansShowCtrl', [
-    '$scope', 'plan', 'FlashAlertService', '$rootScope',
-    ($scope, plan, FlashAlertService, $rootScope) ->
-      $scope.plan = plan
+    '$scope', 'planResponse', 'FlashAlertService', 'PlanAttendant',
+    ($scope, planResponse, FlashAlertService, PlanAttendant) ->
+      $scope.plan = planResponse.plan
 
-      $scope.attendants = plan.all('attendants')
-      $scope.comments = plan.all('comments')
-      $scope.schedules = plan.all('schedules')
+      $scope.planAttendants = null
+      $scope.planComments = null
+      $scope.planSchedules = null
+      $scope.users ?= {}
+
+      #$scope.pickupUser = (userId) ->
+      #  for user in $scope.users
+      #    if user.id is userId
+      #      return user
 
       $scope.attend = ->
-        $scope.attendants.post({}).then((response) ->
-          FlashAlertService.success 'Success to join this plan.'
-          $scope.attendants = response
+        planAttendant = new PlanAttendant plan_id:$scope.plan.id
+
+        request = planAttendant.$save()
+        request.then(
+            (response) ->
+              FlashAlertService.success 'Success to join this plan.'
+              $scope.planAttendants = response.plan_attendants
+
+              for user in response.users
+                $scope.users[user.id] = user
+          ,
+            (response) ->
+              FlashAlertService.error response.data.message
         )
 
   ]

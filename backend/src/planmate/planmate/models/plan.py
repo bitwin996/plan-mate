@@ -49,8 +49,8 @@ class PlanAttendant(mydb.Model):
         )
       count = query.count()
 
-      if count != 0:
-        raise HTTPConflict('You have already attended this plan.')
+      if count > 0:
+        raise HTTPConflict('You have already joined this plan.')
 
 
 class PlanComment(mydb.Model):

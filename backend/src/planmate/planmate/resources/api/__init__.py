@@ -96,9 +96,11 @@ class EntityResource(BaseResource):
   def __init__(self, *args, **options):
     if not options.has_key('key'):
       raise NotImplementedError()
+
     self.key = options.pop('key')
 
-    self.__name__ = self.key.id()
+    if not options.has_key('name'):
+      options['name'] = self.key.id()
 
     super(EntityResource, self).__init__(*args, **options)
 
