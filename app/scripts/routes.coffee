@@ -41,6 +41,7 @@ app.config [
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
         resolve:
+          #TODO replace with $resource
           plansResponse: [
             'Restangular',
             (Restangular) ->
@@ -108,21 +109,16 @@ app.config [
           controller: 'PlansShowSchedulesCtrl'
           dependencies: ['planId']
           resolve:
-            schedulesResponse: [
-              '$routeParams', 'Restangular',
-              ($routeParams, Restangular) ->
-                Restangular.one('plans', $routeParams.planId).getList('schedules')
+            apiResponse: [
+              'PlanSchedule', '$routeParams',
+              (PlanSchedule, $routeParams) ->
+                request = PlanSchedule.query planId:$routeParams.planId
+                request.$promise
             ]
-            #resolveFailed:
-            #  schedules: [
-            #    'FlashAlertService',
-            #    (FlashAlertService) ->
-            #      FlashAlertService.prepareRedirect()
-            #      FlashAlertService.error 'Failed to get schedules of the plan.'
-            #  ]
+          resolveFailed:
+            apiResponse: apiResolveFailed
 
       ###
-
       .segment 'detail',
         templateUrl: 'views/plans/detail.html'
         controller: 'PlansDetailCtrl'

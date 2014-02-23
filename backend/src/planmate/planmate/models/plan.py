@@ -60,6 +60,13 @@ class PlanComment(mydb.Model):
 
 class PlanSchedule(mydb.Model):
   date = mydb.DateProperty(required=True)
+  attendants_count = ndb.ComputedProperty(lambda self: self._attendants_count())
+
+  def _attendants_count(self):
+    if self.is_saved():
+      return PlanScheduleAttendant.query(ancestor=self.key).count()
+    else:
+      return 0
 
   def _pre_put_hook(self):
     if self.date < date.today():

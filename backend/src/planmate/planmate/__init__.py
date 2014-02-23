@@ -67,13 +67,18 @@ def make_app():
   #  route_name='api', renderer='json',
   #  request_method='POST', name='')
 
+  #config.add_view('planmate.views.api.plans.schedules.create',
+  #  context='planmate.resources.api.plans.schedules.PlanScheduleModelResource',
+  #  route_name='api', renderer='json',
+  #  request_method='POST', name='')
+
 
   model_resources = {
     'users.UserModelResource': ['index', 'create'],
     'plans.PlanModelResource': ['index', 'create'],
-    'plans.attendants.PlanAttendantModelResource': ['index_with_users', 'create_with_users_response'],
-    'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users_response'],
-    'plans.schedules.PlanScheduleModelResource': ['index', 'create'],
+    'plans.attendants.PlanAttendantModelResource': ['index_with_users', 'create_with_users'],
+    'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users'],
+    'plans.schedules.PlanScheduleModelResource': ['index', 'create_of_index_response'],
     'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index', 'create'],
     'me.plans.MyPlanModelResource': ['index', 'create']
     }
@@ -98,8 +103,13 @@ def make_app():
         context=context, route_name='api', renderer='json',
         request_method='POST', name='')
 
-    if 'create_with_users_response' in views:
-      config.add_view('planmate.views.api.crud.create_with_users_response',
+    if 'create_of_index_response' in views:
+      config.add_view('planmate.views.api.crud.create_of_index_response',
+        context=context, route_name='api', renderer='json',
+        request_method='POST', name='')
+
+    if 'create_with_users' in views:
+      config.add_view('planmate.views.api.crud.create_with_users',
         context=context, route_name='api', renderer='json',
         request_method='POST', name='')
 

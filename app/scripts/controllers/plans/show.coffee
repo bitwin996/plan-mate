@@ -25,6 +25,10 @@ angular.module('planMateApp')
         for user in response.users
           $scope.users[user.id] = user
 
+      $scope.setPlanSchedules = (response) ->
+        $scope.planSchedules = response.plan_schedules
+        #$scope.plan.schedules_count = $scope.planSchedules.length
+
       $scope.attend = ->
         planAttendant = new PlanAttendant plan_id:$scope.plan.id
 

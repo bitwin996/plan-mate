@@ -47,14 +47,20 @@ def show(context, request):
   return response
 
 
-def create(context, request):
-  print('CREATE', context)
-
+def _create(context, request):
   new_entity = context.get_new_entity()
 
   post_params = request.json_body if hasattr(request, 'json_body') else {}
+  print 'POST_PARAMS', post_params
+
   new_entity.set_prop_values(**post_params)
   new_entity.put()
+
+  return new_entity
+
+def create(context, request):
+  print 'CREATE', context
+  new_entity = _create(context, request)
 
   json_body = new_entity.to_json()
   name = underscorize(context.__name__)
@@ -62,17 +68,25 @@ def create(context, request):
   return response
 
 
-def create_with_users_response(context, request):
-  print('CREATE PLAN_ATTENDANTS', context)
+def create_of_index_response(context, request):
+  _create(context, request)
+  response = index(context, request)
+  return response
 
+
+def create_with_users(context, request):
+  print 'CREATE PLAN_ATTENDANTS', context
+
+  """
   new_entity = context.get_new_entity()
 
   post_params = request.json_body if hasattr(request, 'json_body') else {}
   new_entity.set_prop_values(**post_params)
   new_entity.put()
+  """
 
+  _create(context, request)
   response = index_with_users(context, request)
-
   return response
 
 

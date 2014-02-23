@@ -13,9 +13,9 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
 
   .navbar-collapse(ng-class="{collapse:isCollapsed, in:!isCollapsed}")
     ul.nav.navbar-nav
-      //li(ng-class="{active:isActive('/')}")
-      //  a(href="#/") Home
-      li(ng-class="{active:isActive('/plans/7')}")
+      li(ng-class="{active:isActive('/mypage/plans')}")
+        a(href="#/mypage/plans") Plan list
+      //li(ng-class="{active:isActive('/plans/7')}")
         a(href="#/plans/7") Plan Detail
 
     ul.nav.navbar-nav.navbar-right
