@@ -59,11 +59,8 @@ app.config [
       if angular.isArray(response)
         angular.forEach newResponse, (value, key) ->
           newResponse[key].originalElement = angular.copy value
-          #console.log 'NEW_RESPONSE', newResponse[key].originalElement
-
       else
         newResponse.originalElement = angular.copy response
-        #console.log 'NEW_RESPONSE', newResponse.originalElement
 
       return newResponse
     )
@@ -76,6 +73,11 @@ app.run [
   '$angularCacheFactory', 'FlashAlertService', 'AuthenticationService',
   ($rootScope, $http, $location, Restangular, $localStorage,
   $angularCacheFactory, FlashAlertService, AuthenticationService) ->
+
+    # Formats
+    $rootScope.formats =
+      DATE: 'EEE, MM/dd/yyyy'
+      MOMENT_DATE: 'ddd, L'
 
     # ngStorage
     $rootScope.$storage = $localStorage
@@ -110,13 +112,13 @@ app.run [
       if AuthenticationService.isLoggedIn()
         for path,redirectPath of needLogoutRoutes
           if $location.path() is path
-            FlashAlertService.update "Please logout to move to the page", 'danger'
+            FlashAlertService.error "Please logout to move to the page"
             FlashAlertService.prepareRedirect()
             $location.path redirectPath
       else
         for path,redirectPath of needLoginRoutes
           if $location.path() is path
-            FlashAlertService.update "Please login to move to the page", 'danger'
+            FlashAlertService.error "Please login to move to the page"
             FlashAlertService.prepareRedirect()
             $location.path redirectPath
 

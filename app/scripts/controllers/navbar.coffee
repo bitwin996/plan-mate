@@ -22,7 +22,9 @@ angular.module('planMateApp')
         else
           $location.path().substr(0, path.length) is path
 
+      $scope.isLoggedIn = AuthenticationService.isLoggedIn()
+
       $scope.logout = ->
         AuthenticationService.logout ->
-          $location.path '/plans/7'  #TODO
+          $location.path '/'  #TODO
   ]

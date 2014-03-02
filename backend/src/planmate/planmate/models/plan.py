@@ -105,5 +105,5 @@ class PlanScheduleAttendant(mydb.Model):
       count = query.count()
 
       if count != 0:
-        raise HTTPConflict('You have already attended this date.')
+        raise HTTPConflict('You have already availed this date.')
 

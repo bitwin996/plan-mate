@@ -13,26 +13,43 @@ def make_app():
   """
   config = Configurator()
 
-  # config
+  # Config
   conf = ConfigParser.SafeConfigParser()
   conf.read(os.path.join(__here__, '..', 'development.ini'))
 
   settings = dict(conf.items('app:main'))
   config.add_settings(settings)
 
-  # oauth
+  # OAuth
   config.include('velruse.providers.facebook')
   config.add_facebook_login_from_settings(prefix='velruse.facebook.')
   config.include('velruse.providers.twitter')
   config.add_twitter_login_from_settings(prefix='velruse.twitter.')
 
-  # session
+  # Session
   config.include('pyramid_beaker')
 
-  # route
+
+  # Route
   #config.scan()
 
-  # API
+  # auth
+  config.add_view(
+    'planmate.views.auth.status',
+    context='planmate.resources.api.auth.AuthenticationResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='status')
+
+  config.add_route('debug_login', '/debug/login/{offset}')
+
+  config.add_route('auth_login', '/auth/login/{provider_type}')
+  config.add_view('planmate.views.auth.login', route_name='auth_login')
+
+  config.add_view('planmate.views.auth.complete', context='velruse.AuthenticationComplete')
+  config.add_view('planmate.views.auth.denied', context='velruse.AuthenticationDenied')
+
+
+  # jptions
   config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.resources.api.OptionsResource')
   config.add_view('planmate.views.api.options', route_name='api_options', request_method='OPTIONS', renderer='string')
 
@@ -47,31 +64,6 @@ def make_app():
     route_name='api', renderer='json',
     request_method='GET', name='')
 
-  # auth
-  config.add_view(
-    'planmate.views.auth.status',
-    context='planmate.resources.api.auth.AuthenticationResource',
-    route_name='api', renderer='json',
-    request_method='GET', name='status')
-
-  # other special views
-  #config.add_view(
-  #  'planmate.views.api.crud.index_with_users',
-  #  context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
-  #  route_name='api', renderer='json',
-  #  request_method='GET', name='')
-
-  #config.add_view(
-  #  'planmate.views.api.plans.attendants.create',
-  #  context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
-  #  route_name='api', renderer='json',
-  #  request_method='POST', name='')
-
-  #config.add_view('planmate.views.api.plans.schedules.create',
-  #  context='planmate.resources.api.plans.schedules.PlanScheduleModelResource',
-  #  route_name='api', renderer='json',
-  #  request_method='POST', name='')
-
 
   model_resources = {
     'users.UserModelResource': ['index', 'create'],
@@ -79,7 +71,7 @@ def make_app():
     'plans.attendants.PlanAttendantModelResource': ['index_with_users', 'create_with_users'],
     'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users'],
     'plans.schedules.PlanScheduleModelResource': ['index', 'create_of_index_response'],
-    'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index', 'create'],
+    'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index_with_users', 'create_with_users'],
     'me.plans.MyPlanModelResource': ['index', 'create']
     }
   for resource, views in model_resources.iteritems():
@@ -145,16 +137,6 @@ def make_app():
         context=context, route_name='api', renderer='json',
         request_method='DELETE', name='')
 
-  # auth
-  config.add_route('debug_login', '/debug/login/{offset}')
-
-  config.add_route('auth_login', '/auth/login/{provider_type}')
-  config.add_view('planmate.views.auth.login', route_name='auth_login')
-
-  config.add_view('planmate.views.auth.complete', context='velruse.AuthenticationComplete')
-  config.add_view('planmate.views.auth.denied', context='velruse.AuthenticationDenied')
-
-  #config.add_route('api.auth.status.get', '/api/auth/status', request_method='GET')
 
   # exceptions
   for code in status_map:

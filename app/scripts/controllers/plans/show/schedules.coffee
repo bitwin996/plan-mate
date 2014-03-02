@@ -2,10 +2,12 @@
 
 angular.module('planMateApp')
   .controller 'PlansShowSchedulesCtrl', [
-    '$scope', '$timeout', 'apiResponse', 'FlashAlertService', 'PlanSchedule',
-    ($scope, $timeout, apiResponse, FlashAlertService, PlanSchedule) ->
+    '$scope', '$timeout', 'apiResponse', 'FlashAlertService', 'PlanSchedule', 'PlanScheduleAttendant',
+    ($scope, $timeout, apiResponse, FlashAlertService, PlanSchedule, PlanScheduleAttendant) ->
 
       $scope.$parent.setPlanSchedules apiResponse
+
+      $scope.planScheduleAttendants ?= []
 
 
       floorTime = (momentObj) ->
@@ -23,47 +25,30 @@ angular.module('planMateApp')
         dateOptions:
           'year-format': "'yy'"
           'starting-day': 1
+        open: ->
+          $timeout ->
+            $scope.datePicker.opened = true
+        # disable existing dates
+        disabled: (date, mode) ->
+          for planSchedule in $scope.$parent.planSchedules
+            return true if isEqualDate date, planSchedule.date
+          false
 
-      $scope.open = ->
-        $timeout ->
-          $scope.datePicker.opened = true
-
-      # disable existing dates
-      $scope.disabled = (schedule, mode) ->
-        for planSchedule in $scope.$parent.planSchedules
-          return true if isEqualDate date, planSchedule.date
-        false
-
-      $scope.addSchedule = ->
-        #TODO
+      $scope.addPlanSchedule = ->
         params = angular.extend plan_id:$scope.plan.id, $scope.newSchedule
-        #params = angular.copy $scope.newSchedule
+        params.date = moment(params.date).format 'YYYY-MM-DD'
+
         planSchedule = new PlanSchedule params
-        console.log 'PLAN_SCHEDULE', planSchedule
 
         request = planSchedule.$save()
         request.then(
             (response) ->
               console.log 'SUCCESS', response
               FlashAlertService.success 'Success to add a new schedule.'
-              $scope.setPlanSchedules response
+              $scope.$parent.setPlanSchedules response
               $scope.newSchedule = {}
           ,
             (response) ->
               FlashAlertService.error response.data.message
         )
-
-        ###
-        _schedule = angular.copy schedule
-        #_schedule.canBeAvailable = $scope.canBeAvailable dp
-        #_schedule.canBeUnavailable = $scope.canBeUnavailable dp
-        $scope.schedules.post($scope.newSchedule).then(
-            (response) ->
-              console.log response
-          ,
-            (response) ->
-              FlashAlertService.error 'Fail to add a schedule.'
-        )
-        $scope.schedules.push _schedule
-        ###
   ]

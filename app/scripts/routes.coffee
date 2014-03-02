@@ -19,14 +19,15 @@ app.config [
 
       .when('/auth/login', 'login')
 
-      .when('/users/:userId/plans', 'users-plans')
-      .when('/mypage/plans',            'mypage-plans')
-      .when('/mypage/plans/new',        'mypage-plans-new')
+      .when('/users/:userId/plans',      'users-plans')
+      .when('/mypage/plans',             'mypage-plans')
+      .when('/mypage/plans/new',         'mypage-plans-new')
 
       .when('/plans/:planId',            'plans-show.info')
       .when('/plans/:planId/attendants', 'plans-show.attendants')
-      .when('/plans/:planId/schedules',  'plans-show.schedules')
       .when('/plans/:planId/comments',   'plans-show.comments')
+      .when('/plans/:planId/schedules',  'plans-show.schedules')
+      .when('/plans/:planId/schedules/:planScheduleId',  'plans-show.schedules-show')
 
 
       .segment 'main',
@@ -58,6 +59,7 @@ app.config [
         templateUrl: 'views/plans/new.html'
         controller: 'UsersPlansNewCtrl'
 
+      #TODO .segment 'plans.show',
       .segment 'plans-show',
         templateUrl: 'views/plans/show.html'
         controller: 'PlansShowCtrl'
@@ -118,25 +120,42 @@ app.config [
           resolveFailed:
             apiResponse: apiResolveFailed
 
-      ###
-      .segment 'detail',
-        templateUrl: 'views/plans/detail.html'
-        controller: 'PlansDetailCtrl'
+        #.within()
+        .segment 'schedules-show',
+          templateUrl: 'views/plans/show/schedules/show.html'
+          controller: 'PlansShowSchedulesShowCtrl'
+          dependencies: ['planId', 'planScheduleId']
+          resolve:
+            #apiPlan: [
+            #  'Plan', '$routeParams',
+            #  (Plan, $routeParams) ->
+            #    request = Plan.get
+            #      planId: $routeParams.planId
+            #    console.log 'plan', request
+            #    request.$promise
+            #]
+            #TODO get schedule and attendants once
+            apiPlanSchedule: [
+              'PlanSchedule', '$routeParams',
+              (PlanSchedule, $routeParams) ->
+                request = PlanSchedule.get
+                  planId: $routeParams.planId
+                  planScheduleId: $routeParams.planScheduleId
+                request.$promise
+            ]
+            apiResponse: [
+              'PlanScheduleAttendant', '$routeParams',
+              (PlanScheduleAttendant, $routeParams) ->
+                request = PlanScheduleAttendant.query
+                  planId: $routeParams.planId
+                  planScheduleId: $routeParams.planScheduleId
+                request.$promise
+            ]
+          resolveFailed:
+            #apiPlan: apiResolveFailed
+            apiPlanSchedule: apiResolveFailed
+            apiResponse: apiResolveFailed
 
-      .within()
-        .segment 'info',
-          templateUrl: 'views/plans/detail/info.html'
-          dependencies: ['planId']
-        .segment 'scheduling',
-          templateUrl: 'views/plans/detail/scheduling.html'
-          dependencies: ['planId']
-        .segment 'comments',
-          templateUrl: 'views/plans/detail/comments.html'
-          dependencies: ['planId']
-        .segment 'attendants',
-          templateUrl: 'views/plans/detail/attendants.html'
-          dependencies: ['planId']
-      ###
 
     $routeProvider.otherwise redirectTo: '/'
 ]

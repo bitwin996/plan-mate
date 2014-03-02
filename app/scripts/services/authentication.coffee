@@ -16,24 +16,27 @@ angular.module('planMateApp')
         request = $http.get endpoint + '/auth/status'
 
         request.success (response) =>
-          FlashAlertService.update 'Success to get login status', 'info'
-          @storage.isLoggedIn = response.is_logged_in
+          FlashAlertService.success 'Success to get login status'
+          angular.extend @storage, response
 
         request.error (response) ->
-          FlashAlertService.update 'Fail to get login status', 'danger'
+          FlashAlertService.error 'Fail to get login status'
 
       @logout = (callback) ->
         request = $http.get endpoint + '/auth/logout'
 
         request.success (response) =>
-          @storage.isLoggedIn = false
+          @storage = {}
           callback()
 
         request.error (response) ->
-          FlashAlertService.update 'Fail to logout', 'danger'
+          FlashAlertService.error 'Fail to logout'
 
       @isLoggedIn = ->
-        @storage.isLoggedIn
+        @storage.is_logged_in
+
+      @getUserId = ->
+        @storage.user_id
 
       return @
   ]

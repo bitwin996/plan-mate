@@ -67,6 +67,15 @@ def denied(context, request):
 
 
 def status(context, request):
+  user = AuthenticationHelper.instance().get_user()
+  user_dict = user.to_dict()
+
   is_logged_in = AuthenticationHelper.instance().is_logged_in()
-  return {'is_logged_in': is_logged_in}
+  user_dict.update({
+    'user_id': user.key.id(),
+    'user_key': user.key.urlsafe(),
+    'is_logged_in': is_logged_in
+    })
+
+  return user_dict
 
