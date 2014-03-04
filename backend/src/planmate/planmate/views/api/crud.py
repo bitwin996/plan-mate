@@ -77,14 +77,6 @@ def create_of_index_response(context, request):
 def create_with_users(context, request):
   print 'CREATE PLAN_ATTENDANTS', context
 
-  """
-  new_entity = context.get_new_entity()
-
-  post_params = request.json_body if hasattr(request, 'json_body') else {}
-  new_entity.set_prop_values(**post_params)
-  new_entity.put()
-  """
-
   _create(context, request)
   response = index_with_users(context, request)
   return response
@@ -97,6 +89,7 @@ def update(context, request):
   entity = key.get()
 
   post_params = request.json_body if hasattr(request, 'json_body') else {}
+  print 'POST_PARAMS', post_params
   entity.set_prop_values(**post_params)
   entity.put()
 

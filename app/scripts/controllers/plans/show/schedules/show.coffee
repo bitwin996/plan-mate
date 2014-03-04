@@ -2,17 +2,11 @@
 
 angular.module('planMateApp')
   .controller 'PlansShowSchedulesShowCtrl', [
-    '$scope', '$routeParams', '$location', 'apiPlanSchedule', 'apiResponse', 'PlanScheduleAttendant', 'AuthenticationService', 'FlashAlertService',
-    ($scope, $routeParams, $location, apiPlanSchedule, apiResponse, PlanScheduleAttendant, AuthenticationService, FlashAlertService) ->
-      # PlanSchedul
-      #for planSchedule in $scope.$parent.planSchedules
-      #  if planSchedule.id is parseInt($routeParams.planScheduleId)
-      #    $scope.planSchedule = planSchedule
+    '$scope', '$routeParams', '$location', '$routeSegment', 'apiResponse', 'PlanSchedule', 'PlanScheduleAttendant', 'AuthenticationService', 'FlashAlertService',
+    ($scope, $routeParams, $location, $routeSegment, apiResponse, PlanSchedule, PlanScheduleAttendant, AuthenticationService, FlashAlertService) ->
 
-      $scope.plan = $scope.$parent.plan
-      $scope.planSchedule = apiPlanSchedule.plan_schedule
+      $scope.planSchedule = apiResponse.plan_schedule
 
-      # PlanScheduleAttendants
       $scope.planScheduleAttendants = apiResponse.plan_schedule_attendants
 
       for user in apiResponse.users
@@ -20,17 +14,12 @@ angular.module('planMateApp')
 
       @currentUserId = AuthenticationService.getUserId()
 
-      $scope.isOwner = $scope.plan.user_id is @currentUserId
       $scope.isAvailed = false
       for attendant in $scope.planScheduleAttendants
-        console.log attendant.id, @currentUserId
-        if attendant.id is @currentUserId
+        if attendant.user_id is @currentUserId
           $scope.isAvailed = true
 
-      console.log 'IS_OWNER', $scope.isOwner, $scope.isAvailed
-
       $scope.avail = ->
-        console.log 'AVAIL', $routeParams
         newAttendant = new PlanScheduleAttendant
           plan_id: $routeParams.planId
           plan_schedule_id: $routeParams.planScheduleId
@@ -48,4 +37,5 @@ angular.module('planMateApp')
             (response) ->
               FlashAlertService.error response.data.message
         )
+
   ]

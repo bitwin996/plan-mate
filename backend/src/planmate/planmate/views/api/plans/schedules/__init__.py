@@ -1,23 +1,27 @@
-"""
-from pyramid.httpexceptions import HTTPNotFound
 from google.appengine.ext import ndb
-from planmate.lib import mydb
-from planmate.lib.helpers import underscorize,pluralize
-from planmate.views.api.crud import index
+from planmate.models.plan import PlanScheduleAttendant
 
 
-def create(context, request):
-  print 'PLAN_SCHEDULE CREATE', context
+def show(context, request):
+  print 'PLAN_SCHEDULE SHOW', context
+  key = context.get_key()
+  plan_schedule = key.get()
+  plan_schedule_json = plan_schedule.to_json()
 
-  new_entity = context.get_new_entity()
+  attendants = PlanScheduleAttendant.query(ancestor=key).fetch()
 
-  post_params = request.json_body if hasattr(request, 'json_body') else {}
-  print 'POST_PARAMS', post_params
+  attendants_json = []
+  user_keys = []
+  for attendant in attendants:
+    attendants_json.append(attendant.to_json())
+    user_keys.append(attendant.user_key)
 
-  new_entity.set_prop_values(**post_params)
-  new_entity.put()
+  users = ndb.get_multi(user_keys)
+  users_json = [user.to_json() for user in users]
 
-  response = index(context, request)
-  print response
-  return response
-"""
+  return {
+    'plan_schedule': plan_schedule_json,
+    'plan_schedule_attendants': attendants_json,
+    'users': users_json
+    }
+

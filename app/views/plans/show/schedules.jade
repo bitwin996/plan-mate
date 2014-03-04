@@ -1,52 +1,42 @@
-.text-center(ng-show="planSchedules.length == 0")
-  em.text-muted No date offer.
+div(ng-show="routeSegment.startsWith('plans-show\.schedules\.show')")
+  .span(app-view-segment="2")
+
+div(ng-show="!routeSegment.startsWith('plans-show\.schedules\.show')")
+  .text-center(ng-show="planSchedules.length == 0")
+    em.text-muted No date offer.
 
 
-.list-group(ng-repeat="planSchedule in planSchedules | orderBy:'date'")
-  //a.list-group-item(ng-click="getPlanScheduleAttendants(planSchedule.plan_id, planSchedule.id)")
-  a.list-group-item(ng-href="#/plans/{{planSchedule.plan_id}}/schedules/{{planSchedule.id}}")
-    //.text-left.col-xs-8
-    h4.list-group-item-heading
-      {{ planSchedule.date | amDateFormat:formats.MOMENT_DATE }}
-    p.list-group-item-text
-      span.ls-mark
-        i.ls-icon-walking
-      | &nbsp;Available users&nbsp;
-      {{ planSchedule.attendants_count }}
-      | &nbsp;
+  .list-group(ng-repeat="planSchedule in planSchedules | orderBy:'date'")
+    a.list-group-item(ng-href="#/plans/{{planSchedule.plan_id}}/schedules/{{planSchedule.id}}")
+      h4.list-group-item-heading
+        {{ planSchedule.date | amDateFormat:formats.MOMENT_DATE }}
+      p.list-group-item-text
+        span.ls-mark
+          i.ls-icon-walking
+        | &nbsp;Available users&nbsp;
+        {{ planSchedule.attendants_count }}
+        | &nbsp;
 
-    //.text-right
-      button.btn.btn-primary(ng-show="isAvailable(planSchedule)", ng-disabled="isAvailable(planSchedule)", ng-click="avail(planSchedule)") Available
-      | &nbsp;
-      button.btn.btn-danger(ng-show="!isAvailable(planSchedule)", ng-disabled="!isAvailable(planSchedule)", ng-click="unavail(planSchedule)") Unavailable
+      //.text-right
+        button.btn.btn-primary(ng-show="isAvailable(planSchedule)", ng-disabled="isAvailable(planSchedule)", ng-click="avail(planSchedule)") Available
+        | &nbsp;
+        button.btn.btn-danger(ng-show="!isAvailable(planSchedule)", ng-disabled="!isAvailable(planSchedule)", ng-click="unavail(planSchedule)") Unavailable
 
 
-form.text-center(ng-submit="addPlanSchedule()")
-  //.form-group
-    input.input-block-level(type="text",
-      ng-model="newSchedule.date",
-      is-open="opened",
-      date-disabled="datePicker.disabled(schedule,mode)",
-      ng-required="true",
-      min="datePicker.min",
-      max="datePicker.max",
-      datepicker-popup="EEE, MMM dd",
-      placeholder="Click here"
-      )
-    | &nbsp;
-    button.btn.btn-primary(type="submit") Add
+  h4.page-header
+    | Add new date
 
+  form.text-center(ng-submit="addPlanSchedule()")
+    .form-group
+      div(style="display:inline-block; min-height:290px;")
+        .well.well-sm(ng-model="newSchedule.date")
+          datepicker(
+            show-weeks="false",
+            min="datePicker.min",
+            max="datePicker.max",
+          date-disabled="datePicker.disabled(date,mode)")
 
-  .form-group
-    div(style="display:inline-block; min-height:290px;")
-      .well.well-sm(ng-model="newSchedule.date")
-        datepicker(
-          show-weeks="false",
-          min="datePicker.min",
-          max="datePicker.max",
-        date-disabled="datePicker.disabled(date,mode)")
-
-      button.btn.btn-block.btn-primary(type="submit")
-        i.ls-icon-plus
-        br
-        | Add
+        button.btn.btn-block.btn-primary(type="submit")
+          i.ls-icon-plus
+          br
+          | Add

@@ -49,7 +49,7 @@ def make_app():
   config.add_view('planmate.views.auth.denied', context='velruse.AuthenticationDenied')
 
 
-  # jptions
+  # Options
   config.add_route('api_options', '/api/*traverse', request_method='OPTIONS', factory='planmate.resources.api.OptionsResource')
   config.add_view('planmate.views.api.options', route_name='api_options', request_method='OPTIONS', renderer='string')
 
@@ -61,6 +61,12 @@ def make_app():
   config.add_view(
     'planmate.views.api.crud.root',
     context='planmate.resources.api.root.RootResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='')
+
+  config.add_view(
+    'planmate.views.api.plans.schedules.show',
+    context='planmate.resources.api.plans.schedules.PlanScheduleEntityResource',
     route_name='api', renderer='json',
     request_method='GET', name='')
 
@@ -111,7 +117,7 @@ def make_app():
     'plans.PlanEntityResource': ['show', 'update', 'destroy'],
     'plans.attendants.PlanAttendantEntityResource': ['show', 'update', 'destroy'],
     'plans.comments.PlanCommentEntityResource': ['show', 'update', 'destroy'],
-    'plans.schedules.PlanScheduleEntityResource': ['show', 'update', 'destroy'],
+    'plans.schedules.PlanScheduleEntityResource': ['update', 'destroy'],
     'plans.schedules.attendants.PlanScheduleAttendantEntityResource': ['show', 'update', 'destroy'],
     'me.MyEntityResource': ['show', 'update', 'destroy'],
     'me.plans.MyPlanEntityResource': ['show', 'update', 'destroy']

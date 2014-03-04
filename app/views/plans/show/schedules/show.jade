@@ -1,18 +1,30 @@
-h4.text-center
-  {{ planSchedule.date | amDateFormat:formats.MOMENT_DATE }}
+dl
+  dt Date
+  dd {{ planSchedule.date | amDateFormat:formats.MOMENT_DATE }}
 
-ul(ng-repeat="planScheduleAttendant in planScheduleAttendants")
-  li
-    {{ users[planScheduleAttendant.id].name }}
+  dt Available users
+  dd
+    ul(ng-repeat="planScheduleAttendant in planScheduleAttendants")
+      li.list-unstyled
+        img.user-icon-small(src="{{users[planScheduleAttendant.user_id].profile_image_url}}", alt="{{users[ScheduleAttendant.user_id].name}}")
+        &nbsp;
+        {{ users[planScheduleAttendant.user_id].name }}
 
 div(ng-show="!isOwner")
-  button.btn.btn-block(ng-click="avail()")
-    i.ls-icon-plus
-    br
-    | Available
+  div(ng-show="!isAvailed")
+    button.btn.btn-block(ng-click="avail()")
+      i.ls-icon-plus
+      br
+      | Available
 
-div(ng-show="isOwner")
-  button.btn.btn-block(ng-click="fix()")
+  div(ng-show="isAvailed")
+    button.btn.btn-block(ng-click="unavail()")
+      i.ls-icon-remove
+      br
+      | Unavailable
+
+div(ng-show="isOwner && !isFixed")
+  button.btn.btn-block(ng-click="$parent.fix(planSchedule.date)")
     i.ls-icon-check
     br
     | Fix

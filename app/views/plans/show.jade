@@ -1,24 +1,24 @@
 // tabs
 ul.nav.nav-tabs
-  li(ng-class="{active: $routeSegment.startsWith('plans-show.info')}")
+  li(ng-class="{active: routeSegment.startsWith('plans-show\.info')}")
     a(href="#/plans/{{plan.id}}") Info
 
-  li(ng-class="{active: $routeSegment.startsWith('plans-show.schedules')}")
-    a(href="#/plans/{{plan.id}}/schedules") Scheduling
+  li(ng-class="{active: routeSegment.startsWith('plans-show\.schedules')}")
+    a(href="#/plans/{{plan.id}}/schedules") Date
 
-  li(ng-class="{active: $routeSegment.startsWith('plans-show.comments')}")
+  li(ng-class="{active: routeSegment.startsWith('plans-show\.comments')}")
     a(href="#/plans/{{plan.id}}/comments")
       | Comments &nbsp;
       span.badge {{ plan.comments_count }}
 
-  li(ng-class="{active: $routeSegment.startsWith('plans-show.attendants')}")
+  li(ng-class="{active: routeSegment.startsWith('plans-show\.attendants')}")
     a(href="#/plans/{{plan.id}}/attendants")
-      | Attendants &nbsp;
+      | Users &nbsp;
       span.badge {{ plan.attendants_count }}
 
 
-.page-header
-  h4 {{ plan.place_name }}
+h4.page-header
+  {{ plan.place_name }}
 
 // main contents
 .span(app-view-segment="1")

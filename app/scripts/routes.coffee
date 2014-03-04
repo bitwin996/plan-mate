@@ -27,7 +27,7 @@ app.config [
       .when('/plans/:planId/attendants', 'plans-show.attendants')
       .when('/plans/:planId/comments',   'plans-show.comments')
       .when('/plans/:planId/schedules',  'plans-show.schedules')
-      .when('/plans/:planId/schedules/:planScheduleId',  'plans-show.schedules-show')
+      .when('/plans/:planId/schedules/:planScheduleId',  'plans-show.schedules.show')
 
 
       .segment 'main',
@@ -120,41 +120,33 @@ app.config [
           resolveFailed:
             apiResponse: apiResolveFailed
 
-        #.within()
-        .segment 'schedules-show',
-          templateUrl: 'views/plans/show/schedules/show.html'
-          controller: 'PlansShowSchedulesShowCtrl'
-          dependencies: ['planId', 'planScheduleId']
-          resolve:
-            #apiPlan: [
-            #  'Plan', '$routeParams',
-            #  (Plan, $routeParams) ->
-            #    request = Plan.get
-            #      planId: $routeParams.planId
-            #    console.log 'plan', request
-            #    request.$promise
-            #]
-            #TODO get schedule and attendants once
-            apiPlanSchedule: [
-              'PlanSchedule', '$routeParams',
-              (PlanSchedule, $routeParams) ->
-                request = PlanSchedule.get
-                  planId: $routeParams.planId
-                  planScheduleId: $routeParams.planScheduleId
-                request.$promise
-            ]
-            apiResponse: [
-              'PlanScheduleAttendant', '$routeParams',
-              (PlanScheduleAttendant, $routeParams) ->
-                request = PlanScheduleAttendant.query
-                  planId: $routeParams.planId
-                  planScheduleId: $routeParams.planScheduleId
-                request.$promise
-            ]
-          resolveFailed:
-            #apiPlan: apiResolveFailed
-            apiPlanSchedule: apiResolveFailed
-            apiResponse: apiResolveFailed
+        #.segment 'schedules-show',
+        .within()
+          .segment 'show',
+            templateUrl: 'views/plans/show/schedules/show.html'
+            controller: 'PlansShowSchedulesShowCtrl'
+            dependencies: ['planId', 'planScheduleId']
+            resolve:
+              apiResponse: [
+                'PlanSchedule', '$routeParams',
+                (PlanSchedule, $routeParams) ->
+                  request = PlanSchedule.get
+                    planId: $routeParams.planId
+                    planScheduleId: $routeParams.planScheduleId
+                  request.$promise
+              ]
+              #apiPlanScheduleAttendants: [
+              #  'PlanScheduleAttendant', '$routeParams',
+              #  (PlanScheduleAttendant, $routeParams) ->
+              #    request = PlanScheduleAttendant.query
+              #      planId: $routeParams.planId
+              #      planScheduleId: $routeParams.planScheduleId
+              #    request.$promise
+              #]
+            resolveFailed:
+              apiResponse: apiResolveFailed
+              #apiPlan: apiResolveFailed
+              #apiPlanSchedule: apiResolveFailed
 
 
     $routeProvider.otherwise redirectTo: '/'
