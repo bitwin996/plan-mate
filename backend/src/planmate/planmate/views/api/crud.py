@@ -1,7 +1,9 @@
 from pyramid.httpexceptions import HTTPNotFound
 from google.appengine.ext import ndb
 from planmate.lib import mydb
+#TODO migrate to inflection
 from planmate.lib.helpers import underscorize,pluralize
+from inflection.inflection import singularize,underscore
 
 
 def root(context, request):
@@ -83,7 +85,7 @@ def create_with_users(context, request):
 
 
 def update(context, request):
-  print('UPDATE', context, hasattr(request, 'json_body'))
+  print 'UPDATE', context, hasattr(request, 'json_body')
 
   key = context.get_key()
   entity = key.get()
@@ -94,7 +96,10 @@ def update(context, request):
   entity.put()
 
   json_body = entity.to_json()
-  name = underscorize(context.__name__)
+
+  model_name = context.__parent__.__name__
+  name = singularize(underscore(model_name))
+
   response = {name: json_body}
   return response
 

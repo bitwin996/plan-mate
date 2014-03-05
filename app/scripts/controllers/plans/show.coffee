@@ -2,17 +2,22 @@
 
 angular.module('planMateApp')
   .controller 'PlansShowCtrl', [
-    '$scope', '$routeSegment', 'apiResponse', 'Plan', 'PlanAttendant', 'AuthenticationService', 'FlashAlertService',
-    ($scope, $routeSegment, apiResponse, Plan, PlanAttendant, AuthenticationService, FlashAlertService) ->
-      $scope.plan = apiResponse.plan
+    '$scope', '$routeSegment', '$location', 'apiResponse', 'Plan', 'PlanAttendant', 'AuthenticationService', 'FlashAlertService',
+    ($scope, $routeSegment, $location, apiResponse, Plan, PlanAttendant, AuthenticationService, FlashAlertService) ->
+      #$scope.plan = apiResponse.plan
+      $scope.setPlan = (plan) ->
+        $scope.plan = plan
+        $scope.isOwner = plan.user_id is AuthenticationService.getUserId()
+        $scope.isFixed = not not plan.date
+      $scope.setPlan apiResponse.plan
 
       $scope.planAttendants = null
       $scope.planComments = null
       $scope.planSchedules = null
       $scope.users ?= {}
 
-      $scope.isOwner = $scope.plan.user_id is AuthenticationService.getUserId()
-      $scope.isFixed = not not $scope.plan.date
+      #$scope.isOwner = $scope.plan.user_id is AuthenticationService.getUserId()
+      #$scope.isFixed = not not $scope.plan.date
 
       $scope.routeSegment = $routeSegment
       #console.log $routeSegment.chain.slice(-1)[0].name
@@ -51,11 +56,33 @@ angular.module('planMateApp')
       $scope.fix = (date) ->
         plan = new Plan $scope.plan
         plan.date = date
-        console.log 'PLAN', plan
         plan.$fix(
             (response) ->
               console.log 'SUCCESS', response
+
+              #$scope.plan = response.plan
+              $scope.setPlan response.plan
+
+              FlashAlertService.prepareRedirect()
               FlashAlertService.success "Success to fix plan schedule."
+              $location.path '/plans/'+$scope.plan.id
+          ,
+            (response) ->
+              FlashAlertService.error response.data.message
+        )
+
+      $scope.cancelFixing = ->
+        plan = new Plan $scope.plan
+        plan.$cancelFixing(
+            (response) ->
+              console.log 'SUCCESS', response
+
+              #$scope.plan = response.plan
+              $scope.setPlan response.plan
+
+              FlashAlertService.prepareRedirect()
+              FlashAlertService.success "Success to cancel plan schedule."
+              $location.path '/plans/'+$scope.plan.id
           ,
             (response) ->
               FlashAlertService.error response.data.message

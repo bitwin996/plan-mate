@@ -16,5 +16,14 @@ angular.module('planMateApp')
 
             json = $filter('json') params
             return json
+
+        cancelFixing:
+          method: 'PUT'
+          transformRequest: (data, headersGetter) ->
+            params = {'date':null}
+
+            json = $filter('json') params
+            return json
+
   ]
 

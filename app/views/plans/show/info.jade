@@ -6,7 +6,7 @@ dl
   dt Date
   dd
     span(ng-show="plan.date")
-      {{ plan.date | date:'MM-dd-yy' }}
+      {{ plan.date | date:formats.DATE }}
     span(ng-show="!plan.date")
       em.text-muted Not fixed
 

@@ -23,20 +23,27 @@ div(ng-show="!routeSegment.startsWith('plans-show\.schedules\.show')")
         button.btn.btn-danger(ng-show="!isAvailable(planSchedule)", ng-disabled="!isAvailable(planSchedule)", ng-click="unavail(planSchedule)") Unavailable
 
 
-  h4.page-header
-    | Add new date
+  div(ng-show="isFixed")
+    button.btn.btn-block(type="button", ng-click="cancelFixing()")
+      i.ls-icon-clear
+      br
+      | Cancel fixing
 
-  form.text-center(ng-submit="addPlanSchedule()")
-    .form-group
-      div(style="display:inline-block; min-height:290px;")
-        .well.well-sm(ng-model="newSchedule.date")
-          datepicker(
-            show-weeks="false",
-            min="datePicker.min",
-            max="datePicker.max",
-          date-disabled="datePicker.disabled(date,mode)")
+  div(ng-show="!isFixed")
+    h4.page-header
+      | Add new date
 
-        button.btn.btn-block.btn-primary(type="submit")
-          i.ls-icon-plus
-          br
-          | Add
+    form.text-center(ng-submit="addPlanSchedule()")
+      .form-group
+        div(style="display:inline-block; min-height:290px;")
+          .well.well-sm(ng-model="newSchedule.date")
+            datepicker(
+              show-weeks="false",
+              min="datePicker.min",
+              max="datePicker.max",
+            date-disabled="datePicker.disabled(date,mode)")
+
+          button.btn.btn-block(type="submit")
+            i.ls-icon-plus
+            br
+            | Add
