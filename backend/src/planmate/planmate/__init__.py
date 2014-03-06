@@ -70,11 +70,29 @@ def make_app():
     route_name='api', renderer='json',
     request_method='GET', name='')
 
+  config.add_view(
+    'planmate.views.api.plans.show',
+    context='planmate.resources.api.plans.PlanEntityResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='')
+
+  config.add_view(
+    'planmate.views.api.plans.attendants.create',
+    context='planmate.resources.api.plans.attendants.PlanAttendantModelResource',
+    route_name='api', renderer='json',
+    request_method='POST', name='')
+
+  config.add_view(
+    'planmate.views.api.plans.attendants.destroy',
+    context='planmate.resources.api.plans.attendants.PlanAttendantEntityResource',
+    route_name='api', renderer='json',
+    request_method='DELETE', name='')
+
 
   model_resources = {
     'users.UserModelResource': ['index', 'create'],
     'plans.PlanModelResource': ['index', 'create'],
-    'plans.attendants.PlanAttendantModelResource': ['index_with_users', 'create_with_users'],
+    'plans.attendants.PlanAttendantModelResource': ['index_with_users'],
     'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users'],
     'plans.schedules.PlanScheduleModelResource': ['index', 'create_of_index_response'],
     'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index_with_users', 'create_with_users'],
@@ -113,11 +131,11 @@ def make_app():
 
 
   entity_resources = {
-    'users.UserEntityResource': ['show', 'update', 'destroy'],
-    'plans.PlanEntityResource': ['show', 'update', 'destroy'],
-    'plans.attendants.PlanAttendantEntityResource': ['show', 'update', 'destroy'],
-    'plans.comments.PlanCommentEntityResource': ['show', 'update', 'destroy'],
-    'plans.schedules.PlanScheduleEntityResource': ['update', 'destroy'],
+    'users.UserEntityResource': ['show', 'update'],
+    'plans.PlanEntityResource': ['update'],
+    'plans.attendants.PlanAttendantEntityResource': ['show', 'update'],
+    'plans.comments.PlanCommentEntityResource': ['show', 'update'],
+    'plans.schedules.PlanScheduleEntityResource': ['update'],
     'plans.schedules.attendants.PlanScheduleAttendantEntityResource': ['show', 'update', 'destroy'],
     'me.MyEntityResource': ['show', 'update', 'destroy'],
     'me.plans.MyPlanEntityResource': ['show', 'update', 'destroy']

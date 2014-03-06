@@ -1,18 +1,18 @@
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPNotFound,HTTPUnauthorized
 from google.appengine.ext import ndb
 from planmate.lib import mydb
 #TODO migrate to inflection
-from planmate.lib.helpers import underscorize,pluralize
+from planmate.lib.helpers import AuthenticationHelper,underscorize,pluralize
 from inflection.inflection import singularize,underscore
 
 
 def root(context, request):
-  print('ROOT', context)
+  print 'ROOT', context
   return {'message':'root'}
 
 
 def index(context, request):
-  print('INDEX', context)
+  print 'INDEX', context
 
   query = context.get_query()
   entities = query.fetch()
@@ -24,7 +24,7 @@ def index(context, request):
 
 
 def index_with_users(context, request):
-  print('INDEX WITH USERS', context)
+  print 'INDEX WITH USERS', context
 
   query = context.get_query()
   entities = query.fetch()
@@ -39,7 +39,7 @@ def index_with_users(context, request):
 
 
 def show(context, request):
-  print('SHOW', context, request)
+  print 'SHOW', context, request
   key = context.get_key()
   entity = key.get()
 
@@ -90,6 +90,9 @@ def update(context, request):
   key = context.get_key()
   entity = key.get()
 
+  if hasattr(entity, 'user_key') and entity.user_key != AuthenticationHelper.instance().get_user_key():
+    raise HTTPUnauthorized()
+
   post_params = request.json_body if hasattr(request, 'json_body') else {}
   print 'POST_PARAMS', post_params
   entity.set_prop_values(**post_params)
@@ -105,13 +108,13 @@ def update(context, request):
 
 
 def destroy(context, request):
-  print('DESTROY', context)
+  print 'DESTROY', context
 
   key = context.get_key()
   entity = key.get()
 
-  if not entity:
-    raise HTTPNotFound()
+  if hasattr(entity, 'user_key') and entity.user_key != AuthenticationHelper.instance().get_user_key():
+    raise HTTPUnauthorized("You do not have a permission to do the action.")
 
   key.delete()
 

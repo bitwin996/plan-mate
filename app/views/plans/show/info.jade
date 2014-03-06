@@ -16,8 +16,18 @@ dl
   dt Number of Comments
   dd {{ plan.comments_count || 0 }}
 
-form(ng-submit="attend()")
-  button.btn.btn-block.btn-success
-    i.ls-icon-plus
-    br
-    | Attend
+div(ng-show="!isAttended")
+  form(ng-submit="attend()")
+    div(ng-show="!isAttended")
+    button.btn.btn-block
+      i.ls-icon-plus
+      br
+      | Attend
+
+div(ng-show="isAttended")
+  form(ng-submit="unattend()")
+    div(ng-show="!isAttended")
+    button.btn.btn-block
+      i.ls-icon-remove
+      br
+      | Cancel to attend
