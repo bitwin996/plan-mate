@@ -2,29 +2,43 @@
 
 angular.module('planMateApp')
   .controller 'NavbarCtrl', [
-    '$scope', '$location', 'AuthenticationService',
-    ($scope, $location, AuthenticationService) ->
+    '$scope', '$rootScope', '$location', 'AuthenticationService', 'FlashAlertService',
+    ($scope, $rootScope, $location, AuthenticationService, FlashAlertService) ->
 
-      $scope.isCollapsed = true
+      $rootScope.navbar =
+        isCollapsed: true
+
+      #$scope.isCollapsed = true
 
       collapse = ->
-        $scope.isCollapsed = true
+        $rootScope.navbar.isCollapsed = true
 
       $scope.toggle = ->
-        $scope.isCollapsed = not $scope.isCollapsed
+        $rootScope.navbar.isCollapsed = not $rootScope.navbar.isCollapsed
 
+      # change routing
       $scope.$on '$routeChangeSuccess', ->
         collapse()
 
+      # for view
       $scope.isActive = (path) ->
         if path is '/'
           $location.path() is '/'
         else
           $location.path().substr(0, path.length) is path
 
-      $scope.isLoggedIn = AuthenticationService.isLoggedIn()
+      # Auth
+      #$rootScope.navbar.isLoggedIn = AuthenticationService.storage.is_logged_in
+      #$scope.isLoggedIn = AuthenticationService.isLoggedIn()
 
       $scope.logout = ->
-        AuthenticationService.logout ->
-          $location.path '/'  #TODO
+        AuthenticationService.logout(->
+          $rootScope.navbar.isCollapsed = true
+
+          #FlashAlertService.prepareRedirect()
+          FlashAlertService.info "Success to log out."
+
+          #AuthenticationService.update()
+          #$location.path '#/mypage/plans'
+        )
   ]

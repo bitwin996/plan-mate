@@ -26,7 +26,7 @@ class RootResource(api.BaseResource):
       auth.set_session(self.request.session)
 
     #TODO delete
-    auth.debug_login()
+    #auth.debug_login()
 
   def __getitem__(self, name):
     cls = self.__class__._item_map[name]

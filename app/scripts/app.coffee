@@ -47,6 +47,7 @@ app.config [
   'RestangularProvider', 'endpoint',# 'FlashAlertService',
   (RestangularProvider, endpoint) ->
     RestangularProvider.setBaseUrl endpoint
+    #TODO
     #RestangularProvider.setDefaultHttpFields
     #  cache: $angularCacheFactory 'httpCache'
 

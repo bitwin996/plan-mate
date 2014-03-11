@@ -11,19 +11,19 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
     p.navbar-text
       a.navbar-link(href="#") Username
 
-  .navbar-collapse(ng-class="{collapse:isCollapsed, in:!isCollapsed}")
+  .navbar-collapse(ng-class="{collapse:navbar.isCollapsed, in:!navbar.isCollapsed}")
     ul.nav.navbar-nav
       li(ng-class="{active:isActive('/mypage/plans')}")
         a(href="#/mypage/plans") Plan list
 
     ul.nav.navbar-nav.navbar-right
-      li(ng-class="{active:isActive('/users')}", ng-show="isLoggedIn")
+      li(ng-class="{active:isActive('/users')}", ng-show="$storage.authentication.is_logged_in")
         //TODO: Get username
         a(href="#/mypage/plans") Test User
 
       // Login / Logout
-      li(ng-class="{active:isActive('/auth')}", ng-show="!isLoggedIn")
+      li(ng-class="{active:isActive('/auth')}", ng-show="!$storage.authentication.is_logged_in")
         a(href="#/auth/login") Login
-      li(ng-class="{active:isActive('/auth')}", ng-show="isLoggedIn")
+      li(ng-class="{active:isActive('/auth')}", ng-show="$storage.authentication.is_logged_in")
         a(ng-click="logout()") Logout
 

@@ -34,17 +34,11 @@ def make_app():
   #config.scan()
 
   # auth
-  config.add_view(
-    'planmate.views.auth.status',
-    context='planmate.resources.api.auth.AuthenticationResource',
-    route_name='api', renderer='json',
-    request_method='GET', name='status')
+  #config.add_route('debug_login', '/debug/login/{offset}')
 
-  config.add_route('debug_login', '/debug/login/{offset}')
-
+  # login
   config.add_route('auth_login', '/auth/login/{provider_type}')
   config.add_view('planmate.views.auth.login', route_name='auth_login')
-
   config.add_view('planmate.views.auth.complete', context='velruse.AuthenticationComplete')
   config.add_view('planmate.views.auth.denied', context='velruse.AuthenticationDenied')
 
@@ -64,6 +58,20 @@ def make_app():
     route_name='api', renderer='json',
     request_method='GET', name='')
 
+  # auth views
+  config.add_view(
+    'planmate.views.api.auth.status',
+    context='planmate.resources.api.auth.AuthenticationResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='status')
+
+  config.add_view(
+    'planmate.views.api.auth.logout',
+    context='planmate.resources.api.auth.AuthenticationResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='logout')
+
+  # each views
   config.add_view(
     'planmate.views.api.plans.schedules.show',
     context='planmate.resources.api.plans.schedules.PlanScheduleEntityResource',
@@ -176,6 +184,7 @@ def make_app():
 
   # subscribers
   config.add_subscriber('planmate.subscribers.cors.update_headers', 'pyramid.events.NewResponse')
+  config.add_subscriber('planmate.subscribers.auth.set_session', 'pyramid.events.NewRequest')
 
   return config.make_wsgi_app()
 

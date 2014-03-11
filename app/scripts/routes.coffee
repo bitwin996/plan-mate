@@ -18,6 +18,7 @@ app.config [
       .when('/', 'main')
 
       .when('/auth/login', 'login')
+      .when('/auth/login-complete', 'login-complete')
 
       .when('/users/:userId/plans',      'users-plans')
       .when('/mypage/plans',             'mypage-plans')
@@ -38,6 +39,16 @@ app.config [
         templateUrl: 'views/auth/login.html'
         controller: 'AuthCtrl'
 
+      .segment 'login-complete',
+        controller: 'AuthLoginCompleteCtrl'
+        resolve:
+          auth: [
+            '$location', 'AuthenticationService',
+            ($location, AuthenticationService) ->
+              AuthenticationService.update()
+              $location.path '/'
+          ]
+
       .segment 'mypage-plans',
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
@@ -48,6 +59,10 @@ app.config [
             (Restangular) ->
               #Restangular.one('me').all('plans').getList()
               Restangular.one('me').getList('plans')
+
+              #'$http', 'endpoint',
+              #($http, endpoint) ->
+              #  $http.get(endpoint + "/me/plans").then()
           ]
 
       .segment 'users-plans',
