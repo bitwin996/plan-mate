@@ -51,6 +51,19 @@ def make_app():
   # API routes and views
   config.add_route('api', '/api/*traverse', factory='planmate.resources.api.root.RootResource')
 
+  #TODO delete
+  config.add_view(
+    'planmate.views.api.auth.debug',
+    context='planmate.resources.api.auth.AuthenticationResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='debug')
+
+  config.add_view(
+    'planmate.views.api.auth.debug_callback',
+    context='planmate.resources.api.auth.AuthenticationResource',
+    route_name='api', renderer='json',
+    request_method='GET', name='debug_callback')
+
   # root view
   config.add_view(
     'planmate.views.api.crud.root',

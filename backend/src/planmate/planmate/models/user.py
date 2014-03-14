@@ -26,3 +26,7 @@ class User(mydb.Model):
   #@classmethod
   #def _pre_delete_hook(self, key):
   #  self._delete_child_models(key)
+
+
+class Friendship(mydb.Model):
+  user_key = ndb.KeyProperty(kind='User', required=True)

@@ -13,14 +13,16 @@ def login(request):
   # Invoke login request
   provider_type = request.matchdict['provider_type']
 
-  # sub request
+  # Sub Request for internal redirect
   sub_request = Request.blank('/login/' + provider_type, base_url = request.host_url)
   response = request.invoke_subrequest(sub_request)
   return response
 
 
 def complete(context, request):
-  print 'LOGIN COMPLETE', context
+  print 'LOGIN COMPLETE', context, context.credentials
+
+  session = request.session
 
   provider_type = context.provider_type
   provider_userid = int(context.profile['accounts'][0]['userid'])
@@ -47,6 +49,12 @@ def complete(context, request):
   AuthenticationHelper.instance().set_user_id(user.key.id())
   #print 'SESSION', AuthenticationHelper.instance().get_user_id()
   #request.session.save()
+
+  # Store and access tokens to session for Twitter
+  session['resource_owner_key'] = context.credentials['oauthAccessToken']
+  session['resource_owner_secret'] = context.credentials['oauthAccessTokenSecret']
+
+  #TODO Get friend list
 
   # Redirect to main page
   base_url = request.registry.settings['frontend.base_url']
