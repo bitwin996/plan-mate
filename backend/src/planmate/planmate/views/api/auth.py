@@ -91,12 +91,6 @@ def debug_callback(context, request):
 
   if response.status_code == 200:
     data = response.json()
-    print 'DATA', data
-
-    for user in data['users']:
-      print user['screen_name']
-      for k,v in user.iteritems():
-        print(k,v)
 
   elif response.status_code == 401:
     del session['resource_owner_key']
