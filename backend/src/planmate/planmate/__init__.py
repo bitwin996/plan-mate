@@ -112,7 +112,7 @@ def make_app():
 
   model_resources = {
     'users.UserModelResource': ['index', 'create'],
-    'plans.PlanModelResource': ['index', 'create'],
+    'plans.PlanModelResource': ['index_with_users', 'create'],
     'plans.attendants.PlanAttendantModelResource': ['index_with_users'],
     'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users'],
     'plans.schedules.PlanScheduleModelResource': ['index', 'create_of_index_response'],

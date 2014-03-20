@@ -2,18 +2,14 @@
 
 angular.module('planMateApp')
   .controller 'UsersPlansCtrl', [
-    '$scope', 'plansResponse',
-    ($scope, plansResponse) ->
-      $scope.plans = plansResponse.plans
-      $scope.users = plansResponse.users
+    '$scope', 'apiResponse',
+    ($scope, apiResponse) ->
+      console.log 'PLANS RESPONSE', apiResponse
 
-      ###
-      $scope.plans = new Plan
-      $scope.plans.$find(user_id:'me').
-        success((response) ->
-          console.log $scope.plans
-        ).
-        error (response) ->
-          FlashAlertService.error "Couldn't connect the remote server"
-      ###
+      $scope.plans = apiResponse.plans
+
+      $scope.users = {}
+      for user in apiResponse.users
+        $scope[user.id] = user
+
   ]

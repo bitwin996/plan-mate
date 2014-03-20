@@ -5,6 +5,10 @@ angular.module('planMateApp')
     '$resource', '$filter', 'endpoint',
     ($resource, $filter, endpoint) ->
       $resource endpoint + '/plans/:planId', planId:'@id',
+        query:
+          method:'GET'
+          isArray:false
+
         fix:
           method: 'PUT'
           transformRequest: (data, headersGetter) ->

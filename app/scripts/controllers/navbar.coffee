@@ -8,7 +8,7 @@ angular.module('planMateApp')
       $rootScope.navbar =
         isCollapsed: true
 
-      #$scope.isCollapsed = true
+      $scope.current_user = AuthenticationService.storage
 
       collapse = ->
         $rootScope.navbar.isCollapsed = true
@@ -35,10 +35,10 @@ angular.module('planMateApp')
         AuthenticationService.logout(->
           $rootScope.navbar.isCollapsed = true
 
-          #FlashAlertService.prepareRedirect()
+          FlashAlertService.prepareRedirect()
           FlashAlertService.info "Success to log out."
 
           #AuthenticationService.update()
-          #$location.path '#/mypage/plans'
+          $location.path '#/'
         )
   ]

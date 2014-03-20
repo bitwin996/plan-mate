@@ -12,14 +12,13 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavbarCtrl", role="nav
       a.navbar-link(href="#") Username
 
   .navbar-collapse(ng-class="{collapse:navbar.isCollapsed, in:!navbar.isCollapsed}")
-    ul.nav.navbar-nav
-      li(ng-class="{active:isActive('/mypage/plans')}")
-        a(href="#/mypage/plans") Plan list
-
     ul.nav.navbar-nav.navbar-right
       li(ng-class="{active:isActive('/users')}", ng-show="$storage.authentication.is_logged_in")
         //TODO: Get username
-        a(href="#/mypage/plans") Test User
+        a(href="#/mypage/plans")
+          .inline-block
+            img.img-responsive.user-icon-xs.img-circle(src="{{current_user.profile_image_url}}", alt="{{current_user.name}}")
+          &nbsp; {{ current_user.name }}
 
       // Login / Logout
       li(ng-class="{active:isActive('/auth')}", ng-show="!$storage.authentication.is_logged_in")

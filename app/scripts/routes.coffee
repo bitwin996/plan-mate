@@ -53,17 +53,15 @@ app.config [
         templateUrl: 'views/users/plans.html'
         controller: 'UsersPlansCtrl'
         resolve:
-          #TODO replace with $resource
-          plansResponse: [
-            'Restangular',
-            (Restangular) ->
-              #Restangular.one('me').all('plans').getList()
-              Restangular.one('me').getList('plans')
-
-              #'$http', 'endpoint',
-              #($http, endpoint) ->
-              #  $http.get(endpoint + "/me/plans").then()
+          apiResponse: [
+            'Plan',
+            (Plan) ->
+              console.log 'BEFORE'
+              request = Plan.query()
+              request.$promise
           ]
+        resolveFailed:
+          apiResponse: apiResolveFailed
 
       .segment 'users-plans',
         templateUrl: 'views/users/plans.html'
