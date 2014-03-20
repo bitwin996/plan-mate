@@ -50,6 +50,7 @@ def show(context, request):
 
 
 def _create(context, request):
+  print '_CREATE', context
   new_entity = context.get_new_entity()
 
   post_params = request.json_body if hasattr(request, 'json_body') else {}
@@ -65,7 +66,7 @@ def create(context, request):
   new_entity = _create(context, request)
 
   json_body = new_entity.to_json()
-  name = underscorize(context.__name__)
+  name = underscorize(new_entity.key.kind())
   response = {name: json_body}
   return response
 

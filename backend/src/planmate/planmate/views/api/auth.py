@@ -1,8 +1,39 @@
-from planmate.lib.helpers import AuthenticationHelper
+from google.appengine.ext import ndb
 from pyramid.httpexceptions import HTTPFound
+
+from planmate.lib.helpers import AuthenticationHelper
 
 
 #TODO delete
+def debug(context, request):
+  from planmate.models.user import User,Friendship
+  from planmate.models.plan import Plan
+
+  current_user = AuthenticationHelper.instance().get_current_user()
+  friend_keys = current_user.get_friend_keys()
+
+  """
+  user_friendships = Friendship.query(ancestor=current_user_key).fetch()
+  user_keys = [friendship.user_key for friendship in friendships]
+
+  owner_friendships = Friendship.query(Friendship.user_key == current_user_key).fetch()
+  owner_keys = [friendship.key.parent for friendship in friendships]
+  """
+
+  user_keys = friend_keys + [current_user.key]
+  plans = Plan.query(Plan.user_key.IN(user_keys)).fetch()
+  plans_json = [plan.to_json() for plan in plans]
+
+  users = ndb.get_multi(friend_keys)
+  friends_json = [user.to_json() for user in users]
+
+  return plans_json
+
+def debug_callback(context, request):
+  return {}
+
+
+"""
 #from pyramid.url import resource_url
 
 import requests
@@ -97,6 +128,7 @@ def debug_callback(context, request):
     del session['resource_owner_secret']
 
   return {'debug': 'OK'}
+"""
 
 
 def status(context, request):

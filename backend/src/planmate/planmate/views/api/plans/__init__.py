@@ -5,7 +5,6 @@ from planmate.models.plan import PlanAttendant
 def show(context, request):
   print 'PLAN SHOW', context, request
   plan_key = context.get_key()
-  print 'PLAN_KEY', plan_key.get()
   return plans_show_response(plan_key)
 
   """

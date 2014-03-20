@@ -16,11 +16,16 @@ class MyPlanModelResource(api.ModelResource):
     return MyPlanEntityResource(self.request, key=key, parent=self)
 
   def get_query(self, *args, **options):
-    user_key = AuthenticationHelper.instance().get_user_key()
+    current_user = AuthenticationHelper.instance().get_current_user()
+    friend_keys = current_user.get_friend_keys()
+    user_keys = friend_keys + [current_user.key]
+
     list_args = list(args)
-    list_args.append(Plan.user_key == user_key)
+    list_args.append(Plan.user_key.IN(user_keys))
+
     return self._get_query(*list_args, **options)
 
-  def get_new_entity(self):
-    return self._get_new_entity(add_parent=False, current_user_key='user_key')
+  #TODO obsolete
+  #def get_new_entity(self):
+  #  return self._get_new_entity(add_parent=False, current_user_key='user_key')
 

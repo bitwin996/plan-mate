@@ -27,3 +27,6 @@ class PlanModelResource(api.ModelResource):
     key = self.generate_key(unicode_id)
     return PlanEntityResource(self.request, key=key, parent=self)
 
+  def get_new_entity(self):
+    return self._get_new_entity(add_parent=False, current_user_key='user_key')
+

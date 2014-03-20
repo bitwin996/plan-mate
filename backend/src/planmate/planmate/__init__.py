@@ -117,7 +117,7 @@ def make_app():
     'plans.comments.PlanCommentModelResource': ['index_with_users', 'create_with_users'],
     'plans.schedules.PlanScheduleModelResource': ['index', 'create_of_index_response'],
     'plans.schedules.attendants.PlanScheduleAttendantModelResource': ['index_with_users', 'create_with_users'],
-    'me.plans.MyPlanModelResource': ['index', 'create']
+    'me.plans.MyPlanModelResource': ['index']  #, 'create']
     }
   for resource, views in model_resources.iteritems():
     context = 'planmate.resources.api.' + resource

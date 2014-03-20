@@ -23,10 +23,17 @@ class User(mydb.Model):
       if count != 0:
         raise HTTPConflict('You have already attended this date.')
 
-  #TODO
-  #@classmethod
-  #def _pre_delete_hook(self, key):
-  #  self._delete_child_models(key)
+  def get_friend_keys(self):
+    owner_friendships = Friendship.query(ancestor=self.key).fetch()
+    owner_user_keys = [friendship.user_key for friendship in owner_friendships]
+
+    parent_friendships = Friendship.query(Friendship.user_key == self.key).fetch()
+    parent_user_keys = [friendship.key.parent for friendship in parent_friendships]
+
+    user_keys = list(set(owner_user_keys + parent_user_keys))
+    user_keys = [key for key in user_keys if key != self.key]
+
+    return user_keys
 
 
 class Friendship(mydb.Model):
